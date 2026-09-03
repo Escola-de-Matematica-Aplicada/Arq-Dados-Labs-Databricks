@@ -537,7 +537,7 @@ Motivar: "o pipeline de hoje é o rascunho do trabalho final".
 - White, T. (2015). *Hadoop: The Definitive Guide.* O'Reilly — HDFS/YARN/MR.
 - Kreps, J. (2014). Questioning the Lambda Architecture. O'Reilly Radar — origem do Kappa.
 - Delta Lake / Apache Iceberg / Apache Hudi — docs: formatos transacionais sobre Parquet.
-- Databricks Community Edition — https://community.cloud.databricks.com
+- Databricks Free Edition — https://www.databricks.com/learn/free-edition (login: https://login.databricks.com)
 - LODLog: `docs/LODLog/Projeto-Eng-Dados-IA-para-Negocio.md` + `docs/ementa/syllabus.md` Módulo 3.
 
 ### Notes:

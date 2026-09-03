@@ -467,7 +467,7 @@ Exercício conecta RPG + Medallion + LODLog.
 # Lab 2 ao Vivo — Medallion no Databricks CE
 **Objetivo:** implementar **Bronze → Silver → Gold** com **Delta Lake** (ELT) sobre dados LODLog simulados.
 
-- **Plataforma:** **Databricks Community Edition** (https://community.cloud.databricks.com) — gratuito, sem cartão, Spark + Delta nativo. [Aula 1]
+- **Plataforma:** **Databricks Free Edition** (https://login.databricks.com) — gratuito, sem cartão, Spark + Delta nativo, Serverless + Unity Catalog. [Aula 1]
 - **Scripts em `/Aulas/Aula-2/Labs/`:**
   - `lab2-medallion-bronze-silver-gold.py` — pipeline completo IoT (bronze JSON → silver validado → gold agregado)
   - `lab2-nosql-simulation.py` — simulação KV/Documento/Coluna/Grafo com PySpark + Delta

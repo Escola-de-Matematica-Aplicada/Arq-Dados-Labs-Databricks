@@ -104,9 +104,9 @@ Disciplina isenta de prova, avaliada por trabalho.
 ![Logotipo](Imagem4.jpg)
 
 <!-- Slide number: 10 -->
-# Ferramenta do curso: Databricks Community Edition
+# Ferramenta do curso: Databricks Free Edition
 
-O laboratório será executado no **Databricks Community Edition** — ambiente gratuito, sem necessidade de cartão de crédito.
+O laboratório será executado no **Databricks Free Edition** (https://login.databricks.com) — ambiente gratuito, sem necessidade de cartão de crédito, com compute Serverless e Unity Catalog. (O antigo Community Edition foi descontinuado pela Databricks.)
 
 - Notebook colaborativo baseado em Jupyter
 - Spark distribuído para processamento de dados
@@ -824,7 +824,7 @@ Esta tabela será preenchida durante o laboratório. Cada grupo analisará um su
 Lab 1: Classificação das fontes LODLog
 
 ### Notes:
-O laboratório dura 1h40min. Os grupos usarão Databricks Community Edition para analisar dados reais da LODLog.
+O laboratório dura 1h40min. Os grupos usarão Databricks Free Edition para analisar os dados do cenário LODLog.
 
 <!-- Slide number: 50 -->
 # Lab 1 — Enunciado
@@ -976,7 +976,7 @@ Lembrar que o trabalho individual é a maior parte da nota. Incentivar a escolha
 4. Os 5 Vs: Volume, Velocity, Variety, Veracity (4 camadas de validação), Value — aplicação LODLog com 8 fontes
 5. Classificação de fontes + padrões Batch/Streaming/CDC/Event-driven e arquitetura Medallion Bronze/Silver/Gold (Lakehouse com Delta/Iceberg)
 
-**Ferramenta:** Databricks Community Edition
+**Ferramenta:** Databricks Free Edition
 **Cenário:** LODLog Transportes e Distribuição S.A.
 
 > Síntese validada via 5 consultas GraphRAG drift no índice `/workspaces/graphrag/hpc-v100` (agnes-2.5-flash, 2026-08-28). Ver Apêndice abaixo.
