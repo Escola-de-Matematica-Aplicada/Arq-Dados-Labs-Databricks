@@ -35,7 +35,7 @@ Ao final deste lab, você será capaz de:
 
 1. **Escrever consultas SQL avançadas** — JOINs de múltiplas tabelas, agregações e filtragens pós-agrupamento.
 2. **Aplicar Window Functions** — médias móveis, rankings, percentis e NTILE para análise de séries temporais.
-3. **Construir uma Feature Store** — uma view consolidada que alimenta modelos de IA com 9 variáveis explicativas e a variável resposta.
+3. **Construir uma Feature Store** — uma view consolidada que alimenta modelos de IA com 8 variáveis explicativas e a variável resposta.
 4. **Auditar dados** — detectar duplicatas, valores negativos, outliers e quebras de integridade referencial usando SQL.
 
 ---
@@ -178,7 +178,7 @@ Debatem: do ponto de vista de arquitetura de banco de dados, por que as **Window
 
 ### Atividade 3.1: Crie a View de Feature Store `vw_features_ml` (20 min, em grupo)
 
-Os cientistas de dados precisam treinar um modelo preditivo de probabilidade de atraso. O modelo exige que cada linha represente uma entrega com um conjunto unificado de **9 variáveis explicativas (features)** e a **variável resposta (target)**.
+Os cientistas de dados precisam treinar um modelo preditivo de probabilidade de atraso. O modelo exige que cada linha represente uma entrega com um conjunto unificado de **8 variáveis explicativas (features)** e a **variável resposta (target)**.
 
 Criem a view `vw_features_ml` sob o banco `lodlog_dw` com as seguintes variáveis:
 

@@ -119,7 +119,7 @@ Decomponham a tabela ENTREGA (que está em 2FN) até a **Terceira Forma Normal (
 
 1. Lista de tabelas finais (mínimo: `cliente`, `veiculo`, `motorista`, `centro_distribuicao`, `entrega`).
 2. Para cada tabela: PK e FKs.
-3. Atualize o script SQL (`lodlog_modelo_dados_v3.sql`) para que a tabela ENTREGA fique na 3FN.
+3. Atualize o script SQL (`lodlog_modelo_dados_free.sql`) para que a tabela ENTREGA fique na 3FN.
 
 ### Atividade 2.3: Star Schema — ER vs. Analytics (grupo, 10 min)
 
@@ -160,7 +160,7 @@ Para as perguntas de negócio abaixo, indiquem quais tabelas do DW trariam a res
 
 > 💡 *Uma mini-dimensão é como uma "tabela de classificação" pequena e estável. Em vez de guardar a string "Atraso Crítico" em cada linha da fato (ocupando espaço e podendo mudar), você guarda um número inteiro que referencia uma tabela pequena de categorias. Se a descrição mudar, você altera só na tabela de categorias.'*
 
-O script de seed v3 já criou a mini-dimensão `lodlog_dw.dim_cat_atraso` com 5 registros. Respondam:
+O script de seed (`lodlog_lab3_seed_free.py`) já criou a mini-dimensão `lodlog_dw.dim_cat_atraso` com 5 registros. Respondam:
 
 1. **Por que** a categoria de atraso foi para uma mini-dimensão (e não na dim_tempo ou dim_motorista)?
 2. A coluna `kpi_cat_atraso` aparece **duas vezes** no modelo: na entrega (operacional) e na fato_entregas (DW). Isso é redundância aceitável? Justifique.

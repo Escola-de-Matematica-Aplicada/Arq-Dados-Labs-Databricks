@@ -197,9 +197,9 @@ Use esta lista para garantir que entregou tudo:
 - **Conteúdo da Aula 4-5** (`aula-4-5.md`): 4 pilares de governança, pântano de dados, Feature Store + MLOps, checklist, rubrica de avaliação.
 - **Syllabus** (`syllabus.md`): seção Módulo 4 — Avaliação, Competências, Ementa.
 - **CLAUDE.md** (`/workspaces/CLAUDE.md`): modelo de dados LODLog — duas camadas (`lodlog_op` + `lodlog_dw`), regra hard de coerência.
-- **Modelo de dados:** `Labs/lodlog_modelo_dados_v3.sql` (DDL completa).
-- **Labs anteriores:** `Labs/LAB3.md` (queries SQL, Feature Store, data quality).
-- **Cenário LODLog:** `Labs/AGENTS.md` — regras do ambiente Databricks e estrutura do modelo.
+- **Modelo de dados:** `../../Aula-2/Labs/lodlog_modelo_dados_free.sql` (DDL completa, adaptada ao Free Edition).
+- **Labs anteriores:** `../../Aula-3/Labs/LAB3.md` (queries SQL, Feature Store, data quality).
+- **Cenário LODLog:** `../../Aula-3/Labs/AGENTS.md` — regras do ambiente Databricks Free Edition e estrutura do modelo.
 
 **Referências complementares para o relatório individual:**
 - Serra, J. (2024). *Deciphering data architectures*. O'Reilly Media.
