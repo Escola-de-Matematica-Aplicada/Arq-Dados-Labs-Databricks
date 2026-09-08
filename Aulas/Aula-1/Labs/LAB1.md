@@ -150,8 +150,6 @@ Classifique cada serviço/tecnologia como **IaaS**, **PaaS**, **SaaS** ou **On-P
 
 ---
 
-## ---- fim da parte obrigatória ----
-
 ## Material de Apoio e Referências
 
 - **Conteúdo da Aula 1** (`aula-1.md`): slides sobre histórico, tipos de dados, OLTP vs OLAP, 5 Vs, LODLog fontes de dados.
@@ -162,14 +160,4 @@ Classifique cada serviço/tecnologia como **IaaS**, **PaaS**, **SaaS** ou **On-P
 
 ---
 
-## Notas para o Facilitador
-
-| Item | Detalhe |
-|------|---------|
-| **Duração total** | ~1h40 (100 min) |
-| **Teoria** | Breve introdução aos conceitos (~30 min) |
-| **Prática** | Atividades em grupo (~100 min) |
-| **Entrega** | Tabela dos 5 Vs preenchida + respostas das atividades |
-| **Próxima aula** | 28/09 — Módulo 2: Arquiteturas modernas (DW, Lake, Lakehouse, Mesh) e RPG "As Cinco Torres" |
-
-**Prazo do trabalho individual (70%):** 15 dias após a última aula (18/10). Cenário sub-escolhido, fontes mapeadas, análise dos 5 Vs, arquitetura proposta com Bronze/Silver/Gold.
+**Prazo do trabalho individual (70%):** 15 dias após a última. Sub-cenário escolhido, fontes mapeadas, análise dos 5 Vs, arquitetura proposta com Bronze/Silver/Gold.
