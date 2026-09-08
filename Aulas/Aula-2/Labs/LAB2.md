@@ -5,7 +5,7 @@
 **Duração do Lab** ~1h40 (em aula)
 **Entrega** Diagrama ER + DDL SQL + justificativas + mapeamento para camadas Medallion
 
-> **Para quem é este lab:** Você é um executivo ou analista que agora sabe *quais dados tem* (Aula 1) e precisa decidir *onde guardá-los* e *como organizá-los*. Este lab te guia pela escolha certa de arquitetura — sem jargão desnecessário, com foco no que importa para o negócio.
+> **Para quem é este lab:** Você é um executivo ou analista que agora sabe *quais dados tem* (Aula 1) e precisa decidir *onde guardá-los* e *como organizá-los*. Este lab te guia pela escolha certa de arquitetura, com foco no que importa para o negócio.
 
 ---
 
