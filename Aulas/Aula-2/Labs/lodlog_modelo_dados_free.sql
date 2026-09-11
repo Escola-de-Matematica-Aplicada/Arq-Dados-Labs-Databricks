@@ -515,12 +515,3 @@ COMMENT 'Fato entregas — granularidade: 1 linha por entrega. indicador_atraso 
 
 -- SHOW TABLES IN lodlog_op;
 -- SHOW TABLES IN lodlog_dw;
-
--- SELECT 'lodlog_op.entrega' AS tabela, COUNT(*) AS linhas
--- FROM lodlog_op.entrega
--- WHERE kpi_cat_atraso IS NOT NULL;
--- -- Deve retornar ~50.000
-
--- SELECT 'lodlog_dw.dim_cat_atraso' AS tabela, COUNT(*) AS linhas
--- FROM lodlog_dw.dim_cat_atraso;
--- -- Deve retornar 5
