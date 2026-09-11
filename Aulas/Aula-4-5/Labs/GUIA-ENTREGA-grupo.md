@@ -4,7 +4,7 @@
 **Entregáveis:** (1) pitch ao vivo · (2) síntese pós-projeto de 1 página entregue ao final da noite
 **Formato do pitch:** até 5 slides (ou 1 slide + prints no Databricks) — "menos é mais" (slide 31 da aula)
 
-> **O princípio desta entrega:** o lakehouse de vocês **não é construído do zero** — o pipeline Medallion (`lab4_miniprojeto_starter.py`), a DDL (`lodlog_modelo_dados_free.sql`), o seed (`lodlog_lab3_seed_free.py`) e os diagramas ([`/Diagramas/`](../../../Diagramas/)) chegaram prontos. O que o grupo entrega é a **leitura crítica com evidência**: nós rodamos, inspecionamos, adaptamos ao nosso cenário e provamos o que cada camada faz — e dizemos com franqueza o que defenderíamos e o que contestaríamos neste desenho. Isso é exatamente o que a banca do miniprojeto avalia.
+> **O princípio desta entrega:** o lakehouse de vocês **não é construído do zero** — o pipeline Medallion (`lab4_miniprojeto_starter.py`), a DDL (`lodlog_modelo_dados_free.sql`), o seed (`lodlog_lab2_seed_free.py`) e os diagramas ([`/Diagramas/`](../../../Diagramas/)) chegaram prontos. O que o grupo entrega é a **leitura crítica com evidência**: nós rodamos, inspecionamos, adaptamos ao nosso cenário e provamos o que cada camada faz — e dizemos com franqueza o que defenderíamos e o que contestaríamos neste desenho. Isso é exatamente o que a banca do miniprojeto avalia.
 
 ---
 

@@ -3,7 +3,7 @@
 import re
 
 # ────────────────────────────────────────────────────────────────
-# 1) SEED  →  Aulas/Aula-3/Labs/lodlog_lab3_seed_free.py
+# 1) SEED  →  Aulas/Aula-2/Labs/lodlog_lab2_seed_free.py
 # ────────────────────────────────────────────────────────────────
 src = open("/workspaces/Labs/lodlog_lab3_seed_v3.py", encoding="utf-8").read()
 
@@ -14,7 +14,7 @@ header_old = """# Databricks notebook source
 #"""
 header_new = """# Databricks notebook source
 # Importar este arquivo no Databricks Free Edition como notebook Python e executar UMA VEZ antes do LAB 3.
-# File: lodlog_lab3_seed_free.py
+# File: lodlog_lab2_seed_free.py
 # Uso: Workspace > Import > selecione este arquivo (.py) > Run All (compute Serverless)
 #
 # ════════════════════════════════════════════════════════════════
@@ -92,7 +92,7 @@ fix_new = '"descricao_feriado": "Feriado nacional" if ds in _feriados else None,
 assert fix_old in src
 src = src.replace(fix_old, fix_new)
 
-open("/workspaces/Aulas/Aula-3/Labs/lodlog_lab3_seed_free.py", "w", encoding="utf-8").write(src)
+open("/workspaces/Aulas/Aula-2/Labs/lodlog_lab2_seed_free.py", "w", encoding="utf-8").write(src)
 print("seed free OK")
 
 # ────────────────────────────────────────────────────────────────

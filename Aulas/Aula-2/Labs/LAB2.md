@@ -2,7 +2,7 @@
 
 **Disciplina** Arquitetura de Dados e Big Data
 **Aula** 2 — Ferramentas para Gerenciamento de Dados Distribuídos (28 de setembro de 2026)
-**Duração do Lab** ~1h20 (na parte prática da aula; casa: até +20 min para a entrega do grupo)
+**Duração do Lab** ~1h40 (na parte prática da aula; casa: até +20 min para a entrega do grupo)
 **Entrega (grupo)** Parecer técnico de 1 página + checklist de "e se..." respondido em aula
 
 > **Como este lab funciona:** vocês **não vão modelar do zero**. A consultoria de dados da LODLog já entregou os scripts (`lodlog_modelo_dados_free.sql`), o seed de dados, os diagramas do modelo (`/Diagramas/`) e notebooks prontos para executar no Databricks Free Edition. O trabalho de vocês é o que um executivo de dados **realmente** faz no dia a dia: **executar, inspecionar, questionar e avaliar** as escolhas arquiteturais de outros — aprovando, contestando ou propondo evolução.
@@ -24,10 +24,10 @@
 | Arquivo | O que faz | Quando usar |
 |---|---|---|
 | `lab2-medallion-bronze-silver-gold.py` | Pipeline completo Bronze→Silver→Gold de IoT (executar células 1→6) | Parte 1 |
-| `lodlog_modelo_dados_free.sql` | DDL do ER 3FN (`lodlog_op`) + Star Schema (`lodlog_dw`) — **só leitura** | Partes 2 e 3 |
+| `lodlog_modelo_dados_free.sql` | DDL do ER (`lodlog_op`) + Star Schema (`lodlog_dw`) — **executar na Atividade 2.0** e depois ler criticamente | Parte 2 |
+| `lodlog_lab2_seed_free.py` | Geração de dados sintéticos para `lodlog_op` + **ETL SQL para `lodlog_dw`** (~3 min) — **executar na Atividade 2.0** | Parte 2 |
 | `lab2-nosql-simulation.py` | Simulação KV / Documento / Coluna / Grafo com PySpark+Delta | Parte 2 (demo) |
 | [`/Diagramas/`](../../../Diagramas/) | Diagramas ER e Star Schema já desenhados | Parte 2 |
-| `../../Aula-3/Labs/lodlog_lab3_seed_free.py` | Seed de dados sintéticos (se quiser popular as tabelas) | opcional |
 
 ---
 
@@ -36,7 +36,7 @@
 Ao final deste lab, você será capaz de:
 
 1. **Executar** um pipeline Medallion (Bronze → Silver → Gold) em Delta Lake e **interpretar** o que cada camada transforma nos dados.
-2. **Ler** um modelo ER 3FN e um Star Schema a partir de diagramas e DDL prontos, identificando as escolhas de projeto (PK/FK, surrogate keys, SCD, mini-dimensão).
+2. **Executar** a DDL do modelo LODLog e o ETL que popula `lodlog_dw` a partir de `lodlog_op`, e **ler** criticamente o resultado: ER 3FN e Star Schema com escolhas de projeto (PK/FK, surrogate keys, SCD, mini-dimensão).
 3. **Avaliar criticamente** uma arquitetura de dados: reconhecer por que cada escolha foi feita, quais armadilhas ela evita e onde ela quebraria.
 4. **Conectar** a escolha de arquitetura (DW/Lake/Lakehouse/Mesh/Fabric) aos objetivos e ao tamanho do negócio.
 5. **Redigir** um parecer técnico curto — o artefato que um líder de dados usa para defender ou contestar uma arquitetura diante da diretoria.
@@ -71,9 +71,18 @@ Respondam **por escrito** (serve para o parecer da Parte 4):
 
 ---
 
-## Parte 2 — O Modelo Entregue pela Consultoria: Leitura Crítica (30 min)
+## Parte 2 — O Modelo Entregue pela Consultoria: Subir, Executar e Ler (40 min)
 
-> 💡 *O diagrama e a DDL que vocês vão inspecionar são um "produto de dados" entregue por terceiros. O papel do gestor é saber **ler** o produto, não desenhá-lo de novo. Em cada atividade: localizem primeiro o elemento no diagrama/arquivo, depois julguem a escolha.*
+> 💡 *O diagrama e a DDL que vocês vão inspecionar são um "produto de dados" entregue por terceiros. Antes de ler criticamente, vocês vão **subir o ambiente**: criar os schemas, popular `lodlog_op` com dados sintéticos e rodar o **ETL que constrói o star schema `lodlog_dw`** — exatamente como um pipeline real faz. O papel do gestor é saber executar, ler e perguntar "por quê?".*
+
+### Atividade 2.0: Subir o modelo e rodar o ETL (grupo, 15 min)
+
+1. No Databricks: **Workspace > Import** → `lodlog_modelo_dados_free.sql` → execute célula a célula (cria os schemas `lodlog_op` e `lodlog_dw` com todas as tabelas do ER e do Star Schema; ao final, a "CÉLULA 8" mostra `SHOW TABLES`).
+2. Em seguida importe **`lodlog_lab2_seed_free.py`** → **Run All** (~3 min). Ele faz duas coisas: **(a)** gera dados sintéticos e carrega as 14 tabelas de `lodlog_op` (clientes, frota, pedidos e ~50 mil entregas em 2FN); **(b)** roda o **ETL em SQL** (`INSERT INTO … SELECT` e CTAS) que transforma `lodlog_op` no star schema `lodlog_dw` — 6 dimensões + `fato_entregas`.
+3. Confiram no console: as contagens impressas por tabela (ex.: `✓ lodlog_dw.fato_entregas: 50.230 linhas`) — o número maior que 50.000 é proposital; vocês vão descobrir por quê na Atividade 3.4.
+4. Registrem: qual foi a **última tabela carregada** pelo ETL e de quais tabelas `lodlog_op` ela depende (dica: olhem os JOINs da "Parte 6" do notebook).
+
+> ⚠️ Não confundir com a Parte 1: lá o pipeline Medallion era de **telemetria IoT** (Bronze→Silver→Gold em Volumes). Aqui o pipeline é **transacional → analítico** (ER `lodlog_op` → ETL SQL → Star `lodlog_dw`). Dois padrões de movimento de dados, dois propósitos.
 
 ### Atividade 2.1: Duas camadas, dois propósitos (grupo, 10 min)
 
@@ -155,13 +164,13 @@ Autoavaliação rápida (checkbox na entrega): [ ] todos do grupo participaram d
 
 | Item | Detalhe |
 |------|---------|
-| **Duração total** | ~1h20 em aula (RPG ocupa o resto do bloco prático, conforme slides 37–39 da aula) |
+| **Duração total** | ~1h40 em aula (RPG pode migrar para o bloco inicial/encerramento, conforme slides 37–39 da aula) |
 | **Teoria usada** | Arquiteturas modernas, Medallion/Zaloni, NoSQL poliglota, SCD/mini-dimensão (~40 min de slides) |
-| **Prática** | Execução dos 2 notebooks + leitura do DDL/diagramas + "E se..." (~65 min) |
+| **Prática** | Execução do pipeline Medallion + DDL + seed/ETL LODLog + leitura dos diagramas + "E se..." (~75 min) |
 | **Entrega** | Parecer técnico de 1 página (grupo) — sem diagrama novo, sem edição de DDL |
 | **Pré-requisitos** | Alunos com conta Free Edition criada ANTES da aula; notebooks enviados no repositório da disciplina |
-| **Se o tempo apertar** | Atividade 2.3 vira demo do professor; 3.4/3.5 podem virar tarefa de casa; a Parte 1 é intocável (é a experiência central) |
-| **Anomalias do seed** | Confirmar nos comentários do seed: ~100 duplicatas, negativos, outliers, FK quebrada — a contagem da Atividade 3.4 depende do seed estar rodado |
+| **Se o tempo apertar** | A Atividade 2.0 é intocável (o ambiente roda uma vez e serve às Aulas 3 e 4-5); Atividade 2.3 vira demo do professor; 3.4/3.5 podem virar tarefa de casa; a Parte 1 é intocável (é a experiência central) |
+| **Anomalias do seed** | O seed (Atividade 2.0) injeta ~100 duplicatas, negativos, outliers e FK quebrada na `fato_entregas` — a contagem da Atividade 3.4 já usa o ambiente subido em aula, sem tarefa de casa |
 | **Próxima aula** | 29/09 — Módulo 3: Cloud, Hadoop/Spark, Pipelines ETL/ELT |
 
 **Conexão com o trabalho em grupo (30%):** o parecer deste lab é o "ensaio" da avaliação pós-projeto exigida no miniprojeto da Aula 4-5 — mesma habilidade (justificar arquitetura), agora aplicada a um modelo que já existe em vez de um imaginário.

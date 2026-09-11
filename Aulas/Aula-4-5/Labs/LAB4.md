@@ -7,7 +7,7 @@
 - **Individual (70%, até 18/out):** relatório guiado → siga o [`GUIA-ENTREGA-individual.md`](GUIA-ENTREGA-individual.md)
 - **Grupo (30%):** pitch de 5 min na aula → siga o [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md)
 
-> **Como este miniprojeto funciona:** vocês **não vão construir um data lake do zero**. O ambiente pronto já traz tudo: a DDL do modelo LODLog (`lodlog_modelo_dados_free.sql`), o seed com ~50 mil entregas (`lodlog_lab3_seed_free.py`), os diagramas do ER e do Star Schema ([`/Diagramas/`](../../../Diagramas/)) e um pipeline Medallion executável (`lab4_miniprojeto_starter.py`) que roda em ~1 minuto no Databricks Free Edition. O trabalho avaliado é o que um líder de dados faz de verdade diante de uma plataforma pronta: **executar, inspecionar, analisar os resultados, questionar as escolhas de arquitetura e sustentá-las (ou contestá-las) com evidência.** Justificativa vale mais que linha de código — é isso que a banca cobra.
+> **Como este miniprojeto funciona:** vocês **não vão construir um data lake do zero**. O ambiente pronto já traz tudo: a DDL do modelo LODLog (`lodlog_modelo_dados_free.sql`), o seed com ~50 mil entregas (`lodlog_lab2_seed_free.py`), os diagramas do ER e do Star Schema ([`/Diagramas/`](../../../Diagramas/)) e um pipeline Medallion executável (`lab4_miniprojeto_starter.py`) que roda em ~1 minuto no Databricks Free Edition. O trabalho avaliado é o que um líder de dados faz de verdade diante de uma plataforma pronta: **executar, inspecionar, analisar os resultados, questionar as escolhas de arquitetura e sustentá-las (ou contestá-las) com evidência.** Justificativa vale mais que linha de código — é isso que a banca cobra.
 
 ---
 
@@ -22,7 +22,7 @@
 | Artefato | Onde | O que entrega de bandeja |
 |---|---|---|
 | DDL completa (ER `lodlog_op` + Star `lodlog_dw`) | [`../../Aula-2/Labs/lodlog_modelo_dados_free.sql`](../../Aula-2/Labs/lodlog_modelo_dados_free.sql) | modelo dimensional já projetado — para ler e criticar, não para escrever |
-| Seed LODLog (~50k entregas, com anomalias propositais) | [`../../Aula-3/Labs/lodlog_lab3_seed_free.py`](../../Aula-3/Labs/lodlog_lab3_seed_free.py) | dados reais para as suas queries de análise e qualidade |
+| Seed LODLog (~50k entregas, com anomalias propositais) | [`../../Aula-2/Labs/lodlog_lab2_seed_free.py`](../../Aula-2/Labs/lodlog_lab2_seed_free.py) | dados reais para as suas queries de análise e qualidade |
 | Notebook de apoio com queries guiadas | [`../../Aula-3/Labs/LAB3_apoio_free.ipynb`](../../Aula-3/Labs/LAB3_apoio_free.ipynb) | ponto de partida das queries analíticas |
 | Pipeline Medallion completo (starter) | [`lab4_miniprojeto_starter.py`](lab4_miniprojeto_starter.py) | Bronze→Silver→Gold funcionando (JSON IoT + TMS) — adaptem ao cenário do grupo |
 | Diagramas prontos (ER + Star Schema) | [`/Diagramas/`](../../../Diagramas/) | `LODLog_op_v3.png` e `LODLog_dw_v3.png` — use-os no pitch e no relatório |
@@ -85,7 +85,7 @@ Ao final deste miniprojeto, você será capaz de:
 
 > 💡 *O starter já faz o que um projeto levaria semanas. O trabalho de vocês é executar, ler com atenção e **ver com os próprios olhos** cada promessa de arquitetura se materializando (ou não) nos números do console.*
 
-1. **Suba o ambiente:** execute (se ainda não feito) `lodlog_modelo_dados_free.sql` e `lodlog_lab3_seed_free.py` nos seus workspaces.
+1. **Suba o ambiente:** execute (se ainda não feito) `lodlog_modelo_dados_free.sql` e `lodlog_lab2_seed_free.py` nos seus workspaces.
 2. **Rode `lab4_miniprojeto_starter.py` (Run All, ~1 min)** e registre no notebook os números do console: linhas Bronze IoT × Silver IoT (quantos eventos a mais/menos? por quê?), linhas TMS, agregados Gold.
 3. **Inspecione as 6 tabelas criadas** (`lodlog_bronze.*`, `lodlog_silver.*`, `lodlog_gold.*`): para cada uma, anote uma frase — *o que entra aqui, o que sai daqui, quem consumiria isso* (operação? diretoria? modelo de IA?).
 4. **Mapeie o cenário do grupo sobre o pronto:** preencha a tabela fonte×camada do seu cenário usando as tabelas existentes + o que o starter simula (ex.: cenário B → `iot_eventos` da Silver é o coração; cenário D → a auditoria nasce das anomalias do seed na `fato_entregas`).

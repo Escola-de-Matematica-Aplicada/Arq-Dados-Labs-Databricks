@@ -1,6 +1,6 @@
 # Databricks notebook source
-# Importar este arquivo no Databricks Free Edition como notebook Python e executar UMA VEZ antes do LAB 3.
-# File: lodlog_lab3_seed_free.py
+# Importar este arquivo no Databricks Free Edition como notebook Python e executar UMA VEZ na AULA 2 (Atividade 2.0 do LAB 2).
+# File: lodlog_lab2_seed_free.py (antes: lodlog_lab3_seed_free.py, movido para a Aula 2 em 11/09/2026)
 # Uso: Workspace > Import > selecione este arquivo (.py) > Run All (compute Serverless)
 #
 # ════════════════════════════════════════════════════════════════
@@ -35,7 +35,7 @@
 # MAGIC %md
 # MAGIC # LODLog — Geração de Dados Sintéticos & ETL · LAB 2 (v3)
 # MAGIC
-# MAGIC Execute este notebook **uma única vez** antes do LAB 3 (compute Serverless).
+# MAGIC Execute este notebook **uma única vez na Aula 2** (Atividade 2.0 do LAB 2; compute Serverless). O ambiente criado aqui é reutilizado nos LABs 3 e 4-5.
 # MAGIC
 # MAGIC **v3:** ETL do DW feito via `INSERT INTO … SELECT` a partir de `lodlog_op`.
 # MAGIC

@@ -23,4 +23,4 @@ Pasta de laboratório da **Aulas 4 e 5 — Miniprojeto: Construção e Avaliaç�
 - **Recomendação arquitetural para LODLog:** Lakehouse Delta (Bronze JSON/CSV + Silver/Gold Parquet Delta).
 - **Não federar prematuramente** — o cenário LODLog cabe em um único workspace do Databricks Free Edition.
 - **Ambiente:** Databricks **Free Edition** (https://login.databricks.com), compute Serverless, catálogo `workspace`. Schemas do miniprojeto: `lodlog_bronze`, `lodlog_silver`, `lodlog_gold` (podem consumir `lodlog_op.*` do LAB 3 como fonte estruturada).
-- **Scripts de referência:** `lab4_miniprojeto_starter.py` (nesta pasta), `../../Aula-2/Labs/lodlog_modelo_dados_free.sql`, `../../Aula-3/Labs/lodlog_lab3_seed_free.py`, `../../Aula-3/Labs/LAB3.md`.
+- **Scripts de referência:** `lab4_miniprojeto_starter.py` (nesta pasta), `../../Aula-2/Labs/lodlog_modelo_dados_free.sql`, `../../Aula-2/Labs/lodlog_lab2_seed_free.py`, `../../Aula-3/Labs/LAB3.md`.

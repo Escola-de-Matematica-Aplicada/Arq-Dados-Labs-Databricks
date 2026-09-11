@@ -13,8 +13,8 @@ Adaptação dos labs da disciplina original (Engenharia de Dados para IA, Databr
 
 ## Mapa dos artefatos (versões adaptadas — editar ESTAS, não as de `Labs/`)
 - `Aulas/Aula-1/Labs/LAB1.md` — teórico (5 Vs, OLTP/OLAP, IaaS/PaaS/SaaS).
-- `Aulas/Aula-2/Labs/LAB2.md` + `lodlog_modelo_dados_free.sql` — arquiteturas + normalização 2FN→3FN + Star Schema (DDL).
-- `Aulas/Aula-3/Labs/LAB3.md` + `lodlog_lab3_seed_free.py` + `LAB3_apoio_free.ipynb` — único lab executável obrigatório (SQL avançado, feature store, data quality).
+- `Aulas/Aula-2/Labs/LAB2.md` + `lodlog_modelo_dados_free.sql` (DDL) + `lodlog_lab2_seed_free.py` (seed sintético + ETL dw) — arquiteturas, normalização 2FN→3FN, Star Schema. **Seed/ETL executados na Aula 2** (renomeado de `lodlog_lab3_seed_free.py`/Aula-3 em 11/09/2026 a pedido do professor).
+- `Aulas/Aula-3/Labs/LAB3.md` + `LAB3_apoio_free.ipynb` — queries/feature store — único lab executável obrigatório (SQL avançado, feature store, data quality).
 - `Aulas/Aula-4-5/Labs/LAB4.md` + `lab4_miniprojeto_starter.py` — miniprojeto (70%+30% da nota), starter Medallion executável.
 - `Labs/` (raiz) = material ORIGINAL preservado; não editar para a nova disciplina.
 
@@ -41,14 +41,20 @@ Adaptação dos labs da disciplina original (Engenharia de Dados para IA, Databr
 ```bash
 pip install pyspark==3.5.3 delta-spark==3.2.1
 cd <pasta-de-trabalho-temporária>
-python /workspaces/.skills/lodlog-databricks-free/tools/run_seed.py /workspaces/Aulas/Aula-3/Labs/lodlog_lab3_seed_free.py   # ~1 min
+python /workspaces/.skills/lodlog-databricks-free/tools/run_seed.py /workspaces/Aulas/Aula-2/Labs/lodlog_lab2_seed_free.py   # ~1 min
 python /workspaces/.skills/lodlog-databricks-free/tools/validate_labs.py                                                     # roda todas as queries dos labs
 ```
 Atenção: os scripts usam `WAREHOUSE` hardcoded apontando para um scratchpad de sessão antiga — ajuste a constante `WAREHOUSE` nos dois arquivos para um diretório novo antes de rodar. O validador divide células `%sql` por `;` — fragmentos só-comentário geram falso ❌ (ignorar).
 - `tools/make_free_versions.py` — regenera seed/DDL free a partir dos originais de `Labs/` (transformações programáticas).
 - `tools/make_lab3_apoio.py` — regenera `LAB3_apoio_free.ipynb`.
 
+## Sessão 2026-09-11 — notebooks Databricks dos labs (LAB1–LAB4 .ipynb)
+- Cada `Aulas/Aula-X/Labs/LABX.md` tem um gêmeo `LABX.ipynb` no formato de exportação Databricks, gerado por `Aulas/md2dbx.py` (cópia sincronizada na skill global `databricks-notebook-conversion/scripts/`). **Ao editar um .md, regere o .ipynb**: `python3 Aulas/md2dbx.py Aula-2/Labs/LAB2.md Aula-2/Labs/LAB2.ipynb`.
+- Regras: quebra de célula em `##`/`###`; blocos ```sql viram células code com magic `%sql` + `cellMetadata.language` (sem o `%sql` a célula não executa no Databricks); fences de linguagem desconhecida ficam markdown; links relativos viram URLs GitHub `blob/<branch>/` resolvidas via `git remote.origin.url` (Databricks não tem filesystem do repo — link relativo quebra). Links só abrem para quem tem acesso ao repo (hoje `Arq-Dados-Labs-Databricks`, privado — o público antigo `EDIA-Labs-DataBricks` ainda não tem os arquivos novos).
+- Verificação obrigatória pós-geração (está na skill global): 0 linhas .md faltando no ipynb + envelope metadata idêntico ao `ex-formato-databrick-notebook.ipynb` + todo alvo de link GitHub existe em `origin/main` (`git cat-file -e`).
+- Seed/ETL movidos para a Aula 2 com a Atividade 2.0 no LAB2.md; qualquer novo artefato que referencie o seed deve usar `Aulas/Aula-2/Labs/lodlog_lab2_seed_free.py` e regenerar os 4 ipynb após editar .md.
+
 ## Pendências / próximos passos possíveis
-- Publicar os novos arquivos no repositório GitHub que os alunos importam (`EDIA-Labs-DataBricks`) — os labs referenciam esse Git folder.
+- Publicar os novos arquivos no repositório GitHub que os alunos importam (`EDIA-Labs-DataBricks`) — os labs referenciam esse Git folder. Obs. 11/09: origin atual é `Arq-Dados-Labs-Databricks` (privado; links dos notebooks só abrem logado com acesso) — avaliar repo público para os alunos.
 - `CLAUDE.md` da raiz ainda descreve a disciplina original (Community Edition, seed v1) — atualizar se a nova disciplina virar a principal.
 - Validação em workspace real do Free Edition (a simulação local não cobre quotas Serverless nem UI).

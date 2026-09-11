@@ -59,7 +59,7 @@ Marque com ✔/✖/— os **10 mandamentos** (slide 19 da aula) no seu desenho: 
 
 ## Como evidenciar o uso dos artefatos prontos (requisito)
 
-Em toda a seção 1, inclua **um anexo "Ambiente e artefatos"** com: print do `SHOW TABLES` dos seus schemas, datas de execução do seed/starter, e link/caminho dos arquivos usados (`lodlog_modelo_dados_free.sql`, `lodlog_lab3_seed_free.py`, `lab4_miniprojeto_starter.py`, diagramas). Isso prova autoria da execução — o resto é análise.
+Em toda a seção 1, inclua **um anexo "Ambiente e artefatos"** com: print do `SHOW TABLES` dos seus schemas, datas de execução do seed/starter, e link/caminho dos arquivos usados (`lodlog_modelo_dados_free.sql`, `lodlog_lab2_seed_free.py`, `lab4_miniprojeto_starter.py`, diagramas). Isso prova autoria da execução — o resto é análise.
 
 ## Checklist final antes de submeter (AVA FGV)
 

@@ -4,7 +4,7 @@
 
 ## Principais arquivos
 - `aula-3.md` — Conteúdo completo do slide deck (≈571 linhas): cloud computing, Hadoop (HDFS/YARN/MapReduce), Spark Catalyst, Kafka/Flink/Airflow/dbt/Debezium/NiFi, formatos CSV/JSON/Avro/Parquet/ORC/Delta, ETL vs ELT, batch vs streaming, Lambda vs Kappa vs híbrido, pipeline fim-a-fim LODLog.
-- `Labs/lodlog_lab3_seed_free.py` — Seed de dados adaptado ao Databricks Free Edition (original: `../../../Labs/lodlog_lab3_seed_v3.py`).
+- `Labs/lodlog_lab2_seed_free.py` — Seed de dados adaptado ao Databricks Free Edition (original: `../../../Labs/lodlog_lab3_seed_v3.py`).
 
 ## Regras e padrões
 - Slides com `<!-- Slide number: N -->` e validação GraphRAG `[DRIFT-xx]`.

@@ -16,7 +16,7 @@
    *(alternativa: baixe os arquivos e use **Workspace → Import**).*
 3. Execute os notebooks, nesta ordem (o compute **Serverless** já vem selecionado — não é preciso configurar nada):
    - `Aulas/Aula-2/Labs/lodlog_modelo_dados_free.sql` (se ainda não executou)
-   - `Aulas/Aula-3/Labs/lodlog_lab3_seed_free.py` (levará ~3 min para rodar)
+   - `Aulas/Aula-2/Labs/lodlog_lab2_seed_free.py` (rodado na Aula 2; só refaça se necessário — leva ~3 min)
 4. Após o seed terminar com sucesso, abra o notebook **`Aulas/Aula-3/Labs/LAB3_apoio_free`** para desenvolver as atividades.
 5. Na primeira célula, execute:
    ```sql
@@ -301,7 +301,7 @@ Para cada tipo de anomalia identificada:
 - **Conteúdo da Aula 3** (`aula-3.md`): Cloud IaaS/PaaS/SaaS, Hadoop/Spark/Hive, pipelines ETL/ELT, Lambda/Kappa, arquitetura em camadas.
 - **Syllabus** (`syllabus.md`): seção Módulo 3.
 - **Modelo de dados**: `../../Aula-2/Labs/lodlog_modelo_dados_free.sql` (DDL adaptada ao Free Edition).
-- **Seed de dados**: `lodlog_lab3_seed_free.py` (nesta pasta — gera os ~50 mil registros com anomalias).
+- **Seed de dados**: `Aulas/Aula-2/Labs/lodlog_lab2_seed_free.py` (rodado na Aula 2 — gera os ~50 mil registros com anomalias).
 - **Notebook de apoio**: `LAB3_apoio_free.ipynb` (nesta pasta).
 - **Referência**: `AGENTS.md` — regras do ambiente Databricks Free Edition.
 

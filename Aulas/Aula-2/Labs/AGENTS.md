@@ -19,5 +19,5 @@ Pasta de laboratório da **Aula 2 — Ferramentas para Gerenciamento de Dados Di
 - **Conteúdo técnico principal:** arquiteturas (DW/Lake/Lakehouse/Mesh), Medallion (Bronze/Silver/Gold), normalização 3FN, Star Schema, mini-dimensão Kimball.
 - **Pode usar o RPG "As Cinco Torres Isoladas"** como dinâmica complementar (materiais em `docs/Aulas-de-outros-cursos/Aula 8 Arquitetura de Dados/`).
 - **Ambiente:** Databricks **Free Edition** (https://login.databricks.com — o Community Edition foi descontinuado). Compute Serverless; schemas no catálogo `workspace`.
-- Scripts de referência: `lodlog_modelo_dados_free.sql` (nesta pasta) e `../../Aula-3/Labs/lodlog_lab3_seed_free.py`. Originais (Community Edition) preservados em `../../../Labs/`.
+- Scripts de referência: `lodlog_modelo_dados_free.sql` e `lodlog_lab2_seed_free.py` (ambos nesta pasta — DDL + seed/ETL são executados na Aula 2). Originais (Community Edition) preservados em `../../../Labs/`.
 - **Números do cenário:** narrativa = 450 veículos, 12 CDs, ~18 mil entregas/mês; dataset de lab = recorte com 5 CDs, 50 veículos, ~50 mil entregas (2024–2026).

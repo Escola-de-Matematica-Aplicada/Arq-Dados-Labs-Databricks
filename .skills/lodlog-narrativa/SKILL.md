@@ -92,7 +92,7 @@ Para cada lab (`LAB*.md`) e `AGENTS.md` correspondente:
   completo da sessão de 03/09/2026: cânone 100% coerente nos 4 labs, sem contaminação com LODGov; 4
   divergências de **referência de arquivo/contagem** (não de história) encontradas e corrigidas:
   1. `LAB2.md` citava `lodlog_modelo_dados_v3.sql` em vez de `lodlog_modelo_dados_free.sql`.
-  2. `LAB2.md` citava "seed v3" em vez do seed Free Edition (`lodlog_lab3_seed_free.py`).
+  2. `LAB2.md` citava "seed v3" em vez do seed Free Edition (`lodlog_lab2_seed_free.py`).
   3. `LAB4.md` apontava para a pasta raiz original (`Labs/...`) em vez dos arquivos migrados em
      `Aula-2/Labs/` e `Aula-3/Labs/`.
   4. `LAB3.md` dizia "9 variáveis explicativas" na Feature Store, mas a tabela definia 8 — corrigido.

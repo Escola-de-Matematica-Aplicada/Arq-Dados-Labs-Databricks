@@ -13,7 +13,7 @@ md("""# LAB 3 — Material de Apoio (Databricks Free Edition)
 
 ## Antes de tudo
 1. Este notebook roda no **Databricks Free Edition** (login em https://login.databricks.com) com compute **Serverless** — você não precisa configurar nada.
-2. Execute primeiro os notebooks `lodlog_modelo_dados_free.sql` (Aula 2) e `lodlog_lab3_seed_free.py` (~3 min) — eles criam e populam os schemas `lodlog_op` e `lodlog_dw`.
+2. Execute primeiro, na Aula 2, os notebooks `lodlog_modelo_dados_free.sql` (DDL) e `lodlog_lab2_seed_free.py` (~3 min — seed + ETL) — eles criam e populam os schemas `lodlog_op` e `lodlog_dw`.
 3. No Free Edition os dados vivem no catálogo `workspace` (Unity Catalog). A primeira célula abaixo aponta para o lugar certo.
 
 > 💡 **Como usar:** as células já prontas são o "raio-X" guiado — execute e escreva sua interpretação. As células com `-- TODO` são suas: complete a query usando as dicas do enunciado (`LAB3.md`)."""),
