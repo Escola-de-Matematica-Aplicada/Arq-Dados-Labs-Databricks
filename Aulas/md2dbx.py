@@ -8,6 +8,9 @@ Regras:
   identicos ao notebook-exemplo; notebookName = nome do arquivo.
 """
 import json
+import posixpath
+import re
+import subprocess
 import sys
 import uuid
 from pathlib import Path
@@ -72,8 +75,53 @@ def split_cells(md_text):
     return cells
 
 
+LINK_PAT = re.compile(r'\[([^\]]*)\]\(([^)]+)\)')
+
+
+def repo_base(md_path):
+    """URL base 'https://.../blob/main' do repo git, ou None fora de repo."""
+    try:
+        root = subprocess.run(["git", "rev-parse", "--show-toplevel"],
+                              cwd=str(Path(md_path).parent), capture_output=True, text=True, check=True).stdout.strip()
+        url = subprocess.run(["git", "config", "--get", "remote.origin.url"],
+                             cwd=root, capture_output=True, text=True, check=True).stdout.strip()
+    except Exception:
+        return None, None
+    url = url.rstrip("/")
+    url = re.sub(r"\.git$", "", url)
+    m = re.match(r"git@github\.com:(.+)$", url)
+    if m:
+        url = "https://github.com/" + m.group(1)
+    branch = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"],
+                            cwd=root, capture_output=True, text=True).stdout.strip() or "main"
+    return f"{url}/blob/{branch}", root
+
+
+def rewrite_links(md_text, base_url, repo_root, md_path):
+    """Transforma links relativos em URLs GitHub absolutas (funcionam no Databricks)."""
+    rel_dir = Path(md_path).resolve().parent.relative_to(repo_root).as_posix()
+
+    def repl(m):
+        text, url = m.group(1), m.group(2)
+        if url.startswith(("http://", "https://", "mailto:", "#", "data:")):
+            return m.group(0)
+        clean = url.split("#", 1)[0]
+        frag = url[len(clean):]
+        if clean.startswith("/"):
+            target = clean.lstrip("/")
+        else:
+            target = posixpath.normpath(posixpath.join(rel_dir, clean))
+        target = target.rstrip("/")
+        return f"[{text}]({base_url}/{target}{frag})"
+
+    return LINK_PAT.sub(repl, md_text)
+
+
 def convert(md_path, ipynb_path):
     md_text = Path(md_path).read_text(encoding="utf-8")
+    base_url, repo_root = repo_base(md_path)
+    if base_url:
+        md_text = rewrite_links(md_text, base_url, repo_root, md_path)
     name = Path(ipynb_path).stem
     cells = []
     for kind, lang, text in split_cells(md_text):
