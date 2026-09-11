@@ -295,9 +295,6 @@ Para cada tipo de anomalia identificada:
 
 > 💡 *Na arquitetura Medallion (que vocês viram na Aula 2): a camada Bronze guarda tudo como veio (raw). A Silver é onde você limpa. Se um dado nasce errado, você descobre na Silver e corrige — sem perder o raw original.*
 
----
-
-## ---- fim da parte obrigatória ----
 
 ## Material de Apoio e Referências
 

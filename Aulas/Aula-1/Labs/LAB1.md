@@ -44,17 +44,41 @@ Para cada marco histórico abaixo, responda em **uma frase simples**: **"Por que
 
 > 💡 *Pense assim: cada um desses momentos foi um "salto" que permitiu que as empresas guardassem e usassem mais dados, de forma mais rápida e barata.*
 
-| Marco | Sua Resposta (1 frase) |
-|-------|------------------------|
-| Cartões perfurados (Hollerith, 1911) | |
-| Fitas magnéticas (1951) | |
-| Discos rígidos e acesso aleatório (anos 70) | |
-| Modelo relacional de Codd (1970) | |
-| Primeiro SGBD comercial — Oracle (1979) | |
-| Data Warehouse (Inmon/Kimball, anos 90) | |
-| Google File System / Big Data (2003+) | |
-| Cloud computing e hipervisores (2006+) | |
-| Transformers / IA Generativa (2017/2022) | |
+#### Cartões perfurados (Hollerith, 1911)
+
+Sua Resposta (1 frase): ______________________________________________________
+
+#### Fitas magnéticas (1951)
+
+Sua Resposta (1 frase): ______________________________________________________
+
+#### Discos rígidos e acesso aleatório (anos 70)
+
+Sua Resposta (1 frase): ______________________________________________________
+
+#### Modelo relacional de Codd (1970)
+
+Sua Resposta (1 frase): ______________________________________________________
+
+#### Primeiro SGBD comercial — Oracle (1979)
+
+Sua Resposta (1 frase): ______________________________________________________
+
+#### Data Warehouse (Inmon/Kimball, anos 90)
+
+Sua Resposta (1 frase): ______________________________________________________
+
+#### Google File System / Big Data (2003+)
+
+Sua Resposta (1 frase): ______________________________________________________
+
+#### Cloud computing e hipervisores (2006+)
+
+Sua Resposta (1 frase): ______________________________________________________
+
+#### Transformers / IA Generativa (2017/2022)
+
+Sua Resposta (1 frase): ______________________________________________________
 
 ### Atividade 1.2: Discussão em Grupo, 10 min
 
@@ -70,18 +94,18 @@ Registrem a conclusão do grupo em **3 a 5 linhas** — será útil para a apres
 
 ### Atividade 2.1: Classifique os Sistemas, 10 min
 
-Classifique cada sistema da LODLog como **Transacional (T)** ou **Analítico (A)**. Justifique em **uma frase**.
+Classifique cada sistema da LODLog como **Transacional (T)** ou **Analítico (A)**.
 
-| Sistema | T ou A? | Justificativa |
-|---------|---------|---------------|
-| ERP que registra o pagamento de um pedido | | |
-| Dashboard de SLA de entregas do mês | | |
-| WMS que baixa o estoque no momento da expedição | | |
-| Modelo de ML que prediz atraso de entrega | | |
-| TMS que aloca um veículo a um pedido | | |
-| Relatório de ranking de CDs por eficiência | | |
-| API de IoT que recebe evento do sensor da frota | | |
-| Planilha Excel usada pelo supervisor para escalar motoristas | | |
+| Sistema | T ou A? |
+|---------|---------|
+| ERP que registra o pagamento de um pedido | |
+| Dashboard de SLA de entregas do mês | |
+| WMS que baixa o estoque no momento da expedição | |
+| Modelo de ML que prediz atraso de entrega | |
+| TMS que aloca um veículo a um pedido | |
+| Relatório de ranking de CDs por eficiência | |
+| API de IoT que recebe evento do sensor da frota | |
+| Planilha Excel usada pelo supervisor para escalar motoristas | |
 
 ### Atividade 2.2: Mapeamento LODLog, 10 min
 
@@ -99,18 +123,95 @@ No cenário da LODLog, liste:
 
 ### Atividade 3.1: Preencha a Matriz dos 5 Vs (grupo, 15 min)
 
-Para cada fonte de dados da LODLog, discutam e preencham o perfil nos 5 Vs e como ela se conecta com oportunidades de negócio e IA:
+Para cada fonte de dados da LODLog, discutam e preencham o perfil nos 5 Vs e como ela se conecta com oportunidades de negócio e IA. Cada fonte tem sua própria tabela — respondam em 1 a 2 linhas por critério:
 
-| Fonte | Valor (insights) | Veracidade (desafios) | Variedade (formato) | Velocidade | Volume/dia | Conexão com IA/ML |
-|-------|-----------------|----------------------|---------------------|------------|-----------|-------------------|
-| Sensores IoT da frota | | | | | | |
-| Pedidos do TMS | | | | | | |
-| Estoque do WMS | | | | | | |
-| APIs externas (clima, tráfego) | | | | | | |
-| Planilhas Excel do supervisor | | | | | | |
-| Faturamento do ERP | | | | | | |
-| Cotações da ANTT | | | | | | |
-| IBGE (dados econômicos) | | | | | | |
+#### Fonte 1 — Sensores IoT da frota
+
+| Critério | Resposta do grupo |
+|----------|-------------------|
+| Valor (insights) | |
+| Veracidade (desafios) | |
+| Variedade (formato) | |
+| Velocidade | |
+| Volume/dia | |
+| Conexão com IA/ML | |
+
+#### Fonte 2 — Pedidos do TMS
+
+| Critério | Resposta do grupo |
+|----------|-------------------|
+| Valor (insights) | |
+| Veracidade (desafios) | |
+| Variedade (formato) | |
+| Velocidade | |
+| Volume/dia | |
+| Conexão com IA/ML | |
+
+#### Fonte 3 — Estoque do WMS
+
+| Critério | Resposta do grupo |
+|----------|-------------------|
+| Valor (insights) | |
+| Veracidade (desafios) | |
+| Variedade (formato) | |
+| Velocidade | |
+| Volume/dia | |
+| Conexão com IA/ML | |
+
+#### Fonte 4 — APIs externas (clima, tráfego)
+
+| Critério | Resposta do grupo |
+|----------|-------------------|
+| Valor (insights) | |
+| Veracidade (desafios) | |
+| Variedade (formato) | |
+| Velocidade | |
+| Volume/dia | |
+| Conexão com IA/ML | |
+
+#### Fonte 5 — Planilhas Excel do supervisor
+
+| Critério | Resposta do grupo |
+|----------|-------------------|
+| Valor (insights) | |
+| Veracidade (desafios) | |
+| Variedade (formato) | |
+| Velocidade | |
+| Volume/dia | |
+| Conexão com IA/ML | |
+
+#### Fonte 6 — Faturamento do ERP
+
+| Critério | Resposta do grupo |
+|----------|-------------------|
+| Valor (insights) | |
+| Veracidade (desafios) | |
+| Variedade (formato) | |
+| Velocidade | |
+| Volume/dia | |
+| Conexão com IA/ML | |
+
+#### Fonte 7 — Cotações da ANTT
+
+| Critério | Resposta do grupo |
+|----------|-------------------|
+| Valor (insights) | |
+| Veracidade (desafios) | |
+| Variedade (formato) | |
+| Velocidade | |
+| Volume/dia | |
+| Conexão com IA/ML | |
+
+#### Fonte 8 — IBGE (dados econômicos)
+
+| Critério | Resposta do grupo |
+|----------|-------------------|
+| Valor (insights) | |
+| Veracidade (desafios) | |
+| Variedade (formato) | |
+| Velocidade | |
+| Volume/dia | |
+| Conexão com IA/ML | |
 
 > 📌 *Dica: "Valor" é a pergunta que o negócio mais precisa responder. "Veracidade" é onde você desconfia dos dados. "Variedade" mostra se você precisa de um data lake (para juntar tudo) ou de um data warehouse tradicional.*
 
@@ -157,7 +258,3 @@ Classifique cada serviço/tecnologia como **IaaS**, **PaaS**, **SaaS** ou **On-P
 - **Cenário LODLog**: `Labs/` — modelo de dados completo e descrição do cenário.
 
 **Dica do Professor:** Não se preocupe em "acertar" a arquitetura agora. O objetivo do LAB 1 é **diagnosticar** o que o grupo já sabe e **alinhá-lo** com os conceitos da aula. A arquitetura evoluirá nos próximos labs.
-
----
-
-**Prazo do trabalho individual (70%):** 15 dias após a última. Sub-cenário escolhido, fontes mapeadas, análise dos 5 Vs, arquitetura proposta com Bronze/Silver/Gold.

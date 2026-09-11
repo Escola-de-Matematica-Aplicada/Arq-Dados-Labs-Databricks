@@ -2,9 +2,9 @@ services:
   agents:
     build:
       context: .
-    # se você renomear o Dockerfile:
-    # dockerfile: Dockerfile
     working_dir: /workspaces
+    ports:
+      - "35000-40000:35000-40000"
     volumes:
       - "C:/Users/julio.chaves/PycharmProjects/IDE-IDT/Arq-Dados-Labs-Databricks:/workspaces"
     extra_hosts:
