@@ -1,7 +1,7 @@
 # Databricks notebook source
 import random
 # LAB 2 — RPG "As Cinco Torres Isoladas" (template executável)
-# Version: free (Unity Catalog, catálogo `workspace`)
+# Version: free (Unity Catalog: Volume `workspace.lodlog_volumes.raw` em vez de /FileStore, descontinuado)
 # Execute: Workspace > Import > Run All
 # ============================================
 # DINÂMICA: 5 grupos, 1 porta cada. Cada porta = 1 arquitetura com armadilha.
@@ -11,8 +11,11 @@ import random
 
 # COMMAND ----------
 # CÉLULA 1 — Setup
+VOL = "/Volumes/workspace/lodlog_volumes/raw"  # Volume UC = substituto do /FileStore (descontinuado)
 try:
     spark.sql("USE CATALOG workspace")
+    spark.sql("CREATE DATABASE IF NOT EXISTS lodlog_volumes")
+    spark.sql("CREATE VOLUME IF NOT EXISTS lodlog_volumes.raw")
     print("✅ Catálogo workspace — RPG pronto")
 except Exception as e:
     print(f"⚠️  {e}")
@@ -43,7 +46,7 @@ portas = [
 ]
 
 df_portas = spark.createDataFrame(portas)
-df_portas.write.format("delta").mode("overwrite").save("/FileStore/rpg/portas")
+df_portas.write.format("delta").mode("overwrite").save(f"{VOL}/rpg/portas")
 print("✅ 5 portas registradas")
 df_portas.show(truncate=False)
 
@@ -52,7 +55,7 @@ df_portas.show(truncate=False)
 # PROFESSOR: alterar o valor abaixo para simular a escolha do grupo
 porta_escolhida = 2  # ← altere aqui para testar (1-5)
 
-escolha = spark.sql(f"SELECT * FROM delta.`/FileStore/rpg/portas` WHERE porta = {porta_escolhida}").collect()[0]
+escolha = spark.sql(f"SELECT * FROM delta.`{VOL}/rpg/portas` WHERE porta = {porta_escolhida}").collect()[0]
 total = escolha.resiliencia + escolha.visao + escolha.influencia
 
 print(f"\n🏢 GRUPO ESCOLHEU: Porta {escolha.porta} — {escolha.nome}")

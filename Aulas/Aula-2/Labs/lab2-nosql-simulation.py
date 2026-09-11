@@ -1,14 +1,17 @@
 # Databricks notebook source
 import random
 # LAB 2 — Simulação NoSQL com PySpark + Delta (poliglota persistence)
-# Version: free (Unity Catalog, catálogo `workspace`)
+# Version: free (Unity Catalog: Volume `workspace.lodlog_volumes.raw` em vez de /FileStore, descontinuado)
 # Execute: Workspace > Import > Run All
 # ============================================
 
 # COMMAND ----------
 # CÉLULA 1 — Catálogo
+VOL = "/Volumes/workspace/lodlog_volumes/raw"  # Volume UC = substituto do /FileStore (descontinuado)
 try:
     spark.sql("USE CATALOG workspace")
+    spark.sql("CREATE DATABASE IF NOT EXISTS lodlog_volumes")
+    spark.sql("CREATE VOLUME IF NOT EXISTS lodlog_volumes.raw")
     print("✅ Catálogo workspace")
 except Exception as e:
     print(f"⚠️  {e}")
@@ -29,7 +32,7 @@ for i in range(200):
     })
 
 df_kv = spark.createDataFrame(kv_data)
-df_kv.write.format("delta").mode("overwrite").save("/FileStore/nosql/kv")
+df_kv.write.format("delta").mode("overwrite").save(f"{VOL}/nosql/kv")
 print(f"✅ KV (Redis): {df_kv.count()} rotas em cache")
 
 # COMMAND ----------
@@ -47,7 +50,7 @@ for v in range(1, 21):
     doc_rows.append(base)
 
 df_doc = spark.createDataFrame(doc_rows)
-df_doc.write.format("delta").mode("overwrite").save("/FileStore/nosql/doc")
+df_doc.write.format("delta").mode("overwrite").save(f"{VOL}/nosql/doc")
 print(f"✅ Documento (MongoDB): {df_doc.count()} eventos heterogêneos")
 
 # COMMAND ----------
@@ -66,7 +69,7 @@ for v in range(1, 11):
         })
 
 df_col = spark.createDataFrame(col_rows)
-df_col.write.format("delta").mode("overwrite").save("/FileStore/nosql/col")
+df_col.write.format("delta").mode("overwrite").save(f"{VOL}/nosql/col")
 print(f"✅ Coluna (Cassandra): {df_col.count()} registros série temporal")
 
 # COMMAND ----------
@@ -83,19 +86,19 @@ for v in range(1, 6):
         grafos.append({"origem": f"veiculo_{v}", "destino": f"cliente_{c}", "tipo_aresta": "entrega", "peso": round(random.uniform(1, 5), 1)})
 
 df_grafo = spark.createDataFrame(grafos)
-df_grafo.write.format("delta").mode("overwrite").save("/FileStore/nosql/grafo")
+df_grafo.write.format("delta").mode("overwrite").save(f"{VOL}/nosql/grafo")
 print(f"✅ Grafo (Neo4j): {df_grafo.count()} arestas (CD→veículo→cliente)")
 
 # COMMAND ----------
 # CÉLULA 6 — Polyglot summary: quantos bancos por workload
-spark.sql("""
-SELECT 'KV-Redis' AS banco, COUNT(*) AS registros FROM delta.`/FileStore/nosql/kv`
+spark.sql(f"""
+SELECT 'KV-Redis' AS banco, COUNT(*) AS registros FROM delta.`{VOL}/nosql/kv`
 UNION ALL
-SELECT 'Documento-MongoDB', COUNT(*) FROM delta.`/FileStore/nosql/doc`
+SELECT 'Documento-MongoDB', COUNT(*) FROM delta.`{VOL}/nosql/doc`
 UNION ALL
-SELECT 'Coluna-Cassandra', COUNT(*) FROM delta.`/FileStore/nosql/col`
+SELECT 'Coluna-Cassandra', COUNT(*) FROM delta.`{VOL}/nosql/col`
 UNION ALL
-SELECT 'Grafo-Neo4j', COUNT(*) FROM delta.`/FileStore/nosql/grafo`
+SELECT 'Grafo-Neo4j', COUNT(*) FROM delta.`{VOL}/nosql/grafo`
 """).show()
 
 print("\n💡 POLÍGLOTA PERSISTENCE: cada banco é escolhido pelo workload,")

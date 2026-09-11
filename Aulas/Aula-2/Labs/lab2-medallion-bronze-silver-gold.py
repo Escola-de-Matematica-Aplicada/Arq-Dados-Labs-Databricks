@@ -3,7 +3,7 @@ import random
 from pyspark.sql.functions import col, avg, count, lit, to_date
 from pyspark.sql.window import Window
 # LAB 2 — Pipeline Bronze → Silver → Gold (Medallion)
-# Version: free (Unity Catalog, catálogo `workspace`)
+# Version: free (Unity Catalog: Volume `workspace.lodlog_volumes.raw` em vez de /FileStore, descontinuado)
 # Execute in Databricks Free Edition: Workspace > Import > Run All
 #
 # CENÁRIO: telemetria IoT de frota (JSON raw → Delta validado → agregado)
@@ -12,10 +12,13 @@ from pyspark.sql.window import Window
 
 # COMMAND ----------
 # CÉLULA 1 — Catálogo e schemas (Free Edition = Serverless + Unity Catalog)
+VOL = "/Volumes/workspace/lodlog_volumes/raw"  # Volume UC = substituto do /FileStore (descontinuado)
 try:
     spark.sql("USE CATALOG workspace")
     spark.sql("CREATE DATABASE IF NOT EXISTS lodlog_op COMMENT 'Operacional (ER 3FN)'")
     spark.sql("CREATE DATABASE IF NOT EXISTS lodlog_dw COMMENT 'Star Schema DW/ML'")
+    spark.sql("CREATE DATABASE IF NOT EXISTS lodlog_volumes")
+    spark.sql("CREATE VOLUME IF NOT EXISTS lodlog_volumes.raw")
     print("✅ Catálogo workspace — schemas prontos")
 except Exception as e:
     print(f"⚠️  Catálogo (modo local?): {e}")
@@ -50,7 +53,7 @@ for v in range(1, VEICULOS + 1):
             })
 
 df_bronze = spark.createDataFrame(rows)
-df_bronze.write.format("delta").mode("overwrite").save("/FileStore/bronze/iot")
+df_bronze.write.format("delta").mode("overwrite").save(f"{VOL}/bronze/iot")
 print(f"✅ Bronze: {df_bronze.count():,} linhas gravadas")
 
 # COMMAND ----------
@@ -59,7 +62,7 @@ from pyspark.sql.functions import col, to_date, avg, lag
 from pyspark.sql.window import Window
 
 df_silver = (
-    spark.read.format("delta").load("/FileStore/bronze/iot")
+    spark.read.format("delta").load(f"{VOL}/bronze/iot")
     # Edge: range checks (vel 0-200, temp 50-150)
     .filter((col("velocidade_kmh") >= 0) & (col("velocidade_kmh") <= 200))
     .filter((col("temperatura_motor_c") >= 50) & (col("temperatura_motor_c") <= 150))
@@ -71,7 +74,7 @@ df_silver = (
 )
 
 df_silver.write.format("delta").mode("overwrite") \
-    .option("mergeSchema", "true").save("/FileStore/silver/iot")
+    .option("mergeSchema", "true").save(f"{VOL}/silver/iot")
 print(f"✅ Silver: {df_silver.count():,} linhas (dedup + validação)")
 
 # COMMAND ----------
@@ -88,13 +91,13 @@ df_gold = (
     .orderBy("data", "veiculo_id")
 )
 
-df_gold.write.format("delta").mode("overwrite").save("/FileStore/gold/iot")
+df_gold.write.format("delta").mode("overwrite").save(f"{VOL}/gold/iot")
 print(f"✅ Gold: {df_gold.count():,} linhas (agregado veículo/dia)")
 
 # COMMAND ----------
 # CÉLULA 5 — Time-travel: auditoria de versão
-print("Versões Gold:", spark.sql("DESCRIBE HISTORY delta.`/FileStore/gold/iot`").count())
-display(spark.read.format("delta").load("/FileStore/gold/iot").limit(10))
+print("Versões Gold:", spark.sql(f"DESCRIBE HISTORY delta.`{VOL}/gold/iot`").count())
+display(spark.read.format("delta").load(f"{VOL}/gold/iot").limit(10))
 
 # COMMAND ----------
 # CÉLULA 6 — Resumo executivo
@@ -103,6 +106,6 @@ SELECT data,
        COUNT(DISTINCT veiculo_id) AS veiculos,
        ROUND(AVG(avg_vel), 1) AS vel_media_frota,
        ROUND(AVG(avg_temp), 1) AS temp_media_frota
-FROM delta.`/FileStore/gold/iot`
+FROM delta.`/Volumes/workspace/lodlog_volumes/raw/gold/iot`
 GROUP BY data ORDER BY data LIMIT 10
 """).show()
