@@ -1,4 +1,8 @@
 # Databricks notebook source
+# /// script
+# [tool.databricks.environment]
+# environment_version = "5"
+# ///
 # Importar este arquivo no Databricks Free Edition como notebook Python e executar UMA VEZ na AULA 2 (Atividade 2.0 do LAB 2).
 # File: lodlog_lab2_seed_free.py (antes: lodlog_lab3_seed_free.py, movido para a Aula 2 em 11/09/2026)
 # Uso: Workspace > Import > selecione este arquivo (.py) > Run All (compute Serverless)

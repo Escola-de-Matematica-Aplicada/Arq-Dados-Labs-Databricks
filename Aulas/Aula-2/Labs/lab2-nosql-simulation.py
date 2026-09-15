@@ -1,4 +1,8 @@
 # Databricks notebook source
+# /// script
+# [tool.databricks.environment]
+# environment_version = "5"
+# ///
 import random
 # LAB 2 — Simulação NoSQL com PySpark + Delta (poliglota persistence)
 # Version: free (Unity Catalog: Volume `workspace.lodlog_volumes.raw` em vez de /FileStore, descontinuado)
@@ -6,6 +10,7 @@ import random
 # ============================================
 
 # COMMAND ----------
+
 # CÉLULA 1 — Catálogo
 VOL = "/Volumes/workspace/lodlog_volumes/raw"  # Volume UC = substituto do /FileStore (descontinuado)
 try:
@@ -17,6 +22,7 @@ except Exception as e:
     print(f"⚠️  {e}")
 
 # COMMAND ----------
+
 # CÉLULA 2 — KV (Redis): cache de rotas origem→destino → distância/tempo
 # Simula Redis como dict chave-valor O(1)
 kv_data = []
@@ -36,6 +42,7 @@ df_kv.write.format("delta").mode("overwrite").save(f"{VOL}/nosql/kv")
 print(f"✅ KV (Redis): {df_kv.count()} rotas em cache")
 
 # COMMAND ----------
+
 # CÉLULA 3 — Documento (MongoDB): eventos IoT heterogêneos
 # Cada veículo tem payload diferente (schema flexível)
 doc_rows = []
@@ -54,6 +61,7 @@ df_doc.write.format("delta").mode("overwrite").save(f"{VOL}/nosql/doc")
 print(f"✅ Documento (MongoDB): {df_doc.count()} eventos heterogêneos")
 
 # COMMAND ----------
+
 # CÉLULA 4 — Coluna / Wide-Column (Cassandra): série temporal apend-only
 # Simula HBase/Cassandra com writes sequenciais + partição por tempo
 col_rows = []
@@ -73,6 +81,7 @@ df_col.write.format("delta").mode("overwrite").save(f"{VOL}/nosql/col")
 print(f"✅ Coluna (Cassandra): {df_col.count()} registros série temporal")
 
 # COMMAND ----------
+
 # CÉLULA 5 — Grafo (Neo4j): topologia CD → veículo → entrega → cliente
 # Simula relacionamentos como pares (origem, destino, peso)
 import itertools
@@ -90,6 +99,7 @@ df_grafo.write.format("delta").mode("overwrite").save(f"{VOL}/nosql/grafo")
 print(f"✅ Grafo (Neo4j): {df_grafo.count()} arestas (CD→veículo→cliente)")
 
 # COMMAND ----------
+
 # CÉLULA 6 — Polyglot summary: quantos bancos por workload
 spark.sql(f"""
 SELECT 'KV-Redis' AS banco, COUNT(*) AS registros FROM delta.`{VOL}/nosql/kv`

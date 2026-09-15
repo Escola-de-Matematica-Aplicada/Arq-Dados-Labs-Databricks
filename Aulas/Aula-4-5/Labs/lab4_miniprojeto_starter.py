@@ -1,4 +1,8 @@
 # Databricks notebook source
+# /// script
+# [tool.databricks.environment]
+# environment_version = "5"
+# ///
 # MAGIC %md
 # MAGIC # LAB 4 — Starter do Miniprojeto: Data Lake da LODLog
 # MAGIC ### Databricks Free Edition · Arquitetura Medallion (Bronze → Silver → Gold)
