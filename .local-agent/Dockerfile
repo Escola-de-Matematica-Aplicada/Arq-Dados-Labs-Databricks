@@ -1,5 +1,7 @@
-FROM python:3.11-slim
+FROM python:3.12-slim
 
+# Instalar dependências do sistema
+ENV DEBIAN_FRONTEND=noninteractive
 # Instalar dependências do sistema
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -33,6 +35,7 @@ RUN apt-get update && apt-get install -y \
     locales \
     nodejs \
     npm \
+    tmux \
     && git lfs install \
     && rm -rf /var/lib/apt/lists/*
 
@@ -47,6 +50,12 @@ RUN pip install --no-cache-dir uv
 # Set PATH for uv
 ENV PATH="/root/.local/bin:${PATH}"
 
+# Clone and install docker-mcp
+RUN cd /opt && \
+    git clone https://github.com/QuantGeekDev/docker-mcp.git && \
+    cd docker-mcp && \
+    uv sync
+
 # Clone and install MarkItDown
 RUN git clone https://github.com/microsoft/markitdown.git /opt/markitdown && \
     cd /opt/markitdown && \
@@ -54,7 +63,13 @@ RUN git clone https://github.com/microsoft/markitdown.git /opt/markitdown && \
 
 # Install CLI agents
 # HERMES Agent
-RUN curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash
+RUN mkdir -p /root/.hermes && \
+    git clone https://github.com/NousResearch/hermes-agent.git /root/.hermes/hermes-agent && \
+    curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash
+
+# Install HERMES Agent MCP extras
+RUN cd /root/.hermes/hermes-agent && \
+    uv pip install --system -e ".[mcp]"
 
 # Kilo Code
 RUN curl -fsSL https://kilo.ai/cli/install | bash
@@ -69,7 +84,7 @@ RUN curl -fsSL https://claude.ai/install.sh | bash
 RUN curl -LsSf https://mistral.ai/vibe/install.sh | bash
 
 # Grok CLI
-RUN npm install -g @vibe-kit/grok-cli
+RUN curl -fsSL https://x.ai/cli/install.sh | bash
 
 # Install Gemini CLI
 RUN npm install -g @google/gemini-cli
@@ -77,8 +92,26 @@ RUN npm install -g @google/gemini-cli
 # Install copilot cli
 RUN npm install -g @github/copilot
 
-# Note: Gemini CLI will be installed separately
-# Add the Gemini install script when available
+# Install MiMo Code
+RUN npm install -g @mimo-ai/cli --registry https://registry.npmjs.org \
+    && mimo --version
+
+# Install qwen code
+RUN curl -s https://raw.githubusercontent.com/QwenLM/qwen-code/main/scripts/installation/install-qwen-with-source.sh | bash
+
+# Nebius cli cloud
+RUN curl -sSL https://storage.eu-north1.nebius.cloud/cli/install.sh | bash
+
+# Muse code
+RUN curl -fsSL https://dev.meta.ai/install.sh | bash
+
+# openresearch
+RUN curl -LsSf https://openresearch.sh/install.sh | sh \
+
+# Atomic chat - https://atomicagent.io/
+#  atomic-agent
+#  atag           # same thing, shorter
+RUN curl -fsSL https://atomicagent.io/install | sh
 
 # Install Python packages
 RUN pip install --no-cache-dir --break-system-packages \
@@ -96,7 +129,9 @@ RUN pip install --no-cache-dir --break-system-packages \
     clickhouse-driver \
     clickhouse-connect \
     poppler-utils \
-    PyMuPDF  # Adiciona o PyMuPDF (que fornece o módulo fitz)
+    PyMuPDF \
+    semantica \
+    graphrag
 
 # Set environment variables
 ENV LANG=pt_BR.UTF-8 \
