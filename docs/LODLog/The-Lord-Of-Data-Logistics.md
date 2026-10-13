@@ -1,6 +1,6 @@
 The Lord Of Data Logistics - LODLog Transportes e Distribuição S.A.
 
-Empresa fictícia para servir de linha de base para o trabalho em grupo da disciplina de engenharia de dados (MBA).
+Empresa fictícia para servir de linha de base para o trabalho em grupo.
 
 Consideramos essa linha de base a título da grande diversidade de perfis alunos.
 

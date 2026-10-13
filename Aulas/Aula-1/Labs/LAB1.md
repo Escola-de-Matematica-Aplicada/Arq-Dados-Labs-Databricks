@@ -11,7 +11,7 @@
 
 ## Antes de começar
 
-- Releia rapidamente o **syllabus** da disciplina (seção Módulo 1) e o conteúdo da **Aula 1**.
+- Releia rapidamente o **plano de ensino** da disciplina (Módulo 1, no eClass) e os slides da **Aula 1**.
 - O cenário que vamos usar é a **LODLog Transportes e Distribuição S.A.** — uma empresa fictícia (mas bem realista) de logística com 450 veículos, 12 centros de distribuição e ~18 mil entregas por mês. Você vai analisar as 8 fontes de dados dela, exatamente como um consultor de dados faria no primeiro dia de um projeto.
 
 ---
@@ -253,8 +253,8 @@ Classifique cada serviço/tecnologia como **IaaS**, **PaaS**, **SaaS** ou **On-P
 
 ## Material de Apoio e Referências
 
-- **Conteúdo da Aula 1** (`aula-1.md`): slides sobre histórico, tipos de dados, OLTP vs OLAP, 5 Vs, LODLog fontes de dados.
-- **Syllabus** (`syllabus.md`): seção Módulo 1 — Objetivos de aprendizagem e conteúdo programático.
+- **Slides da Aula 1** (eClass): histórico, tipos de dados, OLTP vs OLAP, 5 Vs, fontes de dados da LODLog.
+- **Plano de ensino** (eClass): Módulo 1 — objetivos de aprendizagem e conteúdo programático.
 - **Cenário LODLog**: `Labs/` — modelo de dados completo e descrição do cenário.
 
 **Dica do Professor:** Não se preocupe em "acertar" a arquitetura agora. O objetivo do LAB 1 é **diagnosticar** o que o grupo já sabe e **alinhá-lo** com os conceitos da aula. A arquitetura evoluirá nos próximos labs.

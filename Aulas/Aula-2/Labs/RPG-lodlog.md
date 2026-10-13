@@ -1,9 +1,9 @@
 # RPG "As Cinco Torres Isoladas" — O Cenário da LODLog
 
-**Disciplina** Arquitetura de Dados e Big Data — Aula 2 (28/set/2026)
-**Formato** Dinâmica em grupo, síncrona, sem mestre — 85 min de jogo + síntese técnica
+**Disciplina** Arquitetura de Dados e Big Data — Aula 2 (10/nov/2026)
+**Formato** Dinâmica em grupo, síncrona, sem mestre — 58 min, incluindo a síntese técnica
 **Papel de vocês** O CTO da LODLog (e sua equipe de arquitetura)
-**Material de origem** Cenário baseado em [`Aulas/LODLog/The-Lord-Of-Data-Logistics.md`](../../LODLog/The-Lord-Of-Data-Logistics.md)
+**Material de origem** Cenário baseado em [`Aulas/LODLog/The-Lord-Of-Data-Logistics.md`](../../../docs/LODLog/The-Lord-Of-Data-Logistics.md)
 
 > ⚠️ **Sigilo do jogo:** este documento contém o cenário, as portas e as regras — mas NÃO as armadilhas de cada porta nem a pontuação. As consequências da sua escolha só são reveladas DEPOIS que o grupo defende a porta. Não leia os notebooks do professor, não procure os comentários do `lab2-rpg-exercicio.py`. A descoberta é o aprendizado.
 
@@ -124,26 +124,26 @@ A gamificação termina, o aprendizado começa a virar artefato. Cada grupo mape
 
 **Entregável do grupo:** 1 slide com (a) a porta que defenderam (ou a oculta, se a abriram), (b) justificativa batch × streaming por domínio, e (c) o **contrato mínimo** que exigiriam na Silver da frota: schema + regras de qualidade + SLA de atualização + lineage.
 
-Esse slide é o ensaio geral do miniprojeto da Aula 4-5 (trabalho em grupo, 30%) — onde vocês vão CONSTRUIR no Databricks o lakehouse que aqui apenas defenderam.
+Esse slide é o ensaio geral do miniprojeto das Aulas 4 e 5 (trabalho em grupo, 30%) — onde vocês vão CONSTRUIR no Databricks o lakehouse que aqui apenas defenderam.
 
 ---
 
-## Cronômetro da Dinâmica (85 min)
+## Cronômetro da Dinâmica (58 min)
 
 | Fase | Tempo |
 |---|---|
-| Formar 5 grupos (um por porta) e ler o cenário | 5 min |
-| Discussão interna: como nossa porta resolve as dores dos 5 C-Levels? | 15 min |
-| Defesas (2 min por grupo) + consequências narradas pelo professor | 15 min |
-| Rodada da porta oculta: pistas progressivas até alguém propô-la | 15 min |
-| Votação final: qual porta escolheríamos agora? | 5 min |
-| Síntese técnica Medallion + contratos (seção 5) | 30 min |
+| Formar 5 grupos (um por porta) e ler o cenário | 3 min |
+| Discussão interna: como nossa porta resolve as dores dos 5 C-Levels? | 10 min |
+| Defesas (1min30 por grupo) + consequências narradas pelo professor | 12 min |
+| Rodada da porta oculta: pistas progressivas até alguém propô-la | 10 min |
+| Votação final: qual porta escolheríamos agora? | 3 min |
+| Síntese técnica Medallion + contratos (seção 5) | 20 min |
 
 ---
 
 ## Referências
 
-- Cenário completo: [`Aulas/LODLog/The-Lord-Of-Data-Logistics.md`](../../LODLog/The-Lord-Of-Data-Logistics.md)
+- Cenário completo: [`Aulas/LODLog/The-Lord-Of-Data-Logistics.md`](../../../docs/LODLog/The-Lord-Of-Data-Logistics.md)
 - Lab de execução desta aula: [`LAB2.md`](LAB2.md) e [`lab2-rpg-exercicio.py`](lab2-rpg-exercicio.py)
-- Slides da Aula 2: [`../aula-2.md`](../aula-2.md) · Syllabus: Módulo 2 — [`../../../syllabus.md`](../../../syllabus.md)
+- Slides da Aula 2 e plano de ensino (Módulo 2): no eClass
 - Leituras: Dehghani (2022) *Data Mesh*; Serra (2024) *Deciphering Data Architectures*, cap. 3–5.

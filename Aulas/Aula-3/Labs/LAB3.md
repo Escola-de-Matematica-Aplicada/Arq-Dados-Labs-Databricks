@@ -1,322 +1,141 @@
-# LAB 3 — SQL Avançado e Pipeline de Feature Engineering
+# LAB 3 — Pipelines LODLog: do Desenho à Execução
 
 **Disciplina** Arquitetura de Dados e Big Data
-**Aula** 3 — Organização e Manuseio de Dados em Bases Distribuídas (29 de setembro de 2026)
-**Duração do Lab** ~1h30 (em aula)
-**Entrega** Queries SQL + view de Feature Store + relatório de qualidade de dados
+**Aula** 3 — Organização e Manuseio de Dados em Bases Distribuídas (16 de novembro de 2026)
+**Duração do Lab** 93 min em aula (20h47–22h20): 5 min de briefing + 30 min de desenho + 35 min de mão na massa no Databricks + 20 min de apresentações + 3 min de síntese
+**Entrega (grupo)** Matriz de decisão + diagrama do pipeline + respostas aos 5 exercícios do notebook + pitch de 3 min
 
-> **Para quem é este lab:** Você é um profissional que já entende o cenário (Aulas 1–2) e agora precisa **extrair valor dos dados** usando SQL avançado. Este é o **único lab executável obrigatório** da disciplina — você vai escrever queries, criar views e detectar problemas reais nos dados, tudo no Databricks Free Edition.
+> **Como este lab funciona:** em duas metades. Na **primeira (desenho, 30 min)**, o trabalho é o de um arquiteto de dados: olhar as fontes de um domínio da LODLog, decidir como cada uma entra, onde é guardada, como é transformada e quem a consome — e **justificar** cada escolha por latência, custo e facilidade de reprocessar. Na **segunda (mão na massa, 35 min)**, vocês rodam no Databricks um pipeline pronto, em lote e em streaming, até um **motor preditivo** que calcula o risco de atraso de cada entrega — e respondem, com números, às perguntas que um gestor faria. Ninguém precisa saber programar: o notebook já vem pronto; vocês operam, observam e decidem. O que sair daqui é o rascunho do miniprojeto das Aulas 4 e 5.
 
 ---
 
 ## Antes de começar
 
-1. Crie sua conta gratuita no **Databricks Free Edition** em [databricks.com/learn/free-edition](https://www.databricks.com/learn/free-edition) (não precisa de cartão de crédito) e faça login em [login.databricks.com](https://login.databricks.com).
-2. No painel lateral esquerdo, selecione **Workspace** → **Create** → **Git folder** e adicione o endereço do repositório do curso: `https://github.com/Escola-de-Matematica-Aplicada/EDIA-Labs-DataBricks.git`
-   *(alternativa: baixe os arquivos e use **Workspace → Import**).*
-3. Execute os notebooks, nesta ordem (o compute **Serverless** já vem selecionado — não é preciso configurar nada):
-   - `Aulas/Aula-2/Labs/lodlog_modelo_dados_free.sql` (se ainda não executou)
-   - `Aulas/Aula-2/Labs/lodlog_lab2_seed_free.py` (rodado na Aula 2; só refaça se necessário — leva ~3 min)
-4. Após o seed terminar com sucesso, abra o notebook **`Aulas/Aula-3/Labs/LAB3_apoio_free`** para desenvolver as atividades.
-5. Na primeira célula, execute:
-   ```sql
-   USE CATALOG workspace;
-   USE lodlog_dw;
-   SHOW TABLES;
-   ```
+- Formem **5 grupos** e sorteiem um domínio por grupo (tabela abaixo).
+- Tenham à mão os slides da Aula 3, em especial "Ingestão LODLog — 8 fontes, 5 padrões", "AWS vs Azure vs GCP — por camada" e "Pipeline Fim a Fim LODLog".
+- Cenário completo: [`docs/LODLog/The-Lord-Of-Data-Logistics.md`](../../../docs/LODLog/The-Lord-Of-Data-Logistics.md).
+- Material: papel/quadro ou qualquer ferramenta de diagrama (draw.io, Excalidraw, Miro, PowerPoint).
 
-> 💡 *O script carrega ~50 mil entregas fictícias nos schemas `lodlog_op` e `lodlog_dw`, dentro do catálogo `workspace` (o Free Edition usa Unity Catalog — pense nele como o "prédio" onde moram os schemas). Demora uns 3 minutos.*
+| Domínio | Fontes do domínio | Pergunta de negócio que o pipeline precisa responder |
+| --- | --- | --- |
+| Frota/IoT | Sensores IoT (JSON a cada 30s), API ANTT (eventos de bloqueio) | Quais veículos precisam de manutenção antes de quebrar? |
+| Operação/TMS | TMS (status de entregas em tempo real), API Google Maps (5 min) | Quais entregas vão atrasar hoje e por quê? |
+| Estoque/WMS | WMS (movimentações a cada 15 min), ERP (pedidos diários) | Onde vai faltar estoque na próxima semana? |
+| Financeiro/ERP | ERP (faturamento diário), IBGE (CSV mensal) | Qual a receita e a margem por cliente e por região? |
+| Dados Externos | Google Maps, INMET (horário), ANTT, IBGE | Como clima, trânsito e bloqueios explicam os atrasos? |
 
 ---
 
-## Objetivos de Aprendizagem
+## Parte 1 — Mapear as fontes (5 min)
 
-Ao final deste lab, você será capaz de:
+Para cada fonte do domínio, anotem:
 
-1. **Escrever consultas SQL avançadas** — JOINs de múltiplas tabelas, agregações e filtragens pós-agrupamento.
-2. **Aplicar Window Functions** — médias móveis, rankings, percentis e NTILE para análise de séries temporais.
-3. **Construir uma Feature Store** — uma view consolidada que alimenta modelos de IA com 8 variáveis explicativas e a variável resposta.
-4. **Auditar dados** — detectar duplicatas, valores negativos, outliers e quebras de integridade referencial usando SQL.
+- **Formato:** relacional, JSON, XML, CSV.
+- **Frequência e volume:** ex.: IoT 864k eventos/dia; Maps ~60k requisições/dia; ERP ~3k registros/dia.
+- **Tipo de dado:** estruturado, semiestruturado ou não estruturado (Aula 1).
+- **Quem consome:** dashboard, alerta, modelo de ML, API.
+
+## Parte 2 — Padrão de ingestão (7 min)
+
+Escolham, por fonte, um dos cinco padrões e a ferramenta:
+
+| Padrão | Use quando | Ferramentas típicas |
+| --- | --- | --- |
+| Batch | a latência de horas é aceitável | Airflow, Glue, Data Factory, `spark.read` |
+| Micro-batch | minutos bastam e se quer simplicidade | Spark Structured Streaming com trigger, Auto Loader |
+| Streaming | a decisão precisa ser tomada em segundos | Kafka, Kinesis, Event Hubs, Pub/Sub |
+| CDC | a fonte é um banco OLTP que não pode ser sobrecarregado | Debezium, DMS |
+| API pull/push | a fonte é um serviço externo | Airflow + `requests`, NiFi, webhooks |
+
+**Pergunta de controle:** essa fonte *realmente* precisa de streaming? Qual decisão de negócio piora se ela chegar uma hora depois?
+
+## Parte 3 — ETL ou ELT (4 min)
+
+- **ELT** (carregar cru na Bronze e transformar no Lakehouse) é o padrão quando há dado semi/não estruturado, volume crescente ou regras que mudam com frequência.
+- **ETL** (transformar antes de carregar) só se justifica com volume pequeno, schema estável e governança rígida antes da carga.
+
+Registrem a decisão por fonte e **uma frase de justificativa**.
+
+## Parte 4 — Lambda, Kappa ou híbrido (4 min)
+
+| Opção | Escolham se... |
+| --- | --- |
+| Lambda | precisam de recálculo completo do histórico **e** de baixa latência, e aceitam manter dois códigos |
+| Kappa | as fontes já são logs de eventos e um replay de dias resolve o reprocessamento |
+| Híbrido | só parte das fontes precisa de streaming — o restante vai em batch |
+
+Justifiquem por **custo** (streaming fica sempre ligado) e **latência** exigida pelo consumo.
+
+## Parte 5 — Matriz ferramenta × camada (6 min)
+
+Preencham uma linha por fonte. Escolham **uma** plataforma para o domínio (AWS, Azure, GCP ou Hadoop/Spark local) e expliquem por quê.
+
+| Fonte | Ingestão (padrão + ferramenta) | ETL/ELT | Bronze → Silver/Gold | Processamento | Latência alvo | Arquitetura |
+| --- | --- | --- | --- | --- | --- | --- |
+| (ex.: IoT) | Streaming: Kafka + Structured Streaming | ELT | JSON → Delta particionado por data | Spark + `MERGE` no Delta | Segundos | Kappa |
+| (ex.: ERP) | Batch diário: Airflow + JDBC | ELT | Parquet → Delta | Spark SQL + dbt | Horas | Batch puro |
+| | | | | | | |
+| | | | | | | |
+
+**Plataforma escolhida e justificativa:** ____________________________________________
+
+## Parte 6 — Diagrama (4 min)
+
+Desenhem o pipeline do domínio com as cinco caixas abaixo e as setas entre elas, uma faixa por fonte:
+
+```
+Fonte → Ingestão → Bronze (cru) → Silver (validado) → Gold (consumo) → Consumidor
+                    └──────────── Orquestração (Airflow / job contínuo) ────────────┘
+```
+
+O pitch de 3 min é preparado depois da Parte 7, já com os números do notebook.
 
 ---
 
-## Parte 1 — Análise Exploratória com SQL (25 min)
+## Parte 7 — Mão na massa: do evento ao score de risco (35 min)
 
-> 💡 *Antes de construir qualquer coisa, você precisa conhecer os dados. Estas queries são como o "raio-X" do negócio — revelam padrões que a diretoria precisa ver.*
+O notebook [`lab3_pipeline_motor_preditivo.py`](lab3_pipeline_motor_preditivo.py) executa, em escala de laboratório, o pipeline do domínio **Operação/Frota**: entregas do TMS chegam em **lote** (CSV diário) e a telemetria IoT em **streaming** (micro-lotes JSON); as duas passam por Bronze → Silver → Gold, e um **motor preditivo pronto** (modelo `risco_atraso` v1.2, entregue pelo time de Ciência de Dados) lê a Gold e calcula a probabilidade de atraso de cada entrega.
 
-### Atividade 1.1: Conhecendo os Dados do DW (10 min, individual)
+1. **Rodar (10 min):** Databricks Free Edition → Workspace → Import → `lab3_pipeline_motor_preditivo.py` → **Run All** (~2 min, Serverless). Não precisa ter rodado nada antes: o notebook gera os próprios dados.
+2. **Observar (10 min):** anotem os números de cada etapa — linhas na Bronze e na Silver (quantas foram barradas e por quê), entregas na Gold, alertas do motor por CD.
+3. **Responder (15 min):** os 5 exercícios do fim do notebook — limiar de alerta como decisão de negócio, lote × streaming, qualidade, reprocessamento e ferramenta por camada. Cada resposta com um número do notebook.
 
-Execute e interprete as três queries abaixo. Escreva **uma frase curta** de interpretação sobre o que o resultado revela para a gestão da LODLog.
+> Vocês **não** criam features nem treinam o modelo — isso é tema das disciplinas de Ciência de Dados. O modelo aqui é um **consumidor** da Gold, como um dashboard: o que importa para a arquitetura é a Gold ser confiável, documentada e chegar a tempo.
 
-**Query 1: Volume de entregas e atrasos por mês**
-```sql
-SELECT DATE_TRUNC('month', data_entrega) AS mes,
-       COUNT(*) AS total_entregas,
-       SUM(CASE WHEN minutos_atraso > 0 THEN 1 ELSE 0 END) AS entregas_atrasadas
-FROM fato_entregas
-GROUP BY 1
-ORDER BY 1;
-```
-
-**Sua Interpretação:**
-
-**Query 2: Ranking de Centros de Distribuição por eficiência operacional**
-```sql
-SELECT cd.codigo AS cd_origem,
-       ROUND(AVG(fe.minutos_atraso), 2) AS atraso_medio_min,
-       ROUND(SUM(fe.custo_combustivel + fe.custo_pedagio), 2) AS custo_total_operacional,
-       COUNT(DISTINCT fe.sk_veiculo) AS frota_alocada
-FROM fato_entregas fe
-INNER JOIN dim_centro_distribuicao cd ON fe.sk_cd_origem = cd.sk_cd
-WHERE fe.data_entrega >= CURRENT_DATE - INTERVAL '90 days'
-GROUP BY cd.codigo
-ORDER BY atraso_medio_min ASC;
-```
-
-**Sua Interpretação:**
-
-**Query 3: Correlação entre distância e custo de combustível**
-```sql
-SELECT corr(distancia_km, custo_combustivel) AS correlacao_distancia_custo
-FROM fato_entregas
-WHERE data_entrega >= CURRENT_DATE - INTERVAL '30 days';
-```
-
-**Sua Interpretação:**
-
-> 💬 *Se a correlação é alta e positiva: quanto mais longe, mais caro. Isso confirma o que o financeiro já desconfiava?*
-
-### Atividade 1.2: Sua Primeira Query Analítica (15 min, individual)
-
-Escreva uma consulta SQL para responder à seguinte pergunta da diretoria comercial:
-
-**"Qual o percentual de entregas no prazo por cliente nos últimos 90 dias, considerando apenas clientes com mais de 10 entregas realizadas no período?"**
-
-**Dicas de implementação:**
-- Faça um `INNER JOIN` entre `fato_entregas` e `dim_cliente` (usando as surrogate keys).
-- Filtre a data: `fe.data_entrega >= CURRENT_DATE - INTERVAL '90 days'`.
-- Use `GROUP BY` na coluna `razao_social` do cliente.
-- Filtre os grupos com `HAVING COUNT(*) > 10`.
-- Calcule o percentual de pontualidade: entrega "no prazo" se `minutos_atraso = 0` (ou `indicador_atraso = 0`). Divida o volume pontual pelo total e multiplique por 100.
-- Ordene do menor percentual (piores clientes) para o maior.
-
-```sql
--- Escreva sua query de pontualidade aqui e execute no Databricks
-```
-
-> 💡 *A diretoria quer saber quem são os clientes que mais atrasam. Se um cliente tem 15 entregas e 14 no prazo, a pontualidade é 93%. Se outro tem 50 entregas e 40 no prazo, são 80%. Quem é o problema?*
+**Pitch de 3 min (prepare enquanto os outros apresentam):** (1) qual fonte é a mais crítica e por quê; (2) onde está o streaming e por que ele vale o custo — com o número de alertas do motor; (3) como reprocessar se a regra da Silver mudar.
 
 ---
 
-## Parte 2 — Window Functions e Séries Temporais (25 min)
+## Apresentação relâmpago (20 min) e síntese (3 min)
 
-> 💡 *Window Functions são como cálculos em Excel, mas muito mais poderosos: permitem calcular uma métrica para cada linha considerando as linhas "ao redor" dela — sem agrupar e perder detalhes.*
-
-### Atividade 2.1: Média Móvel de Atrasos por CD (10 min, individual)
-
-> *Métricas de tempo de atraso diário são "ruidosas" (variam muito de um dia para outro). Para suavizar as tendências, a gerência pediu a **média móvel de 7 dias** de atrasos, agrupada por centro de distribuição.*
-
-Escreva a query que retorne o CD (código), a data da entrega, o atraso individual da linha e a média móvel das últimas 7 linhas daquele mesmo CD (ordenadas por data).
-
-**Dica Spark SQL:**
-```sql
-AVG(minutos_atraso) OVER (
-  PARTITION BY sk_cd_origem
-  ORDER BY data_entrega
-  ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
-)
-```
-
-```sql
--- Escreva sua query de média móvel aqui
-```
-
-> 💬 *Se a média móvel de um CD está subindo semana a semana, o que isso significa para a operação?*
-
-### Atividade 2.2: Ranking de Eficiência da Frota (10 min, individual)
-
-Analise o custo de combustível por quilômetro rodado de cada motorista nos últimos 30 dias. A query deve:
-
-1. Agrupar as entregas por `sk_motorista` para obter o custo por km (`SUM(custo_combustivel) / NULLIF(SUM(distancia_km), 0)`).
-2. Classificar os motoristas em **quartis (1 a 4)** usando `NTILE(4)`.
-3. Calcular o **percentil exato** de eficiência usando `PERCENT_RANK()`.
-
-**Estrutura sugerida:**
-```sql
-WITH custo_por_motorista AS (
-  SELECT sk_motorista,
-         SUM(custo_combustivel) / NULLIF(SUM(distancia_km), 0) AS custo_por_km
-  FROM fato_entregas
-  WHERE data_entrega >= CURRENT_DATE - INTERVAL '30 days'
-  GROUP BY sk_motorista
-)
-SELECT m.nome_completo AS nome_motorista,
-       c.custo_por_km,
-       NTILE(4) OVER (ORDER BY c.custo_por_km ASC) AS quartil,
-       PERCENT_RANK() OVER (ORDER BY c.custo_por_km ASC) AS percentil
-FROM custo_por_motorista c
-INNER JOIN dim_motorista m ON c.sk_motorista = m.sk_motorista;
-```
-
-```sql
--- Escreva sua query de ranking de motoristas aqui
-```
-
-> 💬 *Quartil 1 = motorista mais eficiente (gasta menos por km). Quartil 4 = menos eficiente. Isso ajuda a gerência a decidir onde focar.*
-
-### Atividade 2.3: Discussão Analítica (5 min, em grupo)
-
-Debatem: do ponto de vista de arquitetura de banco de dados, por que as **Window Functions** são mais eficientes no Spark SQL do que subqueries correlacionas clássicas?
-
-> 💡 *Dica: pense em quantas vezes o banco precisa "ler" os dados. Com subquery, ele lê várias vezes. Com Window Function, lê uma única vez.*
+- 4 min por grupo: 3 min de pitch + 1 pergunta da turma.
+- Perguntas-guia do professor:
+  - Onde está o gargalo de Veracidade?
+  - Onde o egress ou o lock-in doem?
+  - O que reprocessar se a regra da Silver mudar?
+  - Quando o streaming não vale o custo?
 
 ---
 
-## Parte 3 — Feature Engineering em SQL (30 min)
+## Critérios de avaliação (formativa)
 
-> 💡 *Cientistas de dados precisam de dados no formato certo para treinar modelos de IA. O seu trabalho aqui é criar uma "vitrine" de dados — uma view que já vem pronta, com todas as variáveis de que o modelo precisa. Isso se chama **Feature Store**.*
-
-### Atividade 3.1: Crie a View de Feature Store `vw_features_ml` (20 min, em grupo)
-
-Os cientistas de dados precisam treinar um modelo preditivo de probabilidade de atraso. O modelo exige que cada linha represente uma entrega com um conjunto unificado de **8 variáveis explicativas (features)** e a **variável resposta (target)**.
-
-Criem a view `vw_features_ml` sob o banco `lodlog_dw` com as seguintes variáveis:
-
-| Nome da Feature | Tipo/Origem | Fórmula / Lógica em SQL |
-|---|---|---|
-| `sk_entrega` | Identificador | Chave surrogate da entrega (já existe em `fato_entregas`) |
-| `distancia_km` | Numérica (Fato) | `distancia_km` (da fato) |
-| `peso_total_kg` | Numérica (Fato) | `peso_total_kg` (da fato) |
-| `hora_saida` | Numérica (Derivada) | `hour(hora_saida)` |
-| `dia_semana` | Numérica (Derivada) | `dayofweek(data_entrega)` (1 = Domingo, 7 = Sábado) |
-| `eh_feriado` | Booleana (Dimensão) | Coluna `flag_feriado` da `dim_tempo` (requer JOIN) |
-| `temperatura_media_motor` | Numérica (IoT) | Coluna `temperatura_media_motor` (já na fato) |
-| `historico_atrasos_7d` | Janela (Móvel) | Média móvel de atraso do mesmo cliente nos últimos 7 dias |
-| `dias_ultima_manutencao` | Diferença (Histórica) | Diferença em dias entre `data_entrega` e a data da última manutenção do veículo |
-| `target_atraso` | Variável Resposta | `indicador_atraso` (0 = no prazo, 1 = atrasado) |
-
-**Estrutura da view:**
-```sql
-CREATE OR REPLACE VIEW lodlog_dw.vw_features_ml AS
-WITH hist_cliente AS (
-  SELECT sk_entrega, sk_cliente, data_entrega,
-         AVG(minutos_atraso) OVER (
-           PARTITION BY sk_cliente
-           ORDER BY data_entrega
-           ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
-         ) AS hist_7d
-  FROM fato_entregas
-),
-manut_veiculo AS (
-  SELECT veiculo_id, data_conclusao,
-         ROW_NUMBER() OVER (PARTITION BY veiculo_id ORDER BY data_conclusao DESC) as rn
-  FROM lodlog_op.manutencao
-  WHERE status = 'Concluída'
-)
-SELECT
-  fe.sk_entrega,
-  fe.distancia_km,
-  fe.peso_total_kg,
-  hour(fe.hora_saida) AS hora_saida,
-  dayofweek(fe.data_entrega) AS dia_semana,
-  dt.flag_feriado AS eh_feriado,
-  fe.temperatura_media_motor,
-  ROUND(h.hist_7d, 2) AS historico_atrasos_7d,
-  DATEDIFF(fe.data_entrega, mv.data_conclusao) AS dias_ultima_manutencao,
-  fe.indicador_atraso AS target_atraso
-FROM fato_entregas fe
-INNER JOIN dim_tempo dt ON fe.sk_data = dt.sk_tempo
-LEFT JOIN hist_cliente h ON fe.sk_entrega = h.sk_entrega  -- grain 1:1 (por entrega)
-LEFT JOIN manut_veiculo mv ON fe.sk_veiculo = mv.veiculo_id AND mv.rn = 1 AND mv.data_conclusao <= fe.data_entrega;
-```
-
-> 💡 *Ao criar essa view, você está fazendo o trabalho que o cientista de dados precisaria fazer manualmente. É o "Feature Store" — a ponte entre os dados brutos e o modelo de IA.*
-
-### Atividade 3.2: Valide a Feature Store (10 min, individual)
-
-Execute as queries de validação na view recém-criada:
-
-1. **Completude:** Há registros com dados de manutenção nulos? O que isso indica?
-```sql
-SELECT COUNT(*) FROM vw_features_ml WHERE dias_ultima_manutencao IS NULL;
-```
-
-2. **Distribuição do Target:** O dataset está balanceado?
-```sql
-SELECT target_atraso, COUNT(*) AS volume,
-       ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER(), 2) AS pct
-FROM vw_features_ml
-GROUP BY 1;
-```
-
-> 💬 *Se 90% das entregas são "no prazo" e só 10% "atrasadas", o modelo precisa de cuidado para não prever "tudo no prazo" e acertar 90% das vezes sem ser útil.*
-
-3. **Correlação com o target:** A quilometragem está correlacionada com o atraso?
-```sql
-SELECT corr(distancia_km, target_atraso) AS correlacao_dist_target FROM vw_features_ml;
-```
+| Critério | O que se espera |
+| --- | --- |
+| Coerência | padrão de ingestão, latência alvo e ferramenta batem entre si |
+| Evidência | as respostas dos exercícios do notebook citam números da execução |
+| Custo | streaming só onde a latência paga; formatos abertos; particionamento |
+| Reprocessamento | Bronze imutável e caminho claro para refazer Silver/Gold |
+| Justificativa | cada escolha tem uma frase de "porque" ligada à pergunta de negócio |
 
 ---
 
-## Parte 4 — Qualidade de Dados via SQL (15 min)
+## Conexão com o trabalho
 
-> 💡 *Na vida real, os dados sempre têm problemas. O seu papel como profissional de dados é **caçar os erros antes que o erro caçe você**. Estas queries vão detectar anomalias que foram propositalmente inseridas no banco.*
+- **Trabalho individual (70%, até 08-dez):** a matriz e o diagrama de hoje cobrem a parte "arquitetura proposta com Bronze/Silver/Gold e justificativa batch vs streaming".
+- **Miniprojeto em grupo (30%, apresentação em 23-nov):** o grupo vai construir no Databricks Free Edition uma versão simplificada do pipeline desenhado aqui.
 
-### Atividade 4.1: Auditoria Automática de Dados (10 min, individual)
+## Material opcional
 
-O notebook de seed introduziu anomalias na tabela `fato_entregas` para simular problemas reais de pipelines. Escrevam consultas SQL que detectem:
-
-1. **Registros Duplicados:** Encontrem registros com o mesmo `pedido_id` (deveria ser único por grain).
-```sql
--- Escreva sua query para encontrar pedido_id duplicados
-```
-
-2. **Valores Inválidos / Negativos:** Detectem registros com campos físicos negativos (distância, peso ou custos).
-```sql
--- Escreva sua query para valores negativos
-```
-
-3. **Outliers de Tempo:** Identifiquem registros com atrasos absurdamente altos (> 1.000 min, ou seja, mais de ~16h) ou adiantamentos fisicamente impossíveis (adiantados mais de 8h, isto é, < −480 min).
-```sql
--- Escreva sua query para outliers de atraso/adiantamento
-```
-
-4. **Inconsistência de Integridade (Orfãos):** Identifiquem entregas na fato que apontam para clientes (`sk_cliente`) inexistentes no cadastro (`dim_cliente`).
-```sql
--- Escreva sua query de auditoria referencial (Anti-Join)
-```
-
-### Atividade 4.2: Conexão com o Trabalho em Grupo (5 min)
-
-Para cada tipo de anomalia identificada:
-
-- **Qual a causa provável?** (erro de ingestão? sistema de origem enviou errado? pipeline quebrou?)
-- **Como você limparia isso nas camadas Bronze e Silver** do seu pipeline?
-
-> 💡 *Na arquitetura Medallion (que vocês viram na Aula 2): a camada Bronze guarda tudo como veio (raw). A Silver é onde você limpa. Se um dado nasce errado, você descobre na Silver e corrige — sem perder o raw original.*
-
-
-## Material de Apoio e Referências
-
-- **Conteúdo da Aula 3** (`aula-3.md`): Cloud IaaS/PaaS/SaaS, Hadoop/Spark/Hive, pipelines ETL/ELT, Lambda/Kappa, arquitetura em camadas.
-- **Syllabus** (`syllabus.md`): seção Módulo 3.
-- **Modelo de dados**: `../../Aula-2/Labs/lodlog_modelo_dados_free.sql` (DDL adaptada ao Free Edition).
-- **Seed de dados**: `Aulas/Aula-2/Labs/lodlog_lab2_seed_free.py` (rodado na Aula 2 — gera os ~50 mil registros com anomalias).
-- **Notebook de apoio**: `LAB3_apoio_free.ipynb` (nesta pasta).
-- **Referência**: `AGENTS.md` — regras do ambiente Databricks Free Edition.
-
-**Dica do Professor:** Este é o único lab executável. O importante não é a query perfeita — é o raciocínio analítico por trás dela. Se um aluno escreveu a query e obteve resultado, ele aprendeu.
+- [`LAB3_apoio_free.ipynb`](LAB3_apoio_free.ipynb) — consultas SQL guiadas no Databricks Free Edition sobre o modelo LODLog; é a referência de SQL usada na Aula 4.
 
 ---
-
-## Notas para o Facilitador
-
-| Item | Detalhe |
-|------|---------|
-| **Duração total** | ~1h30 (90 min) |
-| **Teoria** | Pipelines, ETL/ELT, Window Functions (~30 min) |
-| **Prática** | Queries SQL, Feature Store, Data Quality (~60 min) |
-| **Entrega** | Queries executadas + view `vw_features_ml` criada + relatório de anomalias |
-| **Próxima aula** | 03/10 — Módulo 4: Miniprojeto de Data Lake (sessão dupla) |
-
-**Próximo passo:** Aula 4-5 é o **miniprojeto** (70% individual + 30% grupo). Baseia-se em tudo o que foi visto aqui: dados, arquitetura, queries e quality.

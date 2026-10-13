@@ -1,11 +1,11 @@
 # LAB 4 — Miniprojeto: Avaliação de um Data Lake Executável
 
 **Disciplina** Arquitetura de Dados e Big Data
-**Aulas** 4 e 5 — Miniprojeto: Construção e Avaliação de Data Lake para a LODLog (03 de outubro de 2026)
-**Duração** Sessão dupla (~4h, com intervalos)
+**Aulas** 4 e 5 — Miniprojeto: Construção e Avaliação de Data Lake para a LODLog
+**Datas** Aula 4 (17/11/2026): teoria curta + execução e análise · Aula 5 (23/11/2026): apresentação dos grupos e lições aprendidas
 **Entrega**
-- **Individual (70%, até 18/out):** relatório guiado → siga o [`GUIA-ENTREGA-individual.md`](GUIA-ENTREGA-individual.md)
-- **Grupo (30%):** pitch de 5 min na aula → siga o [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md)
+- **Individual (70%, até 08/dez — 15 dias após a Aula 5):** relatório guiado → siga o [`GUIA-ENTREGA-individual.md`](GUIA-ENTREGA-individual.md)
+- **Grupo (30%):** pitch de 10 min + 5 min de Q&A na Aula 5 (23/11) → siga o [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md)
 
 > **Como este miniprojeto funciona:** vocês **não vão construir um data lake do zero**. O ambiente pronto já traz tudo: a DDL do modelo LODLog (`lodlog_modelo_dados_free.sql`), o seed com ~50 mil entregas (`lodlog_lab2_seed_free.py`), os diagramas do ER e do Star Schema ([`/Diagramas/`](../../../Diagramas/)) e um pipeline Medallion executável (`lab4_miniprojeto_starter.py`) que roda em ~1 minuto no Databricks Free Edition. O trabalho avaliado é o que um líder de dados faz de verdade diante de uma plataforma pronta: **executar, inspecionar, analisar os resultados, questionar as escolhas de arquitetura e sustentá-las (ou contestá-las) com evidência.** Justificativa vale mais que linha de código — é isso que a banca cobra.
 
@@ -13,7 +13,7 @@
 
 ## Antes de começar
 
-- Releia o **syllabus** (seção Módulo 4 e Avaliação) e o conteúdo das **Aulas 4-5** (`aula-4-5.md`): 4 pilares de governança, pântano de dados, MLOps.
+- Releia o **plano de ensino** (Módulo 4 e Avaliação, no eClass) e os slides da **Aula 4**: 4 pilares de governança, pântano de dados, quem consome a Gold.
 - Releia os Labs 1–3 — tudo se conecta aqui: tipos de dados e 5 Vs (L1), arquiteturas e Medallion (L2), SQL e qualidade (L3).
 - Garanta acesso ao **Databricks Free Edition** ([login.databricks.com](https://login.databricks.com), compute Serverless) ANTES da aula.
 
@@ -50,15 +50,19 @@ Ao final deste miniprojeto, você será capaz de:
 
 ---
 
-## Regra da Sessão Dupla
+## Organização das Aulas 4 e 5
+
+**Aula 4 (17/11) — construir e analisar:**
 
 | Bloco | Horário | Duração | Conteúdo |
 |-------|---------|---------|----------|
 | **Teoria curta** | 19h00–19h40 | 40 min | 4 pilares de governança + checklist + pântano + MLOps |
-| Intervalo 1 | 19h40–19h55 | 15 min | — |
-| **Prática — Parte 1** | 19h55–20h55 | 60 min | Executar o starter + mapear cenário × modelos prontos (lentes de governança) |
-| Intervalo 2 | 20h55–21h10 | 15 min | — |
-| **Prática — Parte 2** | 21h10–22h20 | 70 min | Análise Gold + auditoria de qualidade + pitch 5 min/grupo |
+| **Prática — Parte 1** | 19h40–20h40 | 60 min | Briefing + escolha do cenário + Etapa 2.1 (executar o starter e mapear o cenário) |
+| Intervalo | 20h40–20h55 | 15 min | — |
+| **Prática — Parte 2** | 20h55–22h05 | 70 min | Etapa 2.2 (análise Gold + auditoria + "E se") + pós-projeto e rascunho do pitch |
+| **Checkpoint** | 22h05–22h20 | 15 min | Cada grupo mostra o que tem e o que falta para a Aula 5 |
+
+**Aula 5 (23/11) — apresentar e avaliar:** pitch de cada grupo (10 min + 5 min de Q&A), discussões entre os grupos e lições aprendidas da disciplina (Etapa 2.3).
 
 ---
 
@@ -75,13 +79,13 @@ Ao final deste miniprojeto, você será capaz de:
 | **3. Catálogo e Linhagem** | Onde está e de onde veio? | "De onde veio esse número?" sem resposta |
 | **4. Ciclo de Vida e Operação** | Quanto tempo guardar e quanto custa? | Bronze sem particionamento; JSONs pequenos demais |
 
-> Os "10 mandamentos" do slide 19 da aula (Bronze imutável, particione, tipifique, deduplique, valide ranges, catalogue, anonimize, MERGE idempotente, monitore drift, documente lineage) são as perguntas que a banca fará no pitch.
+> Os "10 mandamentos" do slide "Critérios de Sucesso" da Aula 4 (Bronze imutável, particione, tipifique, deduplique, valide ranges, catalogue, anonimize, MERGE idempotente, monitore drift, documente lineage) são as perguntas que a banca fará no pitch da Aula 5.
 
 ---
 
-## Parte 2 — Prática em Grupo (2h20)
+## Parte 2 — Prática em Grupo (Aula 4: 2h25 · Aula 5: apresentação)
 
-### Etapa 2.1 — Execute o Lakehouse Pronto e prove que ele funciona (60 min)
+### Etapa 2.1 — Execute o Lakehouse Pronto e prove que ele funciona (Aula 4, 50 min)
 
 > 💡 *O starter já faz o que um projeto levaria semanas. O trabalho de vocês é executar, ler com atenção e **ver com os próprios olhos** cada promessa de arquitetura se materializando (ou não) nos números do console.*
 
@@ -91,7 +95,7 @@ Ao final deste miniprojeto, você será capaz de:
 4. **Mapeie o cenário do grupo sobre o pronto:** preencha a tabela fonte×camada do seu cenário usando as tabelas existentes + o que o starter simula (ex.: cenário B → `iot_eventos` da Silver é o coração; cenário D → a auditoria nasce das anomalias do seed na `fato_entregas`).
 5. **Aponte as lentes:** marque quais dos 4 pilares o starter **cumpre visivelmente** e quais ele **não cobre** (dica: ele particiona a Bronze? ele anonimiza PII? ele registra lineage?). Isso vira conteúdo do pós-projeto.
 
-### Etapa 2.2 — Análise com evidência: Gold e qualidade (40 min)
+### Etapa 2.2 — Análise com evidência: Gold e qualidade (Aula 4, 40 min + 30 min de pós-projeto)
 
 Usando o `LAB3_apoio_free.ipynb` como referência de escrita SQL (copiem células para o notebook do grupo — adaptar é permitido e esperado):
 
@@ -102,9 +106,11 @@ Usando o `LAB3_apoio_free.ipynb` como referência de escrita SQL (copiem célula
    - Transformem o MERGE/overwrite em append puro → rodem duas vezes → contem as duplicatas. Isso é ou não é a armadilha da "Colheita Silenciosa" (RPG da Aula 2)?
    - Apaguem o filtro de PII/nulo → reflitam: que artigo de LGPD está sendo violado em qual camada?
 
-### Etapa 2.3 — Pitch do grupo (30 min: ~20 apresentações + Q&A)
+Nos 30 min finais da Parte 2, rascunhem o pós-projeto (2 vantagens, 2 limitações, 1 lição) e o esqueleto do pitch. Às 22h05, cada grupo mostra o checkpoint ao professor (formativo, sem nota).
 
-**5 min por grupo + 2 min de Q&A** — formato completo no [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md). Essência: cenário e pergunta de negócio → diagrama (usem os PNGs prontos, anotados) → números da execução (Bronze/Silver/Gold) → 1 insight de negócio → 1 escolha que defendem + 1 que contestam → lição pós-projeto.
+### Etapa 2.3 — Pitch do grupo (Aula 5, 23/11)
+
+**10 min por grupo + 5 min de Q&A** — formato completo no [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md). Essência: cenário e pergunta de negócio → diagrama (usem os PNGs prontos, anotados) → números da execução (Bronze/Silver/Gold) → 1 insight de negócio → 1 escolha que defendem + 1 que contestam → lição pós-projeto.
 
 > ⚠️ *O "diagrama novo" não é exigido — o exigido é o diagrama **comentado por vocês**: uma foto do `LODLog_dw_v3.png` com 3 setas marcando onde entra a sujeira, onde ela é barrada e onde nasce o número do dashboard.*
 
@@ -112,10 +118,10 @@ Usando o `LAB3_apoio_free.ipynb` como referência de escrita SQL (copiem célula
 
 ## Parte 3 — Entregas
 
-As entregas têm guia próprio, com estrutura, pesos da rubrica (slide 30 da aula) e checklist de submissão:
+As entregas têm guia próprio, com estrutura, pesos da rubrica (slides "Como Você Será Avaliado" da Aula 4) e checklist de submissão:
 
-- **Individual (70%, até 18/10/2026):** [`GUIA-ENTREGA-individual.md`](GUIA-ENTREGA-individual.md) — relatório de até ~8 páginas usando os artefatos prontos como base; DDL não precisa ser reescrita: você **cita** a que rodou e **analisa** o que ela faz.
-- **Grupo (30%, apresentação na aula 4-5):** [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md) — pitch de 5 min + 1 página de síntese pós-projeto.
+- **Individual (70%, até 08/12/2026 — 15 dias após a Aula 5):** [`GUIA-ENTREGA-individual.md`](GUIA-ENTREGA-individual.md) — "Aprofundamento de cenário da LODLog": PDF de 4–6 páginas com o núcleo de arquitetura (fontes, 5 Vs, Bronze/Silver/Gold com batch × streaming) e a conexão transformadora (maturidade em dados × arquitetura empresarial); anexo técnico opcional no Databricks ou no AWS Academy.
+- **Grupo (30%, apresentação na Aula 5 — 23/11):** [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md) — pitch de 10 min + 5 min de Q&A + 1 página de síntese pós-projeto.
 
 Em ambas, o critério de ouro é o mesmo da disciplina: **toda afirmação de arquitetura precisa de uma evidência** (um número do console, uma query, uma linha de DDL, um quadro do diagrama) — ou de uma pergunta honesta ("não testamos X; testaríamos assim").
 
@@ -123,8 +129,8 @@ Em ambas, o critério de ouro é o mesmo da disciplina: **toda afirmação de ar
 
 ## Material de Apoio e Referências
 
-- **Conteúdo das Aulas 4-5** (`../aula-4-5.md`): governança, pântano, MLOps, rubrica (slide 30), template do pitch (slide 31).
-- **Syllabus** (`../../../syllabus.md`): Módulo 4 + seção Avaliação.
+- **Slides das Aulas 4 e 5** (eClass): governança, pântano, rubricas e template do pitch.
+- **Plano de ensino** (eClass): Módulo 4 e Avaliação.
 - **Artefatos prontos:** ver tabela "O que vocês recebem pronto" no topo.
 - **LAB 2 refeito** (`../../Aula-2/Labs/LAB2.md`): o parecer técnico do grupo é o modelo do que se espera de justificativa arquitetural aqui.
 - **Referências complementares:** Serra (2024) cap. 3–5; Inmon et al. (2019); Kleppmann (2017) cap. 1–3.
@@ -132,17 +138,3 @@ Em ambas, o critério de ouro é o mesmo da disciplina: **toda afirmação de ar
 **Dica do Professor:** Arquitetura de dados não é sobre escolher a ferramenta mais bonita — é sobre resolver o problema de negócio com o custo e a maturidade certos. Como desta vez a arquitetura já vem escolhida por terceiros, sobra tempo para o que realmente diferencia um executivo de dados: perguntar *"por quê?"* a cada tabela e provar a resposta com números.
 
 ---
-
-## Notas para o Facilitador
-
-| Item | Detalhe |
-|------|---------|
-| **Duração** | Sessão dupla (~4h com 2 intervalos de 15 min) |
-| **Teoria** | 40 min — governança, pântano, MLOps, rubrica |
-| **Prática** | 2h20 — execução do starter, análise/auditoria, pitch |
-| **Pré-requisitos da noite** | Conta Free Edition criada + DDL/seed rodados (pedir com 1 semana de antecedência; ter CSV de fallback para quem não conseguir acesso) |
-| **Individual (70%)** | Relatório guiado (`GUIA-ENTREGA-individual.md`), até 10 páginas, prazo 18/10 |
-| **Grupo (30%)** | Pitch 5 min + síntese 1 página (`GUIA-ENTREGA-grupo.md`), na aula |
-| **Avaliação** | Disciplina isenta de prova — pesos no slide 30 da aula |
-
-**Conexão com o todo:** este miniprojeto é a soma — L1 classifica as fontes, L2 lê e avalia o modelo, L3 consulta e audita, L4 defende tudo isso numa banca. Se o aluno conseguir explicar *por que* cada camada existe e *onde* o modelo pronto quebraria, a competência do Módulo 4 está atingida — independentemente de quem digitou o SQL.

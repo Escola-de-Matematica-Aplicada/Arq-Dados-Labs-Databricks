@@ -1,9 +1,9 @@
 # LAB 2 — Avaliando Arquiteturas com o Modelo LODLog Pronto
 
 **Disciplina** Arquitetura de Dados e Big Data
-**Aula** 2 — Ferramentas para Gerenciamento de Dados Distribuídos (28 de setembro de 2026)
-**Duração do Lab** ~1h40 (na parte prática da aula; casa: até +20 min para a entrega do grupo)
-**Entrega (grupo)** Parecer técnico de 1 página + checklist de "e se..." respondido em aula
+**Aula** 2 — Ferramentas para Gerenciamento de Dados Distribuídos (10 de novembro de 2026)
+**Duração do Lab** demo de 20 min em aula (20h47–22h20 é dividido com o RPG e a discussão); execução completa em casa
+**Entrega (grupo)** Parecer técnico de 1 página + checklist de "e se...", feitos em casa
 
 > **Como este lab funciona:** vocês **não vão modelar do zero**. A consultoria de dados da LODLog já entregou os scripts (`lodlog_modelo_dados_free.sql`), o seed de dados, os diagramas do modelo (`/Diagramas/`) e notebooks prontos para executar no Databricks Free Edition. O trabalho de vocês é o que um executivo de dados **realmente** faz no dia a dia: **executar, inspecionar, questionar e avaliar** as escolhas arquiteturais de outros — aprovando, contestando ou propondo evolução.
 
@@ -11,7 +11,7 @@
 
 ## Antes de começar (5 min)
 
-- Releia o **syllabus** (seção Módulo 2) e os slides da **Aula 2** (`aula-2.md`).
+- Releia o **plano de ensino** (Módulo 2, no eClass) e os slides da **Aula 2**.
 - Entre no **Databricks Free Edition** ([login.databricks.com](https://login.databricks.com)) — sem cartão, compute serverless. Os schemas do modelo ficam no catálogo `workspace`, schemas `lodlog_op` e `lodlog_dw`.
 - Tenha ao lado os **diagramas prontos** na pasta [`/Diagramas/`](../../../Diagramas/):
   - `LODLog_op_v3.png` — modelo operacional (ER, 3FN)
@@ -150,8 +150,8 @@ Autoavaliação rápida (checkbox na entrega): [ ] todos do grupo participaram d
 
 ## Material de Apoio e Referências
 
-- **Conteúdo da Aula 2** (`../aula-2.md`): NoSQL, DW/Lake/Lakehouse/Mesh/Fabric, Medallion/Zaloni, RPG "As Cinco Torres Isoladas".
-- **Syllabus** (`../../../syllabus.md`): seção Módulo 2.
+- **Slides da Aula 2** (eClass): NoSQL, DW/Lake/Lakehouse/Mesh/Fabric, Medallion/Zaloni, RPG "As Cinco Torres Isoladas".
+- **Plano de ensino** (eClass): Módulo 2.
 - **Modelo de dados (pronto):** `lodlog_modelo_dados_free.sql` (nesta pasta).
 - **Diagramas (prontos):** [`/Diagramas/LODLog_op_v3.png`](../../../Diagramas/LODLog_op_v3.png) e [`/Diagramas/LODLog_dw_v3.png`](../../../Diagramas/LODLog_dw_v3.png).
 - **RPG "As Cinco Torres Isoladas"** — enunciado do aluno com o cenário LODLog em [`RPG-lodlog.md`](RPG-lodlog.md) (nesta pasta); materiais completos em `docs/Aulas-de-outros-cursos/Aula 8 Arquitetura de Dados/`. Roda na abertura da parte prática e conversa com as Partes 1 e 3 deste lab.
@@ -159,18 +159,3 @@ Autoavaliação rápida (checkbox na entrega): [ ] todos do grupo participaram d
 **Dica do Professor:** Vocês não precisam saber desenhar um Star Schema de cabeça para decidir bem — precisam saber **ler** um e perguntar "por quê?". O ER opera (transações); o Star analisa (agregações); o Medallion refina (confiança crescente). Um parecer maduro mostra que você entende as três frases.
 
 ---
-
-## Notas para o Facilitador
-
-| Item | Detalhe |
-|------|---------|
-| **Duração total** | ~1h40 em aula (RPG pode migrar para o bloco inicial/encerramento, conforme slides 37–39 da aula) |
-| **Teoria usada** | Arquiteturas modernas, Medallion/Zaloni, NoSQL poliglota, SCD/mini-dimensão (~40 min de slides) |
-| **Prática** | Execução do pipeline Medallion + DDL + seed/ETL LODLog + leitura dos diagramas + "E se..." (~75 min) |
-| **Entrega** | Parecer técnico de 1 página (grupo) — sem diagrama novo, sem edição de DDL |
-| **Pré-requisitos** | Alunos com conta Free Edition criada ANTES da aula; notebooks enviados no repositório da disciplina |
-| **Se o tempo apertar** | A Atividade 2.0 é intocável (o ambiente roda uma vez e serve às Aulas 3 e 4-5); Atividade 2.3 vira demo do professor; 3.4/3.5 podem virar tarefa de casa; a Parte 1 é intocável (é a experiência central) |
-| **Anomalias do seed** | O seed (Atividade 2.0) injeta ~100 duplicatas, negativos, outliers e FK quebrada na `fato_entregas` — a contagem da Atividade 3.4 já usa o ambiente subido em aula, sem tarefa de casa |
-| **Próxima aula** | 29/09 — Módulo 3: Cloud, Hadoop/Spark, Pipelines ETL/ELT |
-
-**Conexão com o trabalho em grupo (30%):** o parecer deste lab é o "ensaio" da avaliação pós-projeto exigida no miniprojeto da Aula 4-5 — mesma habilidade (justificar arquitetura), agora aplicada a um modelo que já existe em vez de um imaginário.
