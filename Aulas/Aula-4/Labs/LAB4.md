@@ -1,13 +1,13 @@
-# LAB 4 — Miniprojeto: Avaliação de um Data Lake Executável
+# LAB 4 — Miniprojeto: Construção e Avaliação do Data Lake da LODLog
 
 **Disciplina** Arquitetura de Dados e Big Data
 **Aulas** 4 e 5 — Miniprojeto: Construção e Avaliação de Data Lake para a LODLog
-**Datas** Aula 4 (17/11/2026): teoria curta + execução e análise · Aula 5 (23/11/2026): apresentação dos grupos e lições aprendidas
+**Datas** Aula 4 (17/11/2026): teoria curta + construção sobre o seed · Aula 5 (23/11/2026): 1ª metade para concluir o trabalho, 2ª metade para apresentações e lições aprendidas
 **Entrega**
-- **Individual (70%, até 08/dez — 15 dias após a Aula 5):** relatório guiado → siga o [`GUIA-ENTREGA-individual.md`](GUIA-ENTREGA-individual.md)
-- **Grupo (30%):** pitch de 10 min + 5 min de Q&A na Aula 5 (23/11) → siga o [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md)
+- **Individual (70%, até 08/dez — 15 dias após a Aula 5):** avaliação pós-projeto → siga o [`GUIA-ENTREGA-individual.md`](GUIA-ENTREGA-individual.md)
+- **Grupo (30%):** notebook seed completado e executado + pitch de 10 min e 5 min de Q&A na Aula 5 (23/11) → siga o [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md)
 
-> **Como este miniprojeto funciona:** vocês **não vão construir um data lake do zero**. O ambiente pronto já traz tudo: a DDL do modelo LODLog (`lodlog_modelo_dados_free.sql`), o seed com ~50 mil entregas (`lodlog_lab2_seed_free.py`), os diagramas do ER e do Star Schema ([`/Diagramas/`](../../../Diagramas/)) e um pipeline Medallion executável (`lab4_miniprojeto_starter.py`) que roda em ~1 minuto no Databricks Free Edition. O trabalho avaliado é o que um líder de dados faz de verdade diante de uma plataforma pronta: **executar, inspecionar, analisar os resultados, questionar as escolhas de arquitetura e sustentá-las (ou contestá-las) com evidência.** Justificativa vale mais que linha de código — é isso que a banca cobra.
+> **Como este miniprojeto funciona:** vocês **não começam do zero, mas também não recebem tudo pronto**. O notebook [`lab4_miniprojeto_seed.py`](lab4_miniprojeto_seed.py) entrega **70% do data lake da LODLog pronto e explicado** — seis fontes (estruturadas, semiestruturadas e não estruturadas) na Bronze, quatro delas tratadas na Silver, uma Gold de referência e exemplos de análise e governança. Os **30% restantes são do grupo**, em quatro TODOs curtos: levar uma fonte semi/não estruturada até a Silver, construir a Gold do cenário, conduzir a análise de negócio e aplicar governança. O trabalho avaliado é o de um líder de dados: **decidir regras, escolher a métrica que responde ao negócio, executar, interpretar e avaliar a arquitetura com evidência.**
 
 ---
 
@@ -24,7 +24,8 @@
 | DDL completa (ER `lodlog_op` + Star `lodlog_dw`) | [`../../Aula-2/Labs/lodlog_modelo_dados_free.sql`](../../Aula-2/Labs/lodlog_modelo_dados_free.sql) | modelo dimensional já projetado — para ler e criticar, não para escrever |
 | Seed LODLog (~50k entregas, com anomalias propositais) | [`../../Aula-2/Labs/lodlog_lab2_seed_free.py`](../../Aula-2/Labs/lodlog_lab2_seed_free.py) | dados reais para as suas queries de análise e qualidade |
 | Notebook de apoio com queries guiadas | [`../../Aula-3/Labs/LAB3_apoio_free.ipynb`](../../Aula-3/Labs/LAB3_apoio_free.ipynb) | ponto de partida das queries analíticas |
-| Pipeline Medallion completo (starter) | [`lab4_miniprojeto_starter.py`](lab4_miniprojeto_starter.py) | Bronze→Silver→Gold funcionando (JSON IoT + TMS) — adaptem ao cenário do grupo |
+| **Seed do miniprojeto (70% pronto)** | [`lab4_miniprojeto_seed.py`](lab4_miniprojeto_seed.py) | 6 fontes LODLog na Bronze, 4 Silvers, Gold de referência e exemplos; **4 TODOs para o grupo** — é o notebook do trabalho |
+| Pipeline Medallion de referência (starter) | [`lab4_miniprojeto_starter.py`](lab4_miniprojeto_starter.py) | versão mínima 100% pronta (JSON IoT + TMS), para consulta |
 | Diagramas prontos (ER + Star Schema) | [`/Diagramas/`](../../../Diagramas/) | `LODLog_op_v3.png` e `LODLog_dw_v3.png` — use-os no pitch e no relatório |
 
 **Escolha do cenário** (1 por grupo; o individual pode ser outro, se quiser):
@@ -52,17 +53,24 @@ Ao final deste miniprojeto, você será capaz de:
 
 ## Organização das Aulas 4 e 5
 
-**Aula 4 (17/11) — construir e analisar:**
+**Aula 4 (17/11) — construir sobre o seed:**
 
 | Bloco | Horário | Duração | Conteúdo |
 |-------|---------|---------|----------|
 | **Teoria curta** | 19h00–19h40 | 40 min | 4 pilares de governança + checklist + pântano + MLOps |
-| **Prática — Parte 1** | 19h40–20h40 | 60 min | Briefing + escolha do cenário + Etapa 2.1 (executar o starter e mapear o cenário) |
+| **Prática — Parte 1** | 19h40–20h40 | 60 min | Briefing + escolha do cenário + Etapa 2.1 (Run All do seed, leitura do que veio pronto) + TODO 1 |
 | Intervalo | 20h40–20h55 | 15 min | — |
-| **Prática — Parte 2** | 20h55–22h05 | 70 min | Etapa 2.2 (análise Gold + auditoria + "E se") + pós-projeto e rascunho do pitch |
-| **Checkpoint** | 22h05–22h20 | 15 min | Cada grupo mostra o que tem e o que falta para a Aula 5 |
+| **Prática — Parte 2** | 20h55–22h05 | 70 min | Etapa 2.2: TODO 2 (Gold do cenário) e TODO 3 (análise) |
+| **Checkpoint** | 22h05–22h20 | 15 min | Cada grupo mostra a Etapa 8 do notebook (✅/⬜) e o que falta para a Aula 5 |
 
-**Aula 5 (23/11) — apresentar e avaliar:** pitch de cada grupo (10 min + 5 min de Q&A), discussões entre os grupos e lições aprendidas da disciplina (Etapa 2.3).
+**Aula 5 (23/11) — concluir, apresentar e avaliar:**
+
+| Bloco | Horário | Duração | Conteúdo |
+|-------|---------|---------|----------|
+| **Trabalho em grupo** | 19h00–20h32 | ~1h32 | Fechar os TODOs pendentes, TODO 4 (governança), Run All final, montar o pitch — com o professor circulando |
+| Intervalo | 20h32–20h47 | 15 min | — |
+| **Apresentações** | 20h47–21h55 | ~1h08 | Pitch de cada grupo (Etapa 2.3) — 10 + 5 min até 4 grupos; 7 + 3 com 5 ou mais |
+| **Fechamento** | 21h55–22h20 | 25 min | Lições aprendidas da disciplina e preparação da entrega individual |
 
 ---
 
@@ -83,36 +91,42 @@ Ao final deste miniprojeto, você será capaz de:
 
 ---
 
-## Parte 2 — Prática em Grupo (Aula 4: 2h25 · Aula 5: apresentação)
+## Parte 2 — Prática em Grupo (Aula 4: 2h25 · Aula 5: ~1h32 de trabalho + apresentações)
 
-### Etapa 2.1 — Execute o Lakehouse Pronto e prove que ele funciona (Aula 4, 50 min)
+O notebook do grupo é o [`lab4_miniprojeto_seed.py`](lab4_miniprojeto_seed.py). Ele roda inteiro desde o começo (Run All, ~2 min); as partes do grupo ficam "em branco" até serem preenchidas, e a **Etapa 8** do notebook mostra o que já está ✅ e o que falta ⬜.
 
-> 💡 *O starter já faz o que um projeto levaria semanas. O trabalho de vocês é executar, ler com atenção e **ver com os próprios olhos** cada promessa de arquitetura se materializando (ou não) nos números do console.*
+| | O que vem pronto (70%) | O que o grupo faz (30%) |
+|---|---|---|
+| **Fontes** | 6 fontes LODLog geradas com sujeira realista: IoT (JSON), TMS, ERP, WMS, API de clima (JSON), ocorrências dos motoristas (texto livre) | — |
+| **Bronze** | Todas as 6 fontes, com metadados de ingestão | — |
+| **Silver** | IoT, TMS, ERP e WMS, com regras de qualidade comentadas | **TODO 1** — levar `clima` ou `ocorrencias` até a Silver, decidindo as regras |
+| **Gold** | `resumo_diario_frota` (referência) + modelo quase pronto para cada cenário | **TODO 2** — escrever a métrica-chave da Gold do cenário |
+| **Análise** | Exemplo completo: pergunta → consulta → frase para a diretoria | **TODO 3** — pergunta de negócio, consulta e interpretação |
+| **Governança** | Exemplo aplicado na Gold de referência (dono, descrição, PII, retenção) | **TODO 4** — governança da Gold do grupo + regra de qualidade |
 
-1. **Suba o ambiente:** execute (se ainda não feito) `lodlog_modelo_dados_free.sql` e `lodlog_lab2_seed_free.py` nos seus workspaces.
-2. **Rode `lab4_miniprojeto_starter.py` (Run All, ~1 min)** e registre no notebook os números do console: linhas Bronze IoT × Silver IoT (quantos eventos a mais/menos? por quê?), linhas TMS, agregados Gold.
-3. **Inspecione as 6 tabelas criadas** (`lodlog_bronze.*`, `lodlog_silver.*`, `lodlog_gold.*`): para cada uma, anote uma frase — *o que entra aqui, o que sai daqui, quem consumiria isso* (operação? diretoria? modelo de IA?).
-4. **Mapeie o cenário do grupo sobre o pronto:** preencha a tabela fonte×camada do seu cenário usando as tabelas existentes + o que o starter simula (ex.: cenário B → `iot_eventos` da Silver é o coração; cenário D → a auditoria nasce das anomalias do seed na `fato_entregas`).
-5. **Aponte as lentes:** marque quais dos 4 pilares o starter **cumpre visivelmente** e quais ele **não cobre** (dica: ele particiona a Bronze? ele anonimiza PII? ele registra lineage?). Isso vira conteúdo do pós-projeto.
+### Etapa 2.1 — Rodar o seed e entender o que veio pronto (Aula 4, ~45 min)
 
-### Etapa 2.2 — Análise com evidência: Gold e qualidade (Aula 4, 40 min + 30 min de pós-projeto)
+1. **Importe e rode:** Workspace › Import › `lab4_miniprojeto_seed.py` › defina `CENARIO` na primeira célula › Run All.
+2. **Leia as Etapas 1 a 3:** para cada fonte, anote tipo de dado, forma de ingestão típica (batch, streaming, CDC) e **quantas linhas a Silver barrou e por quê** — é o slide de execução do pitch.
+3. **Faça o TODO 1** (~20 min): escolha a fonte extra recomendada para o cenário e defina as regras (limite de chuva plausível ou palavras-chave das ocorrências). O notebook avisa se a regra deixou texto demais em `outros`.
 
-Usando o `LAB3_apoio_free.ipynb` como referência de escrita SQL (copiem células para o notebook do grupo — adaptar é permitido e esperado):
+### Etapa 2.2 — Gold e análise do cenário (Aula 4, 70 min)
 
-1. **2 queries analíticas** sobre os dados do cenário — uma sobre as tabelas Gold do starter, uma sobre `lodlog_dw.fato_entregas` (+ dimensões). Cada uma com **uma frase de interpretação de negócio** ("o que eu diria ao Diretor de Operações com este número?").
-2. **1 query de auditoria** explorando as anomalias propositais do seed (duplicatas de `pedido_id`, valores negativos, outliers, FK quebrada): quantifiquem cada tipo e respondam **em qual camada Medallion cada anomalias deveria ser barrada — e por que na Bronze ela deve passar**.
-3. **1 teste de "E se" arquitetural** (escolham um):
-   - Alterem um range de validação na Silver do starter → o que muda na Gold? Que dano silencioso isso causaria em produção sem time-travel?
-   - Transformem o MERGE/overwrite em append puro → rodem duas vezes → contem as duplicatas. Isso é ou não é a armadilha da "Colheita Silenciosa" (RPG da Aula 2)?
-   - Apaguem o filtro de PII/nulo → reflitam: que artigo de LGPD está sendo violado em qual camada?
+1. **TODO 2** (~25 min): no modelo de Gold do seu cenário, troque `CAST(NULL AS DOUBLE)` pela fórmula da métrica-chave (a dica está no comentário). A Gold junta uma fonte **estruturada** com a fonte **semi/não estruturada** do TODO 1 — é a integração exigida na entrega.
+2. **TODO 3** (~25 min): escreva a pergunta de negócio, rode a consulta sugerida (adaptar é permitido) e escreva a interpretação: *"o que eu diria ao diretor com este número? que decisão ele apoia?"*
+3. **Para quem terminar antes — 1 teste de "E se"** (vira ponto forte no pós-projeto):
+   - Mude a regra de qualidade da Silver do TODO 1 → o que muda na Gold e na conclusão?
+   - Rode a Silver sem o `DISTINCT` → quantas duplicatas chegariam à Gold? Isso é a armadilha da "Colheita Silenciosa" (RPG da Aula 2)?
+   - Sua Gold tem `cliente_id` ou `motorista_id`? Que pilar da LGPD isso aciona e em qual camada vocês tratariam?
 
-Nos 30 min finais da Parte 2, rascunhem o pós-projeto (2 vantagens, 2 limitações, 1 lição) e o esqueleto do pitch. Às 22h05, cada grupo mostra o checkpoint ao professor (formativo, sem nota).
+Às 22h05, checkpoint: cada grupo mostra a Etapa 8 do notebook ao professor (formativo, sem nota).
 
-### Etapa 2.3 — Pitch do grupo (Aula 5, 23/11)
+### Etapa 2.3 — Concluir e apresentar (Aula 5, 23/11)
 
-**10 min por grupo + 5 min de Q&A** — formato completo no [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md). Essência: cenário e pergunta de negócio → diagrama (usem os PNGs prontos, anotados) → números da execução (Bronze/Silver/Gold) → 1 insight de negócio → 1 escolha que defendem + 1 que contestam → lição pós-projeto.
+- **19h00–20h32:** concluir os TODOs pendentes, fazer o **TODO 4** (governança), rodar o Run All final com tudo ✅ e montar o pitch.
+- **20h47–21h55:** **pitch de cada grupo** (10 min + 5 min de Q&A; com 5 ou mais grupos, 7 + 3) — formato no [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md). Essência: cenário e pergunta → arquitetura (o que veio pronto × o que o grupo construiu) → números da Etapa 8 → insight de negócio → avaliação pós-projeto preliminar.
 
-> ⚠️ *O "diagrama novo" não é exigido — o exigido é o diagrama **comentado por vocês**: uma foto do `LODLog_dw_v3.png` com 3 setas marcando onde entra a sujeira, onde ela é barrada e onde nasce o número do dashboard.*
+> ⚠️ *Diagrama novo não é exigido. O exigido é o fluxo do seed **comentado por vocês**: onde entra a sujeira, onde ela é barrada e onde nasce o número do dashboard.*
 
 ---
 
@@ -120,8 +134,8 @@ Nos 30 min finais da Parte 2, rascunhem o pós-projeto (2 vantagens, 2 limitaç�
 
 As entregas têm guia próprio, com estrutura, pesos da rubrica (slides "Como Você Será Avaliado" da Aula 4) e checklist de submissão:
 
-- **Individual (70%, até 08/12/2026 — 15 dias após a Aula 5):** [`GUIA-ENTREGA-individual.md`](GUIA-ENTREGA-individual.md) — "Aprofundamento de cenário da LODLog": PDF de 4–6 páginas com o núcleo de arquitetura (fontes, 5 Vs, Bronze/Silver/Gold com batch × streaming) e a conexão transformadora (maturidade em dados × arquitetura empresarial); anexo técnico opcional no Databricks ou no AWS Academy.
-- **Grupo (30%, apresentação na Aula 5 — 23/11):** [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md) — pitch de 10 min + 5 min de Q&A + 1 página de síntese pós-projeto.
+- **Grupo (30%, Aula 5 — 23/11):** [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md) — o notebook seed com os 30% completados e executado de ponta a ponta (Etapa 8 toda ✅) + pitch de 10 min e 5 min de Q&A + 1 página de síntese pós-projeto preliminar.
+- **Individual (70%, até 08/12/2026 — 15 dias após a Aula 5):** [`GUIA-ENTREGA-individual.md`](GUIA-ENTREGA-individual.md) — "Avaliação pós-projeto do data lake da LODLog": relatório executivo que parte do data lake que o grupo construiu e avalia criticamente a arquitetura, interpreta os resultados para o negócio, compara com uma alternativa e registra as lições aprendidas. Não exige código novo.
 
 Em ambas, o critério de ouro é o mesmo da disciplina: **toda afirmação de arquitetura precisa de uma evidência** (um número do console, uma query, uma linha de DDL, um quadro do diagrama) — ou de uma pergunta honesta ("não testamos X; testaríamos assim").
 
