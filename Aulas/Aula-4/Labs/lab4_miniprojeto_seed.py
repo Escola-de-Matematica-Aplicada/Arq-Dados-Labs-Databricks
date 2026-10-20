@@ -7,17 +7,19 @@
 # MAGIC # LAB 4 — Seed do Miniprojeto: o Data Lake da LODLog (70% pronto · 30% do grupo)
 # MAGIC ### Databricks Free Edition · Arquitetura Medallion (Bronze → Silver → Gold)
 # MAGIC
-# MAGIC **Como este notebook funciona.** Ele já traz **70% do data lake pronto e explicado**: seis fontes
+# MAGIC **Como este notebook funciona.** Ele já traz **70% do data lake pronto e explicado**: sete fontes
 # MAGIC da LODLog (estruturadas, semiestruturadas e não estruturadas), todas carregadas na Bronze, quatro
-# MAGIC delas tratadas na Silver, uma Gold de referência e um exemplo de análise e de governança.
-# MAGIC Os **30% restantes são do grupo** e estão marcados com **🟨 TODO**. São quatro, todos curtos:
+# MAGIC delas tratadas na Silver, uma Gold de referência, um exemplo de análise e de governança e o tratamento
+# MAGIC do **dado mais crítico da empresa — o cliente e seu endereço** (MDM, Etapa 7B).
+# MAGIC Os **30% restantes são do grupo** e estão marcados com **🟨 TODO**. São cinco, todos curtos:
 # MAGIC
 # MAGIC | TODO | O que o grupo faz | Onde | Tempo sugerido |
 # MAGIC |---|---|---|---|
 # MAGIC | **1** | Leva **uma fonte semi/não estruturada** até a Silver, decidindo as regras de qualidade | Etapa 4 | 20 min |
-# MAGIC | **2** | Constrói a **Gold do seu cenário**, escrevendo a métrica-chave | Etapa 5 | 25 min |
-# MAGIC | **3** | Conduz a **análise**: pergunta de negócio, consulta e interpretação | Etapa 6 | 25 min |
-# MAGIC | **4** | Aplica **governança mínima** na Gold do grupo (dono, PII, retenção, regra de qualidade) | Etapa 7 | 15 min |
+# MAGIC | **2** | Constrói a **Gold do seu cenário**, escrevendo a métrica-chave | Etapa 5 | 20 min |
+# MAGIC | **3** | Escreve a **pergunta de negócio** e a **interpretação** da análise (a consulta já vem pronta) | Etapa 6 | 15 min |
+# MAGIC | **4** | Aplica **governança** na Gold do grupo (dono, PII, retenção, regra de qualidade) e define **2 termos do glossário** | Etapa 7 | 20 min |
+# MAGIC | **5** | Decide o **registro de ouro do cliente**: de onde vem o endereço oficial e o que é um endereço válido | Etapa 7B | 25 min |
 # MAGIC
 # MAGIC A **Etapa 8** confere sozinha o que falta e imprime os números para o pitch.
 # MAGIC
@@ -71,7 +73,7 @@ print("Schemas prontos: lodlog_bronze · lodlog_silver · lodlog_gold")
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## Etapa 1 — As seis fontes da LODLog (pronto)
+# MAGIC ## Etapa 1 — As sete fontes da LODLog (pronto)
 # MAGIC
 # MAGIC Na vida real cada fonte chega por um caminho diferente — a telemetria IoT por **streaming** (como no
 # MAGIC Lab 3), os sistemas internos por **batch/CDC**, a API de clima por chamadas diárias. Aqui nós
@@ -86,6 +88,7 @@ print("Schemas prontos: lodlog_bronze · lodlog_silver · lodlog_gold")
 # MAGIC | 4 | Posição de estoque | WMS | estruturado | batch diário |
 # MAGIC | 5 | Clima por CD | API externa (INMET) | **semiestruturado** (JSON) | batch diário |
 # MAGIC | 6 | Ocorrências dos motoristas | App do motorista | **não estruturado** (texto livre) | micro-batch |
+# MAGIC | 7 | Cadastro de clientes | ERP + TMS + CRM (planilha) | estruturado + **texto livre** (endereço do TMS) | batch diário |
 # MAGIC
 # MAGIC > Os dados têm **padrões escondidos** que a análise do grupo pode descobrir — não leia o código
 # MAGIC > gerador procurando a resposta; descubra pelos dados, como faria na empresa.
@@ -152,6 +155,133 @@ for eid in range(1, 6_001):
     tms_raw.append(linha)
     if random.random() < 0.01:
         tms_raw.append(linha)                    # reenvio duplicado do extrato
+
+# ── Fonte 7 · Cadastro de clientes em três sistemas: o dado crítico da LODLog ──
+# Gerador próprio (_cad) para não alterar as demais fontes.
+_cad = random.Random(11)
+_TIPOS = {"Rua": ["Rua", "R.", "R", "RUA"], "Avenida": ["Avenida", "Av.", "AV", "Avda."],
+          "Travessa": ["Travessa", "Tv.", "Trav."], "Alameda": ["Alameda", "Al.", "AL"]}
+_RUAS = ["das Flores", "XV de Novembro", "Brasil", "Sete de Setembro", "Tiradentes", "dos Andradas",
+         "Rio Branco", "Getúlio Vargas", "Santos Dumont", "da Liberdade", "Marechal Deodoro",
+         "Dom Pedro II", "das Palmeiras", "São João", "Barão de Mauá", "Duque de Caxias"]
+_BAIRROS = ["Centro", "Vila Nova", "Jardim América", "Santa Cecília", "Boa Vista", "Distrito Industrial",
+            "Bela Vista", "São Cristóvão"]
+_CIDADES = {1: ("São Paulo", "SP", ["São Paulo", "Sao Paulo", "SAO PAULO", "S. Paulo", "Sampa"], (1000, 5999)),
+            2: ("Campinas", "SP", ["Campinas", "CAMPINAS", "Cps"], (13000, 13139)),
+            3: ("Rio de Janeiro", "RJ", ["Rio de Janeiro", "RIO DE JANEIRO", "Rio de Jan."], (20000, 23799)),
+            4: ("Belo Horizonte", "MG", ["Belo Horizonte", "BELO HORIZONTE", "BH", "B. Horizonte"], (30000, 31999)),
+            5: ("Curitiba", "PR", ["Curitiba", "CURITIBA", "Ctba"], (80000, 82999))}
+_PREF = {"Supermercado": ["Supermerc.", "Superm."], "Distribuidora": ["Dist.", "Distrib."],
+         "Farmácia": ["Farm.", "Farmacia"], "Atacado": ["Atac."], "Comercial": ["Com."], "Mercado": ["Merc."],
+         "Drogaria": ["Drog."], "Armazém": ["Armazem", "Armz."], "Empório": ["Emporio"], "Casa": ["Cs."]}
+_NOMES = ["Alfa", "Bom Preço", "Central", "Paulista", "Horizonte", "Boa Vista", "São Jorge", "Vitória",
+          "Nova Era", "Primavera", "Estrela", "Real", "Santa Clara", "Progresso", "União", "Litoral",
+          "Serra Azul", "Ipê", "Aurora", "Vale Verde"]
+_TYPO = {"Supermercado": "Supermecado", "Distribuidora": "Distribuidra", "Drogaria": "Drogaira",
+         "Farmácia": "Farmáca", "Atacado": "Atacdo", "Comercial": "Comerical"}
+_INICIAIS = {"São": "S.", "Santa": "Sta.", "Nova": "N.", "Boa": "B.", "Vale": "V.", "Serra": "Sa."}
+
+
+def _dv(nums, pesos):
+    r = sum(n * p for n, p in zip(nums, pesos)) % 11
+    return 0 if r < 2 else 11 - r
+
+
+def _gera_cnpj():
+    base = [_cad.randint(0, 9) for _ in range(8)] + [0, 0, 0, 1]
+    d1 = _dv(base, [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2])
+    d2 = _dv(base + [d1], [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2])
+    s = "".join(map(str, base + [d1, d2]))
+    return s, f"{s[:2]}.{s[2:5]}.{s[5:8]}/{s[8:12]}-{s[12:]}"
+
+
+def _cep_fmt(cep):
+    return cep if _cad.random() < 0.5 else f"{cep[:5]}-{cep[5:]}"
+
+
+_combos = [(p, n) for p in _PREF for n in _NOMES]
+_cad.shuffle(_combos)
+MESTRE = {}                                        # a "verdade" que nenhum sistema guarda inteira
+for i in range(1, 201):
+    pref, nome = _combos[i - 1]
+    cd_cli = _cad.randint(1, 5)
+    cnpj, cnpj_fmt = _gera_cnpj()
+    lo, hi = _CIDADES[cd_cli][3]
+    MESTRE[i] = {"pref": pref, "nome": nome, "razao": f"{pref} {nome} {_cad.choice(['Ltda', 'S.A.', 'ME', 'Eireli'])}",
+                 "cnpj": cnpj, "cnpj_fmt": cnpj_fmt, "cd": cd_cli, "cidade": _CIDADES[cd_cli][0], "uf": _CIDADES[cd_cli][1],
+                 "tipo": _cad.choice(list(_TIPOS)), "rua": _cad.choice(_RUAS), "numero": _cad.randint(10, 2999),
+                 "bairro": _cad.choice(_BAIRROS), "cep": f"{_cad.randint(lo, hi):05d}{_cad.randint(0, 999):03d}"}
+CLIENTES_ENDERECO_RUIM = set(_cad.sample(range(1, 201), 25))
+
+# ERP — cadastro do faturamento (campos separados); 12 empresas cadastradas duas vezes com código novo
+cli_erp_raw = []
+for i, c in MESTRE.items():
+    cli_erp_raw.append((str(i), c["razao"], c["cnpj_fmt"] if _cad.random() < 0.6 else c["cnpj"],
+                        f'{c["tipo"]} {c["rua"]}', str(c["numero"]), c["bairro"], c["cidade"], c["uf"],
+                        "" if _cad.random() < 0.05 else _cep_fmt(c["cep"])))
+for novo_id, i in enumerate(sorted(_cad.sample(range(1, 201), 12)), start=201):
+    c = MESTRE[i]
+    cli_erp_raw.append((str(novo_id), c["razao"].upper(), c["cnpj"], f'{_cad.choice(_TIPOS[c["tipo"]][1:])} {c["rua"]}',
+                        str(c["numero"]), c["bairro"], c["cidade"].upper(), c["uf"], c["cep"]))
+
+# TMS — endereço de entrega digitado pelo operador do CD, em texto livre (1 a 3 versões por cliente)
+cli_tms_raw = []
+did = 0
+for i, c in MESTRE.items():
+    ruim = i in CLIENTES_ENDERECO_RUIM
+    for _ in range(_cad.choice([1, 1, 2, 2, 3])):
+        did += 1
+        tipo = _cad.choice(_TIPOS[c["tipo"]])
+        rua = c["rua"] if _cad.random() < 0.8 else c["rua"].upper()
+        cidade = _cad.choice(_CIDADES[c["cd"]][2])
+        num, cep = str(c["numero"]), c["cep"]
+        if ruim:                                   # endereço que leva o motorista ao lugar errado
+            if _cad.random() < 0.5:
+                num = _cad.choice(["S/N", ""])
+            else:
+                lo, hi = _CIDADES[_cad.choice([k for k in _CIDADES if k != c["cd"]])][3]
+                cep = f"{_cad.randint(lo, hi):05d}{_cad.randint(0, 999):03d}"
+        bairro = "" if _cad.random() < 0.05 else c["bairro"]
+        uf, formato = c["uf"], _cad.randint(1, 3)
+        if formato == 1:
+            txt = f"{tipo} {rua}, {num} - {bairro} - {cidade}/{uf}" if num else f"{tipo} {rua} - {bairro} - {cidade}/{uf}"
+        elif formato == 2:
+            txt = f"{tipo} {rua} nº {num}, {bairro}, {cidade} {uf}" if num else f"{tipo} {rua}, {bairro}, {cidade} {uf}"
+        else:
+            txt = f"{tipo} {rua}, {num}, {cidade}-{uf}" if num else f"{tipo} {rua}, {cidade}-{uf}"
+        txt = txt.replace(" -  - ", " - ").replace(", , ", ", ")
+        cli_tms_raw.append((str(did), str(i), txt, "" if _cad.random() < 0.03 else _cep_fmt(cep)))
+
+# CRM — planilha do time comercial: nome fantasia escrito de vários jeitos, CNPJ às vezes ausente
+crm_raw = []
+for n, i in enumerate(sorted(_cad.sample(range(1, 201), 180)), start=1):
+    c = MESTRE[i]
+    pref, nome = c["pref"], c["nome"]
+    r = _cad.random()
+    if r < 0.25:
+        pref = _cad.choice(_PREF[c["pref"]])                   # abreviação
+    elif r < 0.40:
+        pref = _TYPO.get(c["pref"], pref)                      # erro de digitação
+    if _cad.random() < 0.3:
+        nome = " ".join(_INICIAIS.get(w, w) for w in nome.split())
+    fantasia = f"{nome} {pref}" if _cad.random() < 0.3 else f"{pref} {nome}"
+    if _cad.random() < 0.3:
+        fantasia = fantasia.upper()
+    q = _cad.random()
+    cnpj = c["cnpj_fmt"] if q < 0.5 else (c["cnpj"] if q < 0.75 else "")
+    crm_raw.append((f"CRM-{n:04d}", fantasia, cnpj, _cad.choice(_CIDADES[c["cd"]][2]), c["uf"]))
+for k, nome in enumerate(["Ômega", "Delta", "Pioneiro", "Cristal", "Sol Nascente", "Jequitibá", "Atlântico", "Guarani"]):
+    cd_p = _cad.randint(1, 5)                      # prospects: contas comerciais que ainda não são clientes
+    crm_raw.append((f"CRM-{181 + k:04d}", f"{_cad.choice(list(_PREF))} {nome}", _gera_cnpj()[1],
+                    _cad.choice(_CIDADES[cd_p][2]), _CIDADES[cd_p][1]))
+
+# Entregas para clientes com endereço ruim no TMS atrasam mais: o motorista procura o lugar certo
+_novo = {}
+for l in tms_raw:
+    if l[0] in _novo or l[8] != "Entregue" or l[7] != l[6] or int(l[2]) not in CLIENTES_ENDERECO_RUIM:
+        continue
+    _novo[l[0]] = (date.fromisoformat(l[6]) + timedelta(days=_cad.randint(1, 2))).isoformat() if _cad.random() < 0.35 else None
+tms_raw = [l[:7] + (_novo[l[0]],) + l[8:] if _novo.get(l[0]) else l for l in tms_raw]
 
 # ── Fonte 3 · ERP faturas (estruturado) ──
 erp_raw = []
@@ -224,6 +354,7 @@ for oid in range(1, 1_201):
 
 print(f"IoT: {len(iot_raw):,} · TMS: {len(tms_raw):,} · ERP: {len(erp_raw):,} · WMS: {len(wms_raw):,} · "
       f"Clima: {len(clima_raw):,} · Ocorrências: {len(ocorr_raw):,}")
+print(f"Cadastro de clientes — ERP: {len(cli_erp_raw):,} · TMS: {len(cli_tms_raw):,} · CRM: {len(crm_raw):,}")
 
 # COMMAND ----------
 
@@ -258,6 +389,12 @@ para_bronze(wms_raw, ["cd_id", "sku", "data", "saldo", "demanda_dia", "ponto_rep
 para_bronze([(e,) for e in clima_raw], ["payload_json"], "clima_api_raw", "api-inmet (externa)")
 para_bronze(ocorr_raw, ["ocorrencia_id", "entrega_id", "veiculo_id", "registrado_em", "texto"],
             "ocorrencias_raw", "app-motorista (texto livre)")
+para_bronze(cli_erp_raw, ["cliente_id", "razao_social", "cnpj", "logradouro", "numero", "bairro", "cidade", "uf", "cep"],
+            "erp_clientes_raw", "erp (cadastro de clientes)")
+para_bronze(cli_tms_raw, ["destinatario_id", "cliente_id", "endereco_entrega", "cep_informado"],
+            "tms_destinatarios_raw", "tms (endereço digitado no CD)")
+para_bronze(crm_raw, ["conta_id", "nome_fantasia", "cnpj", "cidade", "uf"],
+            "crm_contas_raw", "planilha comercial (CRM)")
 
 # COMMAND ----------
 
@@ -605,9 +742,9 @@ for cen in CENARIOS:
 # MAGIC > à reserva; uma regra de abastecimento antes da saída custa menos que um caminhão parado em rota."*
 # MAGIC
 # MAGIC ### 6.2 · 🟨 TODO 3 · A análise do grupo
-# MAGIC 1. Escrevam a **pergunta de negócio** que a Gold do grupo responde.
-# MAGIC 2. Rodem a consulta sugerida para o seu cenário (podem adaptar o `ORDER BY`, o `WHERE` ou o `LIMIT`).
-# MAGIC 3. Escrevam a **interpretação**: o que vocês diriam ao diretor com esse número? Que decisão ela apoia?
+# MAGIC A consulta do seu cenário **já vem pronta** e roda sozinha. O trabalho do grupo é de líder de dados:
+# MAGIC 1. Escrever a **pergunta de negócio** que a Gold responde.
+# MAGIC 2. Escrever a **interpretação**: o que vocês diriam ao diretor com esse número? Que decisão ela apoia?
 
 # COMMAND ----------
 
@@ -641,7 +778,7 @@ INTERPRETACAO = ""
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## Etapa 7 — Governança
+# MAGIC ## Etapa 7 — Governança, glossário e catálogo
 # MAGIC
 # MAGIC ### 7.1 · Exemplo pronto na Gold de referência
 # MAGIC Os 4 pilares da Aula 4 viram **metadados na própria tabela**: quem é o dono, o que ela contém,
@@ -674,8 +811,67 @@ aplicar_governanca("lodlog_gold.resumo_diario_frota", {
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 7.2 · 🟨 TODO 4 · Governança da Gold do grupo
-# MAGIC Preencham o dicionário. Para a regra de qualidade, escolham uma das regras prontas:
+# MAGIC **Glossário de negócio e catálogo (pronto).** Metadado técnico diz *onde* está o dado; o **glossário** diz
+# MAGIC *o que ele significa* e *quem responde por ele* (DMBOK caps. 3 e 12). Cada termo tem definição, regra,
+# MAGIC **dono** (a área que decide) e **steward** (quem cuida do dia a dia), e a definição vai para o comentário
+# MAGIC da coluna no catálogo — quem achar a coluna no Catalog Explorer lê o significado ali. As **tags** permitem
+# MAGIC buscar, por exemplo, todo dado crítico da empresa.
+
+# COMMAND ----------
+
+spark.sql("""CREATE TABLE IF NOT EXISTS lodlog_gold.glossario_negocio (
+    termo STRING, definicao STRING, dono STRING, steward STRING,
+    regra_ou_calculo STRING, tabela STRING, coluna STRING, origem STRING) USING DELTA""")
+
+
+def registrar_termos(termos, origem):
+    """Grava os termos no glossário (substitui os da mesma origem) e leva a definição para o catálogo."""
+    spark.sql(f"DELETE FROM lodlog_gold.glossario_negocio WHERE origem = '{origem}'")
+    linhas = [(t["termo"], t["definicao"], t["dono"], t["steward"], t["regra"], t.get("tabela", ""),
+               t.get("coluna", ""), origem) for t in termos]
+    (spark.createDataFrame(linhas, "termo STRING, definicao STRING, dono STRING, steward STRING, "
+                                   "regra_ou_calculo STRING, tabela STRING, coluna STRING, origem STRING")
+     .write.format("delta").mode("append").saveAsTable("lodlog_gold.glossario_negocio"))
+    for t in termos:
+        if t.get("tabela") and t.get("coluna") and spark.catalog.tableExists(t["tabela"]):
+            texto = f'{t["termo"]}: {t["definicao"]} Dono: {t["dono"]}.'.replace("'", "")
+            spark.sql(f"ALTER TABLE {t['tabela']} ALTER COLUMN {t['coluna']} COMMENT '{texto}'")
+    print(f"Glossário: {len(termos)} termo(s) de origem '{origem}' registrado(s).")
+
+
+def marcar_no_catalogo(tabela, tags):
+    """Tags do Unity Catalog (busca por domínio, criticidade, camada...)."""
+    pares = ", ".join(f"'{k}' = '{v}'" for k, v in tags.items())
+    try:
+        spark.sql(f"ALTER TABLE {tabela} SET TAGS ({pares})")
+        print(f"Tags em {tabela}: {tags}")
+    except Exception as e:
+        print(f"(tags indisponíveis fora do Unity Catalog: {str(e).splitlines()[0][:60]})")
+
+
+registrar_termos([
+    {"termo": "Leitura de telemetria válida", "dono": "Gerência de Manutenção de Frota",
+     "steward": "Analista de dados da frota",
+     "definicao": "Evento IoT com veículo identificado e velocidade entre 0 e 160 km/h.",
+     "regra": "veiculo_id IS NOT NULL AND velocidade_kmh BETWEEN 0 AND 160",
+     "tabela": "lodlog_silver.iot_telemetria", "coluna": "velocidade_kmh"},
+    {"termo": "Temperatura máxima do motor no dia", "dono": "Gerência de Manutenção de Frota",
+     "steward": "Analista de dados da frota",
+     "definicao": "Maior temperatura do motor registrada pelo veículo no dia, em graus Celsius.",
+     "regra": "MAX(temperatura_motor_c) por veículo e dia",
+     "tabela": "lodlog_gold.resumo_diario_frota", "coluna": "temperatura_max_motor"},
+], origem="exemplo")
+marcar_no_catalogo("lodlog_gold.resumo_diario_frota", {"dominio": "frota", "dado_critico": "nao", "camada": "gold"})
+display(spark.table("lodlog_gold.glossario_negocio"))
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### 7.2 · 🟨 TODO 4 · Governança e glossário da Gold do grupo
+# MAGIC **4a.** Preencham o dicionário de governança. **4b.** Definam os **dois termos de negócio** mais importantes
+# MAGIC da Gold — o primeiro é a métrica-chave (por exemplo, "Entrega no prazo": o que conta, o que não conta, quem
+# MAGIC decide). Na Aula 4 vimos que a mesma palavra dá números diferentes em cada área: o glossário é onde a
+# MAGIC LODLog decide **um** significado oficial. Para a regra de qualidade, escolham uma das regras prontas:
 # MAGIC
 # MAGIC | Regra | O que verifica |
 # MAGIC |---|---|
@@ -693,6 +889,13 @@ GOVERNANCA_GRUPO = {
     "retencao_dias": None,            # por quanto tempo guardar? (número de dias)
     "regra_qualidade": "",            # uma das três regras da tabela acima
 }
+
+# 🟨 TODO 4b — glossário: os dois termos de negócio mais importantes da Gold do grupo.
+#    dono = área que decide sobre o termo · steward = quem cuida do dado no dia a dia · regra = como se calcula
+GLOSSARIO_GRUPO = [
+    {"termo": "", "definicao": "", "dono": "", "steward": "", "regra": "", "coluna": "metrica_chave"},
+    {"termo": "", "definicao": "", "dono": "", "steward": "", "regra": "", "coluna": ""},
+]
 
 # COMMAND ----------
 
@@ -716,6 +919,471 @@ for cen in CENARIOS:
         aplicar_governanca(tabela, g)
         violacoes = spark.sql(REGRAS[g["regra_qualidade"]].format(t=tabela, k=CHAVES[cen])).first()[0]
         print(f"Regra '{g['regra_qualidade']}': {violacoes} violação(ões) " + ("✅" if violacoes == 0 else "⚠️ investiguem"))
+        marcar_no_catalogo(tabela, {"cenario": cen, "camada": "gold"})
+    glossario_ok = all(all(str(t.get(k, "")).strip() for k in ("termo", "definicao", "dono", "steward", "regra"))
+                       for t in GLOSSARIO_GRUPO)
+    if spark.catalog.tableExists(tabela) and glossario_ok:
+        registrar_termos([dict(t, tabela=tabela if t.get("coluna") else "") for t in GLOSSARIO_GRUPO], origem="grupo")
+    elif spark.catalog.tableExists(tabela):
+        print("⏸  TODO 4b pendente: preencham termo, definição, dono, steward e regra dos dois termos do glossário.")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## Etapa 7B — O dado mais crítico da LODLog: cliente e endereço (MDM)
+# MAGIC
+# MAGIC **Por que este dado.** Todo cenário passa pelo cliente: é para ele que a entrega vai (A) e é ele que
+# MAGIC recebe a fatura (D). E o **endereço de entrega** decide se o motorista acerta na primeira tentativa.
+# MAGIC Na LODLog, o mesmo cliente está cadastrado em **três sistemas**, cada um do seu jeito:
+# MAGIC
+# MAGIC | Sistema | Quem cadastra | Como o cliente aparece | Problema típico |
+# MAGIC |---|---|---|---|
+# MAGIC | **ERP** (faturamento) | Comercial | razão social, CNPJ e endereço em campos separados | a mesma empresa cadastrada duas vezes, com códigos diferentes |
+# MAGIC | **TMS** (entregas) | Operador do CD | endereço de entrega em **texto livre** | abreviações, cidade escrita de vários jeitos, sem número, CEP de outra cidade |
+# MAGIC | **CRM** (planilha comercial) | Vendedor | nome fantasia, às vezes sem CNPJ | nome abreviado, palavras trocadas de lugar, erro de digitação |
+# MAGIC
+# MAGIC Gerenciar esse **dado mestre** (MDM, DMBOK cap. 10) tem quatro passos, e esta etapa percorre os quatro:
+# MAGIC 1. **Padronizar** (7B.1 e 7B.2) — regras SQL onde a regra resolve e **IA** (`ai_query` com o modelo
+# MAGIC    `system.ai.llama-4-maverick`) onde o texto é livre demais para regra.
+# MAGIC 2. **Casar** (7B.3) — descobrir quais registros dos três sistemas são a mesma empresa (a tabela de-para).
+# MAGIC 3. **Medir** (7B.4) — o scorecard de qualidade do dado crítico, com as dimensões do DMBOK.
+# MAGIC 4. **Decidir o registro de ouro** (7B.5 · 🟨 **TODO 5**) — de onde vem o endereço oficial e o que é um
+# MAGIC    "endereço válido para entrega". **Essa decisão é de negócio, não de TI** — por isso é do grupo.
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC -- Antes de tudo, olhem o problema: a mesma empresa (cliente 197) nos três sistemas (pronto)
+# MAGIC WITH alvo AS (SELECT regexp_replace(cnpj, '[^0-9]', '') AS cnpj FROM lodlog_bronze.erp_clientes_raw WHERE cliente_id = '197')
+# MAGIC SELECT 'ERP' AS sistema, CONCAT('código ', cliente_id) AS codigo, razao_social AS nome, cnpj,
+# MAGIC        CONCAT_WS(', ', logradouro, numero, bairro, cidade) AS endereco, cep
+# MAGIC FROM lodlog_bronze.erp_clientes_raw WHERE regexp_replace(cnpj, '[^0-9]', '') IN (SELECT cnpj FROM alvo)
+# MAGIC UNION ALL
+# MAGIC SELECT 'TMS', CONCAT('código ', cliente_id), NULL, NULL, endereco_entrega, cep_informado
+# MAGIC FROM lodlog_bronze.tms_destinatarios_raw WHERE cliente_id = '197'
+# MAGIC UNION ALL
+# MAGIC SELECT 'CRM', conta_id, nome_fantasia, cnpj, cidade, NULL
+# MAGIC FROM lodlog_bronze.crm_contas_raw WHERE regexp_replace(cnpj, '[^0-9]', '') IN (SELECT cnpj FROM alvo)
+# MAGIC ORDER BY sistema;
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### 7B.1 · Padronização por regras (pronto)
+# MAGIC Duas **tabelas de referência** (DMBOK cap. 10: dado que serve para classificar e checar outros dados) e
+# MAGIC uma regra de nome. A chave de comparação do nome tira acento, pontuação e sufixo societário (Ltda, S.A., ME),
+# MAGIC troca abreviações conhecidas pela palavra inteira e põe as palavras em ordem alfabética — assim
+# MAGIC "Bom Preço Supermercado" e "Superm. Bom Preço Ltda" viram a mesma chave.
+
+# COMMAND ----------
+
+spark.sql("DROP TABLE IF EXISTS lodlog_silver.ref_faixa_cep")
+spark.createDataFrame([                     # faixas simplificadas das cinco cidades atendidas
+    ("SAO PAULO", "SP", "01000000", "05999999"), ("CAMPINAS", "SP", "13000000", "13139999"),
+    ("RIO DE JANEIRO", "RJ", "20000000", "23799999"), ("BELO HORIZONTE", "MG", "30000000", "31999999"),
+    ("CURITIBA", "PR", "80000000", "82999999")], "cidade STRING, uf STRING, cep_inicio STRING, cep_fim STRING") \
+    .write.format("delta").saveAsTable("lodlog_silver.ref_faixa_cep")
+
+ABREVIACOES = {"SUPERM": "SUPERMERCADO", "SUPERMERC": "SUPERMERCADO", "DIST": "DISTRIBUIDORA",
+               "DISTRIB": "DISTRIBUIDORA", "FARM": "FARMACIA", "ATAC": "ATACADO", "COM": "COMERCIAL",
+               "MERC": "MERCADO", "DROG": "DROGARIA", "ARMZ": "ARMAZEM", "CS": "CASA"}
+SEM_ACENTO = "translate(upper(trim({c})), 'ÁÀÂÃÉÊÍÓÔÕÚÇ', 'AAAAEEIOOOUC')"
+
+
+def chave_nome(col):
+    """Nome → chave de comparação (só regra, sem IA)."""
+    e = f"regexp_replace({SEM_ACENTO.format(c=col)}, '[^A-Z0-9 ]', ' ')"
+    e = f"regexp_replace({e}, '\\\\b(LTDA|S A|SA|ME|EIRELI)\\\\b', ' ')"
+    for abrev, palavra in ABREVIACOES.items():
+        e = f"regexp_replace({e}, '\\\\b{abrev}\\\\b', '{palavra}')"
+    return f"array_join(array_sort(filter(split(trim({e}), ' +'), w -> w <> '')), ' ')"
+
+
+def cidade_padrao(col):
+    """Variações de escrita da cidade → nome oficial, sem acento."""
+    u = SEM_ACENTO.format(c=col)
+    return f"""CASE WHEN {u} RLIKE 'PAULO|SAMPA' THEN 'SAO PAULO'
+                    WHEN {u} RLIKE 'CAMPINAS|^CPS$' THEN 'CAMPINAS'
+                    WHEN {u} RLIKE '^RIO' THEN 'RIO DE JANEIRO'
+                    WHEN {u} RLIKE 'HORIZONTE|^BH$' THEN 'BELO HORIZONTE'
+                    WHEN {u} RLIKE 'CURITIBA|^CTBA$' THEN 'CURITIBA' END"""
+
+
+spark.sql("DROP TABLE IF EXISTS lodlog_silver.cliente_candidatos")
+spark.sql(f"""
+CREATE TABLE lodlog_silver.cliente_candidatos USING DELTA AS
+WITH origem AS (
+  SELECT 'ERP' AS sistema, cliente_id AS chave_origem, CAST(cliente_id AS INT) AS cliente_id,
+         razao_social AS nome, cnpj, logradouro, numero, bairro, cidade, cep
+  FROM lodlog_bronze.erp_clientes_raw
+  UNION ALL
+  SELECT 'CRM', conta_id, NULL, nome_fantasia, cnpj, NULL, NULL, NULL, cidade, NULL
+  FROM lodlog_bronze.crm_contas_raw)
+SELECT sistema, chave_origem, cliente_id, nome,
+       {chave_nome('nome')}                          AS chave_nome,
+       NULLIF(regexp_replace(cnpj, '[^0-9]', ''), '') AS cnpj,
+       logradouro, numero, bairro,
+       {cidade_padrao('cidade')}                     AS cidade,
+       NULLIF(regexp_replace(cep, '[^0-9]', ''), '') AS cep
+FROM origem""")
+display(spark.sql("""SELECT sistema, nome, chave_nome, cnpj, cidade FROM lodlog_silver.cliente_candidatos
+                     WHERE chave_nome LIKE '%BOM PRECO%' OR chave_nome LIKE '%SAO JORGE%' ORDER BY chave_nome, sistema"""))
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### 7B.2 · Padronização com IA (pronto) — só onde a regra não dá conta
+# MAGIC Duas situações em que regra não basta:
+# MAGIC - o **endereço do TMS** é texto livre ("R. das Flores nº 123, Centro, BH MG");
+# MAGIC - o **nome do CRM sem CNPJ** pode ter erro de digitação ou iniciais ("Supermecado S. Jorge") — sem CNPJ,
+# MAGIC   o nome é a única pista para achar o cliente.
+# MAGIC
+# MAGIC Para esses casos chamamos um modelo de linguagem **direto do SQL**, com `ai_query`, pedindo a resposta num
+# MAGIC **formato JSON fixo** (`responseFormat`) — assim a saída da IA vira colunas, não texto solto. Três cuidados de
+# MAGIC arquitetura que valem para qualquer uso de IA em dados:
+# MAGIC 1. **Custo:** a IA só recebe o que a regra não resolve (endereços distintos e nomes sem CNPJ), não as 6 mil entregas.
+# MAGIC 2. **Cache:** o resultado fica numa tabela; um novo Run All **não paga de novo**.
+# MAGIC 3. **Rastreabilidade e plano B:** cada linha registra se veio da `ia` ou da `regra`. Se a IA falhar
+# MAGIC    (cota do Free Edition, por exemplo), a linha cai na regra e o pipeline segue.
+
+# COMMAND ----------
+
+MODELO_IA = "system.ai.llama-4-maverick"
+USAR_IA = True          # False = só regras (por exemplo, se a cota do Free Edition acabar)
+
+PROMPT_ENDERECO = ("Voce padroniza enderecos brasileiros de entrega. Separe o endereco em partes e padronize: "
+                   "tipo de logradouro por extenso (R. = Rua, Av. = Avenida, Tv. = Travessa, Al. = Alameda), "
+                   "nomes com iniciais maiusculas e a cidade pelo nome oficial (BH = Belo Horizonte, Ctba = Curitiba, "
+                   "Sampa ou S. Paulo = Sao Paulo, Cps = Campinas). Numero so com digitos; se nao houver numero ou se "
+                   "for S/N, devolva vazio. Se nao houver bairro, devolva vazio. Nao invente nada que nao esteja no texto. "
+                   "Endereco: ")
+PROMPT_NOME = ("Voce padroniza nomes de empresas brasileiras para um cadastro. Devolva o nome no formato TIPO DE NEGOCIO + "
+               "NOME, em maiusculas, sem acentos, sem sufixo societario (LTDA, S.A., ME, EIRELI), com abreviacoes e "
+               "iniciais por extenso (Superm. = SUPERMERCADO, Drog. = DROGARIA, S. = SAO, Sta. = SANTA, N. = NOVA, "
+               "B. = BOA, V. = VALE) e erros de digitacao corrigidos. Exemplos: Bom Preco Supermercado = "
+               "SUPERMERCADO BOM PRECO; Drogaira Sta. Clara ME = DROGARIA SANTA CLARA. Nome: ")
+
+
+def _formato(nome, campos):
+    return json.dumps({"type": "json_schema", "json_schema": {"name": nome, "strict": True, "schema": {
+        "type": "object", "additionalProperties": False, "required": campos,
+        "properties": {c: {"type": "string"} for c in campos}}}})
+
+
+def _ai(prompt, coluna, formato):
+    return (f"ai_query('{MODELO_IA}', CONCAT('{prompt}', {coluna}), "
+            f"responseFormat => '{formato}', failOnError => false)")
+
+
+SEM_RESPOSTA = "CAST(NULL AS STRUCT<result: STRING, errorMessage: STRING>)"
+
+# Plano B por regra para o endereço em texto livre (pior que a IA, mas não para o pipeline)
+_tipo = ("regexp_replace(regexp_replace(regexp_replace(regexp_replace({x}, "
+         "'^(?i)(r\\\\.?|rua) ', 'Rua '), '^(?i)(av\\\\.?|avda\\\\.?|avenida) ', 'Avenida '), "
+         "'^(?i)(tv\\\\.?|trav\\\\.?|travessa) ', 'Travessa '), '^(?i)(al\\\\.?|alameda) ', 'Alameda ')")
+REGRA_END = {
+    "logradouro": "initcap(" + _tipo.format(x="regexp_extract(endereco_entrega, '^(.+?)(,| n[º°] | - )', 1)") + ")",
+    "numero": "NULLIF(regexp_extract(endereco_entrega, '(,|n[º°]) *([0-9]{1,5})\\\\b', 2), '')",
+    "bairro": ("NULLIF(COALESCE(NULLIF(regexp_extract(endereco_entrega, ' - ([^-]+?) - ', 1), ''), "
+               "NULLIF(regexp_extract(endereco_entrega, '^[^,]+(, *[0-9]+)?, ([^,0-9]+), [^,]+$', 2), '')), 'S/N')"),
+    "cidade": cidade_padrao("regexp_extract(endereco_entrega, '(, | - )([^,-]*?)[ /-]([A-Z]{2}) *$', 2)"),
+}
+
+
+def sql_enderecos(com_ia):
+    resp = _ai(PROMPT_ENDERECO, "endereco_entrega", _formato("endereco", ["logradouro", "numero", "bairro", "cidade"])) \
+        if com_ia else SEM_RESPOSTA
+    ok = "(e IS NOT NULL AND erro IS NULL)"
+    return f"""
+    WITH d AS (SELECT DISTINCT endereco_entrega FROM lodlog_bronze.tms_destinatarios_raw),
+    r AS (SELECT endereco_entrega, {resp} AS resp FROM d),
+    p AS (SELECT endereco_entrega, resp.errorMessage AS erro,
+                 from_json(resp.result, 'logradouro STRING, numero STRING, bairro STRING, cidade STRING') AS e FROM r)
+    SELECT endereco_entrega,
+           CASE WHEN {ok} THEN 'ia' ELSE 'regra' END                                        AS metodo,
+           CASE WHEN {ok} THEN initcap(e.logradouro) ELSE {REGRA_END['logradouro']} END     AS logradouro,
+           CASE WHEN {ok} THEN NULLIF(regexp_replace(e.numero, '[^0-9]', ''), '') ELSE {REGRA_END['numero']} END AS numero,
+           CASE WHEN {ok} THEN NULLIF(trim(e.bairro), '') ELSE {REGRA_END['bairro']} END    AS bairro,
+           CASE WHEN {ok} THEN {cidade_padrao('e.cidade')} ELSE {REGRA_END['cidade']} END   AS cidade
+    FROM p"""
+
+
+def sql_nomes(com_ia):
+    resp = _ai(PROMPT_NOME, "nome", _formato("nome", ["nome_padronizado"])) if com_ia else SEM_RESPOSTA
+    return f"""
+    WITH d AS (SELECT chave_origem, nome, chave_nome FROM lodlog_silver.cliente_candidatos
+               WHERE sistema = 'CRM' AND cnpj IS NULL),
+    r AS (SELECT *, {resp} AS resp FROM d),
+    p AS (SELECT *, from_json(resp.result, 'nome_padronizado STRING').nome_padronizado AS n, resp.errorMessage AS erro FROM r)
+    SELECT chave_origem, nome, n AS nome_padronizado_ia,
+           CASE WHEN n IS NOT NULL AND erro IS NULL THEN {chave_nome('n')} ELSE chave_nome END AS chave_nome_padronizada,
+           CASE WHEN n IS NOT NULL AND erro IS NULL THEN 'ia' ELSE 'regra' END AS metodo
+    FROM p"""
+
+
+def padronizar(tabela, gerar_sql):
+    """Cria a tabela com IA (ou reaproveita a que já existe); se a IA falhar, usa só a regra."""
+    if spark.catalog.tableExists(tabela) and spark.sql(f"SELECT COUNT(*) FROM {tabela} WHERE metodo = 'ia'").first()[0] > 0:
+        print(f"{tabela}: reaproveitando o resultado da IA já gravado (sem custo novo).")
+        return
+    spark.sql(f"DROP TABLE IF EXISTS {tabela}")
+    try:
+        if not USAR_IA:
+            raise RuntimeError("USAR_IA = False")
+        spark.sql(f"CREATE TABLE {tabela} USING DELTA AS {gerar_sql(True)}")
+    except Exception as e:
+        print(f"{tabela}: IA indisponível ({str(e).splitlines()[0][:90]}) → seguindo só com regras.")
+        spark.sql(f"CREATE TABLE {tabela} USING DELTA AS {gerar_sql(False)}")
+    for r in spark.sql(f"SELECT metodo, COUNT(*) AS n FROM {tabela} GROUP BY metodo").collect():
+        print(f"{tabela}: {r['n']:,} linha(s) padronizada(s) por {r['metodo']}")
+
+
+padronizar("lodlog_silver.endereco_tms_padronizado", sql_enderecos)
+padronizar("lodlog_silver.nome_crm_padronizado", sql_nomes)
+display(spark.sql("""SELECT endereco_entrega AS como_chegou, logradouro, numero, bairro, cidade, metodo
+                     FROM lodlog_silver.endereco_tms_padronizado ORDER BY endereco_entrega LIMIT 15"""))
+display(spark.table("lodlog_silver.nome_crm_padronizado").limit(15))
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### 7B.3 · Casamento: quem é quem nos três sistemas (pronto)
+# MAGIC A tabela **de-para** (*cross-reference*, DMBOK cap. 10) liga cada registro de origem a um **id mestre**.
+# MAGIC Três regras, da mais forte para a mais fraca — e cada linha guarda qual regra a casou (rastreabilidade):
+# MAGIC 1. **ERP:** mesmo CNPJ = mesma empresa. O menor código vira o id mestre; os outros são cadastro duplicado.
+# MAGIC 2. **TMS:** o código do cliente no TMS é o mesmo do ERP (chave transacional).
+# MAGIC 3. **CRM:** primeiro pelo CNPJ; sem CNPJ, pelo nome padronizado + cidade. O que não casar vai para a
+# MAGIC    **fila do steward** — uma pessoa decide, não o algoritmo.
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC DROP TABLE IF EXISTS lodlog_silver.cliente_xref;
+# MAGIC CREATE TABLE lodlog_silver.cliente_xref USING DELTA AS
+# MAGIC WITH erp AS (
+# MAGIC   SELECT chave_origem, cliente_id, cnpj, chave_nome, cidade,
+# MAGIC          MIN(cliente_id) OVER (PARTITION BY COALESCE(cnpj, chave_origem)) AS id_mestre
+# MAGIC   FROM lodlog_silver.cliente_candidatos WHERE sistema = 'ERP'),
+# MAGIC mestre AS (SELECT id_mestre, cnpj, chave_nome, cidade FROM erp WHERE cliente_id = id_mestre),
+# MAGIC crm AS (
+# MAGIC   SELECT c.chave_origem, c.cnpj, c.cidade,
+# MAGIC          COALESCE(n.chave_nome_padronizada, c.chave_nome) AS chave_nome, COALESCE(n.metodo, 'regra') AS metodo
+# MAGIC   FROM lodlog_silver.cliente_candidatos c
+# MAGIC   LEFT JOIN lodlog_silver.nome_crm_padronizado n ON n.chave_origem = c.chave_origem
+# MAGIC   WHERE c.sistema = 'CRM')
+# MAGIC SELECT 'ERP' AS sistema, chave_origem, id_mestre,
+# MAGIC        CASE WHEN cliente_id = id_mestre THEN 'registro original' ELSE 'mesmo CNPJ (cadastro duplicado)' END AS regra_casamento
+# MAGIC FROM erp
+# MAGIC UNION ALL
+# MAGIC SELECT 'TMS', t.destinatario_id, e.id_mestre, 'código do cliente no TMS'
+# MAGIC FROM lodlog_bronze.tms_destinatarios_raw t
+# MAGIC JOIN erp e ON e.cliente_id = CAST(t.cliente_id AS INT)
+# MAGIC UNION ALL
+# MAGIC SELECT 'CRM', crm.chave_origem, COALESCE(m1.id_mestre, m2.id_mestre),
+# MAGIC        CASE WHEN m1.id_mestre IS NOT NULL THEN 'mesmo CNPJ'
+# MAGIC             WHEN m2.id_mestre IS NOT NULL THEN CONCAT('mesmo nome e cidade (', crm.metodo, ')')
+# MAGIC             ELSE 'sem casamento: fila do steward' END
+# MAGIC FROM crm
+# MAGIC LEFT JOIN mestre m1 ON m1.cnpj = crm.cnpj
+# MAGIC LEFT JOIN mestre m2 ON crm.cnpj IS NULL AND m2.chave_nome = crm.chave_nome AND m2.cidade = crm.cidade;
+# MAGIC
+# MAGIC SELECT sistema, regra_casamento, COUNT(*) AS registros
+# MAGIC FROM lodlog_silver.cliente_xref GROUP BY sistema, regra_casamento ORDER BY sistema, registros DESC;
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### 7B.4 · O scorecard do dado crítico (pronto)
+# MAGIC Primeiro, todos os endereços candidatos de cada cliente mestre (o do ERP e as versões do TMS), já com as
+# MAGIC quatro regras de qualidade calculadas. Depois, o **scorecard** com as dimensões do DMBOK (Aula 4) — a
+# MAGIC fotografia do problema **antes** de qualquer decisão.
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC DROP TABLE IF EXISTS lodlog_silver.cliente_enderecos;
+# MAGIC CREATE TABLE lodlog_silver.cliente_enderecos USING DELTA AS
+# MAGIC WITH e AS (
+# MAGIC   SELECT x.id_mestre, 'ERP' AS sistema, c.chave_origem, initcap(c.logradouro) AS logradouro, c.numero, c.bairro,
+# MAGIC          c.cidade, c.cep, 'cadastro' AS metodo
+# MAGIC   FROM lodlog_silver.cliente_candidatos c
+# MAGIC   JOIN lodlog_silver.cliente_xref x ON x.sistema = 'ERP' AND x.chave_origem = c.chave_origem
+# MAGIC   WHERE c.sistema = 'ERP'
+# MAGIC   UNION ALL
+# MAGIC   SELECT x.id_mestre, 'TMS', t.destinatario_id, p.logradouro, p.numero, p.bairro, p.cidade,
+# MAGIC          NULLIF(regexp_replace(t.cep_informado, '[^0-9]', ''), ''), p.metodo
+# MAGIC   FROM lodlog_bronze.tms_destinatarios_raw t
+# MAGIC   JOIN lodlog_silver.endereco_tms_padronizado p ON p.endereco_entrega = t.endereco_entrega
+# MAGIC   JOIN lodlog_silver.cliente_xref x ON x.sistema = 'TMS' AND x.chave_origem = t.destinatario_id)
+# MAGIC SELECT e.*, r.uf,
+# MAGIC        COALESCE(e.cep RLIKE '^[0-9]{8}$', FALSE)                     AS cep_8_digitos,
+# MAGIC        COALESCE(e.cep BETWEEN r.cep_inicio AND r.cep_fim, FALSE)      AS cep_coerente_com_cidade,
+# MAGIC        COALESCE(e.numero RLIKE '^[0-9]+$', FALSE)                     AS tem_numero,
+# MAGIC        COALESCE(LENGTH(TRIM(e.bairro)) > 0, FALSE)                    AS tem_bairro,
+# MAGIC        COUNT(*) OVER (PARTITION BY e.id_mestre, e.sistema, lower(e.logradouro), e.numero) AS frequencia
+# MAGIC FROM e LEFT JOIN lodlog_silver.ref_faixa_cep r ON r.cidade = e.cidade;
+# MAGIC
+# MAGIC DROP TABLE IF EXISTS lodlog_gold.scorecard_cliente;
+# MAGIC CREATE TABLE lodlog_gold.scorecard_cliente USING DELTA AS
+# MAGIC WITH s AS (
+# MAGIC   SELECT 'Unicidade' AS dimensao, 'Um código de cliente por CNPJ' AS regra, 'ERP' AS sistema,
+# MAGIC          COUNT(*) AS registros, SUM(CASE WHEN regra_casamento = 'registro original' THEN 0 ELSE 1 END) AS violacoes
+# MAGIC   FROM lodlog_silver.cliente_xref WHERE sistema = 'ERP'
+# MAGIC   UNION ALL
+# MAGIC   SELECT 'Completude', 'CEP preenchido', sistema, COUNT(*), SUM(CASE WHEN cep IS NULL THEN 1 ELSE 0 END)
+# MAGIC   FROM lodlog_silver.cliente_enderecos GROUP BY sistema
+# MAGIC   UNION ALL
+# MAGIC   SELECT 'Completude', 'Número do endereço preenchido', sistema, COUNT(*), SUM(CASE WHEN tem_numero THEN 0 ELSE 1 END)
+# MAGIC   FROM lodlog_silver.cliente_enderecos GROUP BY sistema
+# MAGIC   UNION ALL
+# MAGIC   SELECT 'Validade', 'CEP com 8 dígitos', sistema, COUNT(*), SUM(CASE WHEN cep_8_digitos THEN 0 ELSE 1 END)
+# MAGIC   FROM lodlog_silver.cliente_enderecos GROUP BY sistema
+# MAGIC   UNION ALL
+# MAGIC   SELECT 'Consistência', 'CEP dentro da faixa da cidade', sistema, COUNT(*),
+# MAGIC          SUM(CASE WHEN cep_coerente_com_cidade THEN 0 ELSE 1 END)
+# MAGIC   FROM lodlog_silver.cliente_enderecos GROUP BY sistema
+# MAGIC   UNION ALL
+# MAGIC   SELECT 'Completude', 'CNPJ preenchido', 'CRM', COUNT(*), SUM(CASE WHEN cnpj IS NULL THEN 1 ELSE 0 END)
+# MAGIC   FROM lodlog_silver.cliente_candidatos WHERE sistema = 'CRM'
+# MAGIC   UNION ALL
+# MAGIC   SELECT 'Integridade', 'Conta do CRM ligada a um cliente', 'CRM', COUNT(*),
+# MAGIC          SUM(CASE WHEN id_mestre IS NULL THEN 1 ELSE 0 END)
+# MAGIC   FROM lodlog_silver.cliente_xref WHERE sistema = 'CRM')
+# MAGIC SELECT *, ROUND(100.0 * (registros - violacoes) / registros, 1) AS pct_ok FROM s;
+# MAGIC
+# MAGIC SELECT * FROM lodlog_gold.scorecard_cliente ORDER BY pct_ok;
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC > **Para discutir:** a "violação" de integridade do CRM é sempre erro? Nem toda conta da planilha comercial
+# MAGIC > é cliente — algumas são *prospects*. A regra de qualidade precisa da **definição de negócio** para ser justa.
+# MAGIC
+# MAGIC ### 7B.5 · 🟨 TODO 5 · O registro de ouro do cliente
+# MAGIC O DMBOK chama de **registro de ouro** (*golden record*) a melhor versão que a empresa tem de cada entidade —
+# MAGIC e alerta: "ouro" não é "verdade única"; é uma escolha documentada. Duas escolhas são do grupo:
+# MAGIC
+# MAGIC **5a · De onde vem o endereço de entrega oficial?** (a razão social já vem do ERP, sistema de registro do cliente)
+# MAGIC
+# MAGIC | Opção | O que significa | A favor | Contra |
+# MAGIC |---|---|---|---|
+# MAGIC | `erp` | o cadastro do faturamento | tem dono formal (Comercial) e campos separados | o endereço de cobrança nem sempre é o de entrega |
+# MAGIC | `tms_mais_frequente` | a versão que o operador mais usa | é onde o motorista de fato vai | herda os erros de digitação do CD |
+# MAGIC | `mais_completo` | a versão, de qualquer sistema, que passa em mais regras | maximiza a qualidade | mistura origens: quem é o dono? |
+# MAGIC
+# MAGIC **5b · O que é um "endereço válido para entrega" na LODLog?** Marquem `True` nas regras que valem. Olhem o
+# MAGIC scorecard acima: regra demais reprova cliente bom; regra de menos deixa passar o endereço que atrasa a entrega.
+
+# COMMAND ----------
+
+# 🟨 TODO 5a — de onde vem o endereço do registro de ouro? "erp", "tms_mais_frequente" ou "mais_completo"
+FONTE_ENDERECO = None
+
+# 🟨 TODO 5b — quais regras definem um endereço válido para entrega? True ou False em cada uma
+REGRAS_ENDERECO = {
+    "cep_8_digitos": None,             # o CEP tem 8 dígitos
+    "cep_coerente_com_cidade": None,   # o CEP cai na faixa da cidade (tabela ref_faixa_cep)
+    "tem_numero": None,                # o endereço tem número (não é S/N nem vazio)
+    "tem_bairro": None,                # o endereço tem bairro
+}
+
+# COMMAND ----------
+
+# Construção do registro de ouro (pronto — usa as decisões acima)
+ORDEM_ENDERECO = {
+    "erp": ("sistema = 'ERP'", "n_regras_ok DESC"),
+    "tms_mais_frequente": ("sistema = 'TMS'", "frequencia DESC, n_regras_ok DESC"),
+    "mais_completo": ("TRUE", "n_regras_ok DESC, CASE sistema WHEN 'ERP' THEN 0 ELSE 1 END"),
+}
+mdm_ok = FONTE_ENDERECO in ORDEM_ENDERECO and all(v is not None for v in REGRAS_ENDERECO.values())
+if not mdm_ok:
+    print("⏸  TODO 5 pendente: defina FONTE_ENDERECO e marque True/False em todas as REGRAS_ENDERECO.")
+else:
+    ativas = [r for r, v in REGRAS_ENDERECO.items() if v]
+    valido = " AND ".join(ativas) if ativas else "TRUE"
+    pontos = " + ".join(f"CAST({r} AS INT)" for r in ativas) if ativas else "0"
+    filtro, ordem = ORDEM_ENDERECO[FONTE_ENDERECO]
+    spark.sql("DROP TABLE IF EXISTS lodlog_gold.cliente_mestre")
+    spark.sql(f"""
+    CREATE TABLE lodlog_gold.cliente_mestre USING DELTA AS
+    WITH e AS (SELECT *, {pontos} AS n_regras_ok, ({valido}) AS valido FROM lodlog_silver.cliente_enderecos),
+    escolhido AS (SELECT *, ROW_NUMBER() OVER (PARTITION BY id_mestre ORDER BY {ordem}) AS rn FROM e WHERE {filtro}),
+    nome AS (SELECT x.id_mestre, c.nome AS razao_social, c.cnpj
+             FROM lodlog_silver.cliente_candidatos c
+             JOIN lodlog_silver.cliente_xref x ON x.sistema = 'ERP' AND x.chave_origem = c.chave_origem
+             WHERE c.sistema = 'ERP' AND x.regra_casamento = 'registro original'),
+    origem AS (SELECT id_mestre, COUNT(*) AS registros_de_origem,
+                      concat_ws(' + ', array_sort(collect_set(sistema))) AS sistemas
+               FROM lodlog_silver.cliente_xref WHERE id_mestre IS NOT NULL GROUP BY id_mestre),
+    tms AS (SELECT id_mestre, ROUND(100.0 * AVG(CAST(valido AS INT)), 0) AS pct_enderecos_tms_validos
+            FROM e WHERE sistema = 'TMS' GROUP BY id_mestre)
+    SELECT n.id_mestre, n.razao_social, n.cnpj,
+           s.logradouro, s.numero, s.bairro, s.cidade, s.uf, s.cep,
+           s.sistema AS fonte_endereco, COALESCE(s.valido, FALSE) AS endereco_valido,
+           o.registros_de_origem, o.sistemas, t.pct_enderecos_tms_validos
+    FROM nome n
+    LEFT JOIN escolhido s ON s.id_mestre = n.id_mestre AND s.rn = 1
+    LEFT JOIN origem o ON o.id_mestre = n.id_mestre
+    LEFT JOIN tms t ON t.id_mestre = n.id_mestre""")
+
+    # O significado do dado crítico vai para o glossário e para o catálogo, com dono e steward
+    registrar_termos([
+        {"termo": "Cliente mestre", "dono": "Diretoria Comercial", "steward": "Analista de cadastro (Comercial)",
+         "definicao": "Empresa atendida pela LODLog, identificada pelo CNPJ, com um único registro de ouro que liga "
+                      "seus códigos no ERP, no TMS e no CRM.",
+         "regra": "um id_mestre por CNPJ; de-para em lodlog_silver.cliente_xref",
+         "tabela": "lodlog_gold.cliente_mestre", "coluna": "id_mestre"},
+        {"termo": "Endereço válido para entrega", "dono": "Diretoria de Operações", "steward": "Coordenação de cadastro do CD",
+         "definicao": "Endereço que atende às regras definidas pela LODLog: " + (", ".join(ativas) or "nenhuma regra"),
+         "regra": valido, "tabela": "lodlog_gold.cliente_mestre", "coluna": "endereco_valido"},
+    ], origem="mdm")
+    aplicar_governanca("lodlog_gold.cliente_mestre", {
+        "dono": "Diretoria Comercial",
+        "descricao": f"Registro de ouro do cliente (endereço vindo de: {FONTE_ENDERECO}), a partir de ERP, TMS e CRM.",
+        "contem_dados_pessoais": False,          # CNPJ é dado de empresa (atenção a MEs: o CNPJ pode identificar uma pessoa)
+        "retencao_dias": 3650,
+        "regra_qualidade": "chave_unica",
+    })
+    marcar_no_catalogo("lodlog_gold.cliente_mestre", {"dominio": "cliente", "dado_critico": "sim", "camada": "gold"})
+
+    r = spark.sql("""SELECT COUNT(*) AS mestres, SUM(registros_de_origem) AS origem,
+                            SUM(CASE WHEN endereco_valido THEN 1 ELSE 0 END) AS validos
+                     FROM lodlog_gold.cliente_mestre""").first()
+    print(f"{r['origem']:,} registros de origem (ERP + TMS + CRM) → {r['mestres']:,} clientes mestres · "
+          f"{r['validos']:,} com endereço válido para entrega ({100 * r['validos'] / r['mestres']:.0f}%)")
+    display(spark.sql("SELECT * FROM lodlog_gold.cliente_mestre ORDER BY registros_de_origem DESC LIMIT 10"))
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### 7B.6 · O que o dado crítico custa para o negócio (pronto)
+# MAGIC A pergunta que justifica o MDM para a diretoria: **endereço ruim no TMS atrasa a entrega?** A consulta
+# MAGIC separa os clientes pela parte das suas versões de endereço no TMS que passam na definição do TODO 5.
+
+# COMMAND ----------
+
+if spark.catalog.tableExists("lodlog_gold.cliente_mestre"):
+    display(spark.sql("""
+        SELECT CASE WHEN m.pct_enderecos_tms_validos = 100 THEN '1. todas as versões do TMS válidas'
+                    WHEN m.pct_enderecos_tms_validos > 0  THEN '2. parte das versões inválida'
+                    ELSE '3. nenhuma versão válida no TMS' END                    AS endereco_no_tms,
+               COUNT(DISTINCT m.id_mestre)                                       AS clientes,
+               COUNT(*)                                                          AS entregas,
+               ROUND(100.0 * AVG(CASE WHEN e.no_prazo THEN 1 ELSE 0 END), 1)     AS pct_no_prazo
+        FROM lodlog_silver.tms_entregas e
+        JOIN lodlog_silver.cliente_xref x ON x.sistema = 'ERP' AND x.chave_origem = CAST(e.cliente_id AS STRING)
+        JOIN lodlog_gold.cliente_mestre m ON m.id_mestre = x.id_mestre
+        WHERE e.status = 'Entregue'
+        GROUP BY 1 ORDER BY 1"""))
+else:
+    print("⏸  O impacto aparece depois do TODO 5 (registro de ouro).")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC > **Frase para a diretoria (formato):** *"X% dos clientes têm endereço inválido no TMS e recebem no prazo
+# MAGIC > Y pontos a menos; corrigir o cadastro na origem, com dono e regra definidos, é mais barato que a multa."*
+# MAGIC > Ajustem X e Y com o resultado de vocês — e notem como a resposta muda conforme as regras do TODO 5b.
 
 # COMMAND ----------
 
@@ -743,6 +1411,10 @@ checks = [
     ("TODO 3 · interpretação", len(INTERPRETACAO.strip()) > 20),
     ("TODO 4 · governança aplicada",
      bool(gold) and _existe(gold) and any(r["key"] == "lodlog.dono" for r in spark.sql(f"SHOW TBLPROPERTIES {gold}").collect())),
+    ("TODO 4 · dois termos no glossário",
+     _existe("lodlog_gold.glossario_negocio")
+     and spark.sql("SELECT COUNT(*) FROM lodlog_gold.glossario_negocio WHERE origem = 'grupo'").first()[0] >= 2),
+    ("TODO 5 · registro de ouro do cliente", _existe("lodlog_gold.cliente_mestre")),
 ]
 for nome, ok in checks:
     print(f"  {'✅' if ok else '⬜'} {nome}")
@@ -752,6 +1424,13 @@ for camada in ["lodlog_bronze", "lodlog_silver", "lodlog_gold"]:
     for r in spark.sql(f"SHOW TABLES IN {camada}").collect():
         t = f"{camada}.{r['tableName']}"
         print(f"  {t:45s} {spark.table(t).count():>8,} linhas")
+if _existe("lodlog_gold.cliente_mestre"):
+    m = spark.sql("""SELECT COUNT(*) AS mestres, SUM(registros_de_origem) AS origem,
+                             SUM(CASE WHEN endereco_valido THEN 1 ELSE 0 END) AS validos FROM lodlog_gold.cliente_mestre""").first()
+    fila = spark.sql("SELECT COUNT(*) FROM lodlog_silver.cliente_xref WHERE id_mestre IS NULL").first()[0]
+    print(f"\nDado crítico (MDM): {m['origem']:,} registros de origem → {m['mestres']:,} clientes mestres · "
+          f"{m['validos']:,} com endereço válido · {fila} conta(s) do CRM na fila do steward")
+    print(f"  Endereço oficial vem de: {FONTE_ENDERECO} · regras: {[r for r, v in REGRAS_ENDERECO.items() if v]}")
 if PERGUNTA_NEGOCIO.strip():
     print(f"\nPergunta: {PERGUNTA_NEGOCIO}\nInterpretação: {INTERPRETACAO or '—'}")
 print("═" * 72)
@@ -765,6 +1444,8 @@ print("═" * 72)
 # MAGIC - **Integração:** a Gold de vocês junta uma fonte estruturada (TMS, WMS ou ERP) com uma semi/não estruturada (clima ou ocorrências).
 # MAGIC - **Execução:** os números da Etapa 8 — quantas linhas a qualidade barrou em cada camada e por quê.
 # MAGIC - **Análise:** a pergunta, a consulta e a frase para a diretoria (TODO 3).
+# MAGIC - **Dado crítico:** quantos registros viraram quantos clientes mestres, de onde vem o endereço oficial,
+# MAGIC   a definição de "endereço válido" e o efeito na pontualidade (TODO 5, Etapa 7B). Quem é o dono e o steward?
 # MAGIC - **Avaliação pós-projeto (preliminar):** 2 vantagens, 2 limitações e 1 lição. A versão completa é a entrega individual.
 # MAGIC
 # MAGIC > 🧹 *Para recomeçar do zero:* `DROP SCHEMA lodlog_gold CASCADE` (idem silver e bronze) e Run All.
