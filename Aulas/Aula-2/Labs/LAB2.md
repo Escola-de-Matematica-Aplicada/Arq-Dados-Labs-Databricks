@@ -36,7 +36,7 @@
 Ao final deste lab, você será capaz de:
 
 1. **Executar** um pipeline Medallion (Bronze → Silver → Gold) em Delta Lake e **interpretar** o que cada camada transforma nos dados.
-2. **Executar** a DDL do modelo LODLog e o ETL que popula `lodlog_dw` a partir de `lodlog_op`, e **ler** criticamente o resultado: ER 3FN e Star Schema com escolhas de projeto (PK/FK, surrogate keys, SCD, mini-dimensão).
+2. **Executar** a DDL do modelo LODLog e o ETL que popula `lodlog_dw` a partir de `lodlog_op`, e **ler** criticamente o resultado: ER 3FN e Star Schema com escolhas de projeto (PK (chave primária) e FK (chave estrangeira), surrogate keys, SCD, mini-dimensão).
 3. **Avaliar criticamente** uma arquitetura de dados: reconhecer por que cada escolha foi feita, quais armadilhas ela evita e onde ela quebraria.
 4. **Conectar** a escolha de arquitetura (DW/Lake/Lakehouse/Mesh/Fabric) aos objetivos e ao tamanho do negócio.
 5. **Redigir** um parecer técnico curto — o artefato que um líder de dados usa para defender ou contestar uma arquitetura diante da diretoria.
@@ -59,7 +59,7 @@ Respondam **por escrito** (serve para o parecer da Parte 4):
 
 1. **Bronze × Silver:** quantas linhas foram descartadas na Silver e **por quê**? O filtro de `velocidade 0–200 km/h` e `temperatura 50–150 °C` protege contra quê, na linguagem dos 5 Vs da Aula 1 (dica: *Veracidade*)?
 2. **Silver × Gold:** a Gold tem ~1.500 linhas (50 veículos × 30 dias) contra centenas de milhares na Bronze. Essa "redução" é perda de informação ou ganho de foco? Para qual público cada camada fala (operação de manutenção × diretoria)?
-3. **Time-travel:** a célula 5 mostra o `DESCRIBE HISTORY`. Citem **duas situações de negócio** em que poder voltar à versão anterior de uma tabela Delta vale dinheiro ou evita multa (pensem em LGPD, recall de decisão, auditoria de SLA).
+3. **Time-travel:** a célula 5 mostra o `DESCRIBE HISTORY`. Citem **duas situações de negócio** em que poder voltar à versão anterior de uma tabela Delta vale dinheiro ou evita multa (pensem em LGPD (Lei Geral de Proteção de Dados), recall de decisão, auditoria de SLA).
 
 ### Atividade 1.3: Quebre a esteira de propósito (grupo, 10 min)
 

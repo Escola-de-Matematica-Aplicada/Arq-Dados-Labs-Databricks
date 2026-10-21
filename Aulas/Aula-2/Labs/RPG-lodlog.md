@@ -52,7 +52,7 @@ A LODLog gera dados de 8 fontes diferentes — e cada uma vive no seu próprio m
 | **Financeiro / ERP** | Gestão | Pedidos, faturamento, contratos, notas | extraído via API/CDC |
 | **Dados Externos** | Google Maps · INMET · ANTT · IBGE | Tráfego (~60k req/dia), clima (1.500 chamadas/dia), bloqueios de rodovia (~20/dia, picos de 100), geografia | contínuo + trimestral |
 
-Os payloads são heterogêneos (JSON de sensores com campos que variam por veículo), as chaves não batem entre sistemas (TRK-0342 no TMS ≠ placa no ERP ≠ id no WMS) e cada domínio grava "do seu jeito". As regras de negócio que a diretoria sonha em automatizar —
+Os payloads são heterogêneos (JSON de sensores com campos que variam por veículo), as chaves não batem entre sistemas (o código de caminhão TRK-0342 no TMS ≠ placa no ERP ≠ id no WMS) e cada domínio grava "do seu jeito". As regras de negócio que a diretoria sonha em automatizar —
 
 - SE `temperatura_motor > 105 °C` por 2 min → abrir OS de manutenção
 - SE veículo parado > 30 min em rota → alertar supervisor
@@ -119,7 +119,7 @@ A gamificação termina, o aprendizado começa a virar artefato. Cada grupo mape
 |---|---|---|---|---|
 | Frota/IoT | JSON 30s + ANTT | JSON bruto particionado por data | Delta validado (vel 0–200, temp 50–150), dedup, lineage | `fato_iot_hora` — médias por veículo/hora |
 | Operação/TMS | Pedidos + eventos CDC | JSON CDC bruto | Delta com SLA e `atraso_min` calculados | `fato_entregas` + `%` atraso, multas |
-| Estoque/WMS | Movimentações 15min | CSV bruto | Delta SCD2, SKUs uniformizados | `fato_estoque` — giro, ruptura |
+| Estoque/WMS | Movimentações 15min | CSV bruto | Delta SCD2, SKUs (códigos de produto) uniformizados | `fato_estoque` — giro, ruptura |
 | Financeiro | ERP + IBGE | CSV diário bruto | Parquet tipado, FKs validadas | `fato_faturamento` + enriquecimento IBGE |
 
 **Entregável do grupo:** 1 slide com (a) a porta que defenderam (ou a oculta, se a abriram), (b) justificativa batch × streaming por domínio, e (c) o **contrato mínimo** que exigiriam na Silver da frota: schema + regras de qualidade + SLA de atualização + lineage.
