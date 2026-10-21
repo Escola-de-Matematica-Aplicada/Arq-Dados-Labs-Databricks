@@ -667,23 +667,7 @@ WHERE fe.sk_data BETWEEN 20250701 AND 20250731;
 
 ---
 
-# 15. Diferencas em Relacao ao Template AWS Academy
-
-| Aspecto            | Template AWS Academy (anterior)     | Projeto Eng Dados para IA (novo)                          |
-|--------------------|-------------------------------------|-----------------------------------------------------------|
-| **Foco principal** | Servicos AWS e arquitetura de nuvem | Modelagem, SQL, pipelines, qualidade e preparacao para IA |
-| **Modelagem**      | Nao exigida                         | Obrigatoria (ER + Star Schema)                            |
-| **SQL**            | Nao presente                        | 20% da nota individual                                    |
-| **Qualidade**      | Mencionada superficialmente         | Framework DAMA-DMBOK com dimensoes e metricas             |
-| **Governanca**     | Alertas tecnicos                    | LGPD, linhagem, papéis e responsabilidades                |
-| **Arquiteturas**   | AWS-specific                        | Agnostica: DW, Lake, Lakehouse, Data Mesh                 |
-| **ML/IA**          | Opcional (SageMaker)                | Central: feature store, MLOps, casos de uso detalhados    |
-| **BI**             | QuickSight                          | Power BI / Tableau / SQL views                            |
-| **Cloud**          | Obrigatoria AWS                     | Tecnologia aberta; cloud e opcional/contextual            |
-
----
-
-# 16. Checklist Final para Entrega
+# 15. Checklist Final para Entrega
 
 ## Projeto em Grupo
 - [ ] Diagrama ER (conceitual e logico)

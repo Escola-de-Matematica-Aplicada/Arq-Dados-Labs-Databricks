@@ -60,7 +60,7 @@ Linguagem de board: decisão, risco e valor antes de tecnologia; sem jargão nã
 
 ## Anexo técnico (opcional)
 
-Se quiser ir além, **evolua o notebook do grupo** — mais uma fonte até a Gold, uma segunda regra de qualidade, um teste de "E se" — no **Databricks Free Edition** ou reproduza o data lake no **AWS Academy**. Até 4 páginas de prints, com a data de execução. O anexo não é necessário para a nota máxima; ele **conta como evidência** das Partes A e B.
+Se quiser ir além, **evolua o notebook do grupo** — mais uma fonte até a Gold, uma segunda regra de qualidade, um teste de "E se" — no **Databricks Free Edition**, a plataforma única dos labs da disciplina. Até 4 páginas de prints, com a data de execução. O anexo não é necessário para a nota máxima; ele **conta como evidência** das Partes A e B.
 
 ---
 
