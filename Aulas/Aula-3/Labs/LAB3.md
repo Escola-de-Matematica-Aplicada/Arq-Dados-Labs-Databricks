@@ -47,7 +47,7 @@ Escolham, por fonte, um dos cinco padrões e a ferramenta:
 | CDC | a fonte é um banco OLTP que não pode ser sobrecarregado | Debezium, DMS |
 | API pull/push | a fonte é um serviço externo | Airflow + `requests`, NiFi, webhooks |
 
-**Pergunta de controle:** essa fonte *realmente* precisa de streaming? Qual decisão de negócio piora se ela chegar uma hora depois?
+**Pergunta de controle:** essa fonte *realmente* precisa de streaming? Qual decisão de negócio piora se ela chegar uma hora depois? (No [dossiê](../../../docs/LODLog/Por-que-esta-arquitetura.md), só 2 das 7 perguntas da LODLog pedem resposta em minutos.)
 
 ## Parte 3 — ETL ou ELT (4 min)
 
@@ -70,14 +70,14 @@ Justifiquem por **custo** (streaming fica sempre ligado) e **latência** exigida
 
 Preencham uma linha por fonte. Escolham **uma** plataforma para o domínio (AWS, Azure, GCP ou Hadoop/Spark local) e expliquem por quê.
 
-| Fonte | Ingestão (padrão + ferramenta) | ETL/ELT | Bronze → Silver/Gold | Processamento | Latência alvo | Arquitetura |
-| --- | --- | --- | --- | --- | --- | --- |
-| (ex.: IoT) | Streaming: Kafka + Structured Streaming | ELT | JSON → Delta particionado por data | Spark + `MERGE` no Delta | Segundos | Kappa |
-| (ex.: ERP) | Batch diário: Airflow + JDBC | ELT | Parquet → Delta | Spark SQL + dbt | Horas | Batch puro |
-| | | | | | | |
-| | | | | | | |
+| Fonte | Ingestão (padrão + ferramenta) | ETL/ELT | Bronze → Silver/Gold | Processamento | Latência alvo | Arquitetura | Por que não a alternativa (força) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| (ex.: IoT) | Streaming: Kafka + Structured Streaming | ELT | JSON → Delta particionado por data | Spark + `MERGE` no Delta | Segundos | Kappa | Batch: o alerta do motor exige 2 min (F2) |
+| (ex.: ERP) | Batch diário: Airflow + JDBC | ELT | Parquet → Delta | Spark SQL + dbt | Horas | Batch puro | Streaming: o relatório D-1 basta e streaming fica sempre ligado (F2, F4) |
+| | | | | | | | |
+| | | | | | | | |
 
-**Plataforma escolhida e justificativa:** ____________________________________________
+**Plataforma escolhida e justificativa** (lembrem a decisão D4: 5 pessoas e o hosting do ERP vencendo em 14 meses): ____________________________________________
 
 ## Parte 6 — Diagrama (4 min)
 

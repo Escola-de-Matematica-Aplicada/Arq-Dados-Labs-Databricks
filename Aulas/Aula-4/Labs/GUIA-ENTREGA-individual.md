@@ -21,7 +21,7 @@
    Retome a análise do grupo (TODO 3): o número, a interpretação e **a decisão que ele apoia**. Quais limitações dos dados enfraquecem essa conclusão (amostra, período, dado simulado, regra de qualidade escolhida no TODO 1)? O que você precisaria para levar essa decisão ao board com confiança?
 
 4. **Vantagens e limitações da arquitetura — 15%**
-   Avalie a arquitetura adotada (Lakehouse Medallion num único workspace) em quatro lentes: **escala, custo, governança e risco de "pântano de dados"**. Use os 4 pilares da Aula 4 (qualidade, segurança/LGPD, metadados e glossário, ciclo de vida): o que o seed e o grupo cobriram e o que ficou descoberto. Compare com **ao menos uma alternativa** — Data Warehouse, Data Mesh, Data Fabric ou a **Ponte dos Contratos** do RPG da Aula 2 — e diga em que condição da LODLog a alternativa seria melhor.
+   Avalie a arquitetura adotada (Lakehouse Medallion num único workspace) em quatro lentes: **escala, custo, governança e risco de "pântano de dados"**. Use os 4 pilares da Aula 4 (qualidade, segurança/LGPD, metadados e glossário, ciclo de vida): o que o seed e o grupo cobriram e o que ficou descoberto. Compare com **ao menos uma alternativa** — Data Warehouse, Data Mesh, Data Fabric ou a **Ponte dos Contratos** do RPG da Aula 2 — e diga em que condição da LODLog a alternativa seria melhor. Organize a avaliação em **três registros de decisão (ADRs)** — um de armazenamento (D1/D2), um de movimento (D4–D7) e um de governança (D3/D8/D9) do [dossiê "Por que esta arquitetura?"](../../../docs/LODLog/Por-que-esta-arquitetura.md) —, cada um com a dor, as opções, a escolha, o que se perde e o gatilho de revisão. Feche com **um contra-cenário** (seção 6 do dossiê): mude um fato da LODLog e mostre que a resposta muda.
 
 5. **Lições aprendidas e próximos passos — 10%**
    Pelo menos **três lições** (técnicas, de negócio ou de trabalho em equipe), cada uma com o fato que a originou. Termine com **uma escolha do desenho que você defende e uma que contestaria**, e com os próximos passos para elevar a maturidade em dados da LODLog.
@@ -44,7 +44,7 @@
 > Arquitetura nova é mudança organizacional: muda quem decide, quem corrige e quem responde pelo número (DMBOK cap. 17, Aula 5). Esta parte transforma a sua recomendação em um plano que a LODLog consiga executar.
 
 9. **Maturidade e arquitetura empresarial — 5%**
-   Onde a LODLog estava (silos, planilhas, as "cinco torres" da Aula 2) e aonde este data lake a leva. Que **capacidade de negócio** do cenário passa a ser medida, prevista ou automatizada? Que papéis de governança (dono de dados, steward, conselho) e que contratos de dados isso exige? *Opcional: um parágrafo comparando com a empresa onde você trabalha.*
+   Onde a LODLog estava (silos, planilhas, as "cinco torres" da Aula 2) e aonde este data lake a leva. Que **capacidade de negócio** do cenário passa a ser medida, prevista ou automatizada? Que papéis de governança (dono de dados, steward, conselho) e que contratos de dados isso exige? Use os gatilhos do roteiro D10 do dossiê para dizer **quando** a arquitetura deve evoluir (por exemplo, para Data Mesh no plano 2028). *Opcional: um parágrafo comparando com a empresa onde você trabalha.*
 
 10. **Plano de comunicação e gestão da mudança — 15%**
     - **Diagnóstico da mudança (fórmula de Gleicher, mudança = D × V × F > R):** a insatisfação que já existe (com número), a **visão** em linguagem de negócio — e não "implantar o lakehouse" —, os **primeiros passos** concretos e as **resistências** esperadas (quem perde autonomia ou controle do próprio número).
@@ -73,6 +73,7 @@ Se quiser ir além, **evolua o notebook do grupo** — mais uma fonte até a Gol
 - [ ] Resultado da análise interpretado: decisão apoiada e limitações dos dados
 - [ ] Vantagens e limitações em escala, custo, governança e risco de pântano
 - [ ] Comparação com ao menos uma arquitetura alternativa
+- [ ] 3 ADRs (armazenamento, movimento, governança) com o que se perde e o gatilho, + 1 contra-cenário
 - [ ] 3+ lições aprendidas, 1 escolha defendida e 1 contestada, próximos passos
 - [ ] Dado crítico do cenário: por que é crítico, de que dados mestres depende, dono e steward
 - [ ] Termo central com significados divergentes entre áreas e a definição oficial proposta para o glossário

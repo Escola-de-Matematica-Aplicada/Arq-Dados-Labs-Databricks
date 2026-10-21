@@ -13,7 +13,7 @@
 | # | Bloco | Tempo | O que mostrar | Critério da rubrica (Aula 4, "Como Você Será Avaliado — Grupo") |
 |---|---|---|---|---|
 | 1 | **Cenário + pergunta de negócio** | 1 min | "Escolhemos (A) Rotas para atacar os 23% de atraso e R$ 4,2 MM/ano em multas." | Compreensão do cenário — 10% |
-| 2 | **Arquitetura comentada** | 2 min | O fluxo das fontes ao consumo (pode ser o quadro da Parte 2 do LAB4 ou um desenho simples) **com 3 setas suas**: onde entra a sujeira (Bronze), onde ela é barrada (Silver), onde nasce o número do dashboard (Gold). Marquem o que veio pronto e o que o grupo construiu. | Arquitetura das fontes até o consumo — 20% |
+| 2 | **Arquitetura comentada** | 2 min | O fluxo das fontes ao consumo (pode ser o quadro da Parte 2 do LAB4 ou um desenho simples) **com 3 setas suas**: onde entra a sujeira (Bronze), onde ela é barrada (Silver), onde nasce o número do dashboard (Gold). Marquem o que veio pronto e o que o grupo construiu. **E 1 registro de decisão (ADR)** da escolha mais importante do cenário: dor → opções → escolha → o que perdemos → gatilho (modelo na seção 7.1 do [dossiê](../../../docs/LODLog/Por-que-esta-arquitetura.md)). | Arquitetura das fontes até o consumo — 20% |
 | 3 | **Construção e execução** | 2 min | A Etapa 8 do notebook: linhas Bronze → Silver → Gold e quantas a qualidade barrou. **O que o grupo construiu**: as regras do TODO 1, a métrica-chave do TODO 2 e o **registro de ouro do TODO 5** (quantos registros viraram quantos clientes mestres, de onde vem o endereço oficial e o que é endereço válido). + 1 linha por fonte na tabela "fonte × camada × batch/streaming/CDC". | Integração estruturada + semi/não estruturada — 15% |
 | 4 | **Análise Gold com número** | 2 min | O resultado do TODO 3: pergunta, número e frase de negócio ("nos dias de chuva forte a pontualidade cai de 83% para 48%"). | Análise sobre o data lake, com número — 20% |
 | 5 | **Pós-projeto (preliminar)** | 2 min | 1 vantagem · 1 limitação · **1 escolha que defendemos + 1 que contestaríamos** (com o "E se", se testaram) · 1 lição aprendida. | Pós-projeto e lições — 15% · Apresentação — 5% |
@@ -32,7 +32,7 @@
 
 Substitui relatórios longos de grupo. Quatro seções fixas:
 
-1. **Mapeamento fonte × camada (tabela única):** para cada fonte usada pelo cenário — tipo, formato, volume, frequência, camada Bronze/Silver/Gold no notebook executado, quem construiu (seed ou grupo) e batch/streaming/CDC com justificativa de 1 linha.
+1. **Mapeamento fonte × camada (tabela única):** para cada fonte usada pelo cenário — tipo, formato, volume, frequência, camada Bronze/Silver/Gold no notebook executado, quem construiu (seed ou grupo) e batch/streaming/CDC com justificativa de 1 linha, citando a força do dossiê que a sustenta (F1 a F6).
 2. **A análise que conduzimos:** a consulta do TODO 3 + print + interpretação de negócio (2–3 linhas).
 3. **Governança sob as 4 lentes:** para cada pilar (qualidade, segurança/LGPD, metadados e glossário, ciclo de vida), uma linha: ✔ cobre (citem o TODO 4) / ✖ não cobre / ➜ cobriríamos com (ação). Sem parágrafo defensivo — a banca prefere o ✖ assumido com plano. Feche com o **dado crítico**: qual é o dado mais crítico do cenário de vocês e por quê, a decisão do TODO 5, o dono e o steward do cliente mestre, os dois termos do glossário e o efeito do endereço ruim na pontualidade.
 4. **Avaliação pós-projeto preliminar:** vantagens × limitações (2+2 bullets) + "o que mudaríamos se recomeçássemos" (1 parágrafo) + lições. *(Cada integrante aprofunda isto na entrega individual.)*
@@ -66,4 +66,4 @@ Substitui relatórios longos de grupo. Quatro seções fixas:
 | Modelo de IA treinado ou features criadas | Dizer quem consome a Gold (dashboard ou modelo) e o que esse consumidor exige dela |
 | Slides bonitos | 1 print feio do console que prova uma afirmação |
 
-**Critério de ouro (vale para pitch e síntese):** nenhuma frase de arquitetura sem evidência ao lado. E na hora de defender, usem o vocabulário que a disciplina construiu desde a Aula 2: armadilha, contrato de dados, governança federada leve, Bronze imutável, pântano. A banca sabe quais portas do RPG cada escolha de vocês abre e fecha — mostrem que vocês também sabem.
+**Critério de ouro (vale para pitch e síntese):** nenhuma frase de arquitetura sem evidência ao lado — e nenhuma decisão sem o seu porquê (a dor, a força e o que se perde). E na hora de defender, usem o vocabulário que a disciplina construiu desde a Aula 2: armadilha, contrato de dados, governança federada leve, Bronze imutável, pântano. A banca sabe quais portas do RPG cada escolha de vocês abre e fecha — mostrem que vocês também sabem.

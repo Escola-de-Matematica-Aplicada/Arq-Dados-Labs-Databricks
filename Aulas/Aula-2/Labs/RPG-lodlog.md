@@ -73,6 +73,18 @@ Os payloads são heterogêneos (JSON de sensores com campos que variam por veíc
 
 Todos têm razão. Esse é o problema: **não existe escolha sem trade-off.**
 
+### As restrições que nenhuma porta pode ignorar
+
+| Restrição | Fato |
+|---|---|
+| Pessoas | 5 pessoas em Dados & BI; ninguém de dados nos 12 CDs |
+| Dinheiro | R$ 1,6 MM no 1º ano, retorno em até 18 meses |
+| Legado | ERP no data center próprio, hosting vencendo em 14 meses; WMS em 3 versões |
+| Contratos | 40 clientes = 62% da receita; disputa de multa de até 24 meses |
+| Horizonte | Plano 2028: 30 CDs, 2 países, ~2.000 veículos |
+
+Defendam a porta de vocês **pelas forças** que ela atende e pelas que ela sacrifica (F1 variedade, F2 latência, F3 confiança, F4 equipe e custo, F5 legado, F6 governança). Detalhes no dossiê ["Por que esta arquitetura?"](../../../docs/LODLog/Por-que-esta-arquitetura.md).
+
 ---
 
 ## 3. As Cinco Portas — Escolham o futuro da LODLog

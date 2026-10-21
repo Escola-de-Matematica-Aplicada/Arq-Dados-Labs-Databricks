@@ -14,6 +14,7 @@
 ## Antes de começar
 
 - Releia o **plano de ensino** (Módulo 4 e Avaliação, no eClass) e os slides da **Aula 4**: 4 pilares de governança, pântano de dados, quem consome a Gold.
+- Leia o dossiê ["Por que esta arquitetura?"](../../../docs/LODLog/Por-que-esta-arquitetura.md), seções 2 a 5: as restrições da LODLog, as seis forças e as decisões D0 a D10 são a fonte do "por quê" do pitch e do relatório.
 - Releia os Labs 1–3 — tudo se conecta aqui: tipos de dados e 5 Vs (L1), arquiteturas e Medallion (L2), SQL e qualidade (L3).
 - Garanta acesso ao **Databricks Free Edition** ([login.databricks.com](https://login.databricks.com), compute Serverless) ANTES da aula.
 
@@ -122,13 +123,14 @@ O notebook do grupo é o [`lab4_miniprojeto_seed.py`](lab4_miniprojeto_seed.py).
    - Rode a Silver sem o `DISTINCT` → quantas duplicatas chegariam à Gold? Isso é a armadilha da "Colheita Silenciosa" (RPG da Aula 2)?
    - Sua Gold tem `cliente_id` ou `motorista_id`? Que pilar da LGPD isso aciona e em qual camada vocês tratariam?
    - No TODO 5, liguem e desliguem `tem_bairro`: quantos clientes "bons" passam a ser reprovados? O que isso faz com a análise de impacto?
+   - Escolham um gatilho do roteiro D10 do dossiê (plano 2028, aquisição com outra nuvem, rastreio ao vivo): se ele acontecesse amanhã, o que mudaria no seed de vocês?
 
 Às 22h05, checkpoint: cada grupo mostra a Etapa 8 do notebook ao professor (formativo, sem nota).
 
 ### Etapa 2.3 — Concluir e apresentar (Aula 5, 23/11)
 
 - **19h00–20h30:** concluir os TODOs pendentes, fazer o **TODO 4** (governança e glossário), rodar o Run All final com tudo ✅ e montar o pitch.
-- **20h50–21h55:** **pitch de cada grupo** (10 min + 5 min de Q&A; com 5 ou mais grupos, 7 + 3) — formato no [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md). Essência: cenário e pergunta → arquitetura (o que veio pronto × o que o grupo construiu) → números da Etapa 8 → insight de negócio → avaliação pós-projeto preliminar.
+- **20h50–21h55:** **pitch de cada grupo** (10 min + 5 min de Q&A; com 5 ou mais grupos, 7 + 3) — formato no [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md). Essência: cenário e pergunta → arquitetura (o que veio pronto × o que o grupo construiu) e por quê (1 ADR) → números da Etapa 8 → insight de negócio → avaliação pós-projeto preliminar.
 
 > ⚠️ *Diagrama novo não é exigido. O exigido é o fluxo do seed **comentado por vocês**: onde entra a sujeira, onde ela é barrada e onde nasce o número do dashboard.*
 
@@ -150,6 +152,7 @@ Em ambas, o critério de ouro é o mesmo da disciplina: **toda afirmação de ar
 - **Slides das Aulas 4 e 5** (eClass): governança, pântano, rubricas e template do pitch.
 - **Plano de ensino** (eClass): Módulo 4 e Avaliação.
 - **Artefatos prontos:** ver tabela "O que vocês recebem pronto" no topo.
+- **Dossiê "Por que esta arquitetura?"** ([`docs/LODLog/Por-que-esta-arquitetura.md`](../../../docs/LODLog/Por-que-esta-arquitetura.md)): restrições da LODLog, seis forças, decisões D0–D10 e contra-cenários.
 - **LAB 2 refeito** (`../../Aula-2/Labs/LAB2.md`): o parecer técnico do grupo é o modelo do que se espera de justificativa arquitetural aqui.
 - **Referências complementares:** Serra (2024) cap. 3–5; Inmon et al. (2019); Kleppmann (2017) cap. 1–3.
 

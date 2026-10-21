@@ -25,6 +25,7 @@ https://www.databricks.com/learn/free-edition (gratuito, sem cartão; compute Se
 [guia individual (70%)](Aulas/Aula-4/Labs/GUIA-ENTREGA-individual.md)
 
 **Cenário:** [The Lord of Data Logistics](docs/LODLog/The-Lord-Of-Data-Logistics.md) ·
+[por que esta arquitetura? (dossiê de decisões)](docs/LODLog/Por-que-esta-arquitetura.md) ·
 [diagramas do modelo de dados](Diagramas/)
 
 > Ordem importante: o seed da Aula 2 (`Aulas/Aula-2/Labs/lodlog_lab2_seed_free.py`) cria as tabelas

@@ -135,6 +135,7 @@ Para cada fonte de dados da LODLog, discutam e preencham o perfil nos 5 Vs e com
 | Velocidade | |
 | Volume/dia | |
 | Conexão com IA/ML | |
+| Pergunta do negócio que responde e com que pressa (minutos, horas, D-1) | |
 
 #### Fonte 2 — Pedidos do TMS
 
@@ -146,6 +147,7 @@ Para cada fonte de dados da LODLog, discutam e preencham o perfil nos 5 Vs e com
 | Velocidade | |
 | Volume/dia | |
 | Conexão com IA/ML | |
+| Pergunta do negócio que responde e com que pressa (minutos, horas, D-1) | |
 
 #### Fonte 3 — Estoque do WMS
 
@@ -157,6 +159,7 @@ Para cada fonte de dados da LODLog, discutam e preencham o perfil nos 5 Vs e com
 | Velocidade | |
 | Volume/dia | |
 | Conexão com IA/ML | |
+| Pergunta do negócio que responde e com que pressa (minutos, horas, D-1) | |
 
 #### Fonte 4 — APIs externas (clima, tráfego)
 
@@ -168,6 +171,7 @@ Para cada fonte de dados da LODLog, discutam e preencham o perfil nos 5 Vs e com
 | Velocidade | |
 | Volume/dia | |
 | Conexão com IA/ML | |
+| Pergunta do negócio que responde e com que pressa (minutos, horas, D-1) | |
 
 #### Fonte 5 — Planilhas Excel do supervisor
 
@@ -179,6 +183,7 @@ Para cada fonte de dados da LODLog, discutam e preencham o perfil nos 5 Vs e com
 | Velocidade | |
 | Volume/dia | |
 | Conexão com IA/ML | |
+| Pergunta do negócio que responde e com que pressa (minutos, horas, D-1) | |
 
 #### Fonte 6 — Faturamento do ERP
 
@@ -190,6 +195,7 @@ Para cada fonte de dados da LODLog, discutam e preencham o perfil nos 5 Vs e com
 | Velocidade | |
 | Volume/dia | |
 | Conexão com IA/ML | |
+| Pergunta do negócio que responde e com que pressa (minutos, horas, D-1) | |
 
 #### Fonte 7 — Cotações da ANTT
 
@@ -201,6 +207,7 @@ Para cada fonte de dados da LODLog, discutam e preencham o perfil nos 5 Vs e com
 | Velocidade | |
 | Volume/dia | |
 | Conexão com IA/ML | |
+| Pergunta do negócio que responde e com que pressa (minutos, horas, D-1) | |
 
 #### Fonte 8 — IBGE (dados econômicos)
 
@@ -212,12 +219,13 @@ Para cada fonte de dados da LODLog, discutam e preencham o perfil nos 5 Vs e com
 | Velocidade | |
 | Volume/dia | |
 | Conexão com IA/ML | |
+| Pergunta do negócio que responde e com que pressa (minutos, horas, D-1) | |
 
 > 📌 *Dica: "Valor" é a pergunta que o negócio mais precisa responder. "Veracidade" é onde você desconfia dos dados. "Variedade" mostra se você precisa de um data lake (para juntar tudo) ou de um data warehouse tradicional.*
 
 ### Atividade 3.2: Priorização, 10 min
 
-Dado o problema de negócio da LODLog (*"estamos perdendo dinheiro, mas não sabemos onde"*), ordenem as fontes acima por **prioridade de ingestão** (1 = mais urgente). Justifiquem a escolha das 3 primeiras.
+Dado o problema de negócio da LODLog (*"estamos perdendo dinheiro, mas não sabemos onde"*), ordenem as fontes acima por **prioridade de ingestão** (1 = mais urgente). Justifiquem a escolha das 3 primeiras pela linha "pressa": que dor em R$ cada uma ataca e quanto tempo o negócio aceita esperar?
 
 > 💬 *Pergunta-guia: se você só pudesse ingerir 3 fontes de dados hoje, quais seriam e por quê?*
 
@@ -247,13 +255,14 @@ Classifique cada serviço/tecnologia como **IaaS**, **PaaS**, **SaaS** ou **On-P
 ### Atividade 4.2: Reflexão em grupo, 10 min
 
 1. Qual desses serviços a LODLog já deve estar usando hoje?
-2. Para onde a empresa deveria migrar nos próximos 3 anos, se o volume de dados triplicar?
+2. Para onde a empresa deveria migrar nos próximos 3 anos, se o volume de dados triplicar? Considerem as restrições do [dossiê](../../../docs/LODLog/Por-que-esta-arquitetura.md) (seção 2.2): 5 pessoas em dados e o hosting do ERP vencendo em 14 meses.
 
 ---
 
 ## Material de Apoio e Referências
 
 - **Slides da Aula 1** (eClass): histórico, tipos de dados, OLTP vs OLAP, 5 Vs, fontes de dados da LODLog.
+- **Dossiê "Por que esta arquitetura?"** ([`docs/LODLog/Por-que-esta-arquitetura.md`](../../../docs/LODLog/Por-que-esta-arquitetura.md)): as restrições da LODLog e a tabela dor → requisito.
 - **Plano de ensino** (eClass): Módulo 1 — objetivos de aprendizagem e conteúdo programático.
 - **Cenário LODLog**: `Labs/` — modelo de dados completo e descrição do cenário.
 
