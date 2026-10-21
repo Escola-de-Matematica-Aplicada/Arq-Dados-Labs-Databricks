@@ -68,9 +68,9 @@ Ao final deste miniprojeto, você será capaz de:
 
 | Bloco | Horário | Duração | Conteúdo |
 |-------|---------|---------|----------|
-| **Trabalho em grupo** | 19h00–20h32 | ~1h32 | Fechar os TODOs pendentes, TODO 4 (governança e glossário), Run All final, montar o pitch — com o professor circulando |
-| Intervalo | 20h32–20h47 | 15 min | — |
-| **Apresentações** | 20h47–21h55 | ~1h08 | Pitch de cada grupo (Etapa 2.3) — 10 + 5 min até 4 grupos; 7 + 3 com 5 ou mais |
+| **Trabalho em grupo** | 19h00–20h30 | ~1h30 | Fechar os TODOs pendentes, TODO 4 (governança e glossário), Run All final, montar o pitch — com o professor circulando |
+| Intervalo | 20h30–20h50 | 15–20 min | — |
+| **Apresentações** | 20h50–21h55 | ~1h05 | Pitch de cada grupo (Etapa 2.3) — 10 + 5 min até 4 grupos; 7 + 3 com 5 ou mais |
 | **Fechamento** | 21h55–22h20 | 25 min | Lições aprendidas da disciplina e preparação da entrega individual |
 
 ---
@@ -92,7 +92,7 @@ Ao final deste miniprojeto, você será capaz de:
 
 ---
 
-## Parte 2 — Prática em Grupo (Aula 4: 2h25 · Aula 5: ~1h32 de trabalho + apresentações)
+## Parte 2 — Prática em Grupo (Aula 4: 2h25 · Aula 5: ~1h30 de trabalho + apresentações)
 
 O notebook do grupo é o [`lab4_miniprojeto_seed.py`](lab4_miniprojeto_seed.py). Ele roda inteiro desde o começo (Run All, ~2 min); as partes do grupo ficam "em branco" até serem preenchidas, e a **Etapa 8** do notebook mostra o que já está ✅ e o que falta ⬜.
 
@@ -127,8 +127,8 @@ O notebook do grupo é o [`lab4_miniprojeto_seed.py`](lab4_miniprojeto_seed.py).
 
 ### Etapa 2.3 — Concluir e apresentar (Aula 5, 23/11)
 
-- **19h00–20h32:** concluir os TODOs pendentes, fazer o **TODO 4** (governança e glossário), rodar o Run All final com tudo ✅ e montar o pitch.
-- **20h47–21h55:** **pitch de cada grupo** (10 min + 5 min de Q&A; com 5 ou mais grupos, 7 + 3) — formato no [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md). Essência: cenário e pergunta → arquitetura (o que veio pronto × o que o grupo construiu) → números da Etapa 8 → insight de negócio → avaliação pós-projeto preliminar.
+- **19h00–20h30:** concluir os TODOs pendentes, fazer o **TODO 4** (governança e glossário), rodar o Run All final com tudo ✅ e montar o pitch.
+- **20h50–21h55:** **pitch de cada grupo** (10 min + 5 min de Q&A; com 5 ou mais grupos, 7 + 3) — formato no [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md). Essência: cenário e pergunta → arquitetura (o que veio pronto × o que o grupo construiu) → números da Etapa 8 → insight de negócio → avaliação pós-projeto preliminar.
 
 > ⚠️ *Diagrama novo não é exigido. O exigido é o fluxo do seed **comentado por vocês**: onde entra a sujeira, onde ela é barrada e onde nasce o número do dashboard.*
 

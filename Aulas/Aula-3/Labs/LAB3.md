@@ -2,7 +2,7 @@
 
 **Disciplina** Arquitetura de Dados e Big Data
 **Aula** 3 — Organização e Manuseio de Dados em Bases Distribuídas (16 de novembro de 2026)
-**Duração do Lab** 93 min em aula (20h47–22h20): 5 min de briefing + 30 min de desenho + 35 min de mão na massa no Databricks + 20 min de apresentações + 3 min de síntese
+**Duração do Lab** 90 min em aula (20h50–22h20): 3 min de briefing + 30 min de desenho + 35 min de mão na massa no Databricks + 20 min de apresentações + 2 min de síntese
 **Entrega (grupo)** Matriz de decisão + diagrama do pipeline + respostas aos 5 exercícios do notebook + pitch de 3 min
 
 > **Como este lab funciona:** em duas metades. Na **primeira (desenho, 30 min)**, o trabalho é o de um arquiteto de dados: olhar as fontes de um domínio da LODLog, decidir como cada uma entra, onde é guardada, como é transformada e quem a consome — e **justificar** cada escolha por latência, custo e facilidade de reprocessar. Na **segunda (mão na massa, 35 min)**, vocês rodam no Databricks um pipeline pronto, em lote e em streaming, até um **motor preditivo** que calcula o risco de atraso de cada entrega — e respondem, com números, às perguntas que um gestor faria. Ninguém precisa saber programar: o notebook já vem pronto; vocês operam, observam e decidem. O que sair daqui é o rascunho do miniprojeto das Aulas 4 e 5.

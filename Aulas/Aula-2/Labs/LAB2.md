@@ -2,7 +2,7 @@
 
 **Disciplina** Arquitetura de Dados e Big Data
 **Aula** 2 — Ferramentas para Gerenciamento de Dados Distribuídos (10 de novembro de 2026)
-**Duração do Lab** demo de 20 min em aula (20h47–22h20 é dividido com o RPG e a discussão); execução completa em casa
+**Duração do Lab** demo de 20 min em aula (20h50–22h20 é dividido com o RPG e a discussão); execução completa em casa
 **Entrega (grupo)** Parecer técnico de 1 página + checklist de "e se...", feitos em casa
 
 > **Como este lab funciona:** vocês **não vão modelar do zero**. A consultoria de dados da LODLog já entregou os scripts (`lodlog_modelo_dados_free.sql`), o seed de dados, os diagramas do modelo (`/Diagramas/`) e notebooks prontos para executar no Databricks Free Edition. O trabalho de vocês é o que um executivo de dados **realmente** faz no dia a dia: **executar, inspecionar, questionar e avaliar** as escolhas arquiteturais de outros — aprovando, contestando ou propondo evolução.

@@ -2,7 +2,7 @@
 
 **Disciplina** Arquitetura de Dados e Big Data
 **Aula** 1 — Tipos de Dados e Contexto de Big Data (22 de setembro de 2026)
-**Duração do Lab** ~1h40 (em aula)
+**Duração do Lab** ~1h30 (em aula)
 **Entrega** Tabela de classificação preenchida + reflexões em grupo
 
 > **Para quem é este lab:** Você é um executivo ou analista que precisa entender *onde estão os dados da sua empresa* e *como eles fluem*. Não é preciso saber programar — é preciso saber pensar em dados. Este lab te ajuda a diagnosticar o que você já sabe e a alinhar essa visão com os conceitos que vamos construir nas próximas aulas.
@@ -28,7 +28,7 @@ Ao final deste lab, você será capaz de:
 
 ---
 
-## Parte 0 — Formação dos Grupos (10 min)
+## Parte 0 — Formação dos Grupos (5 min)
 
 * Formar grupos de 5 a 6 integrantes.
 * Escolher um **"Data Product Owner"** do grupo (quem vai apresentar e representar o grupo).

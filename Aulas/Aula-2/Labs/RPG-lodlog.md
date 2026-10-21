@@ -1,7 +1,7 @@
 # RPG "As Cinco Torres Isoladas" — O Cenário da LODLog
 
 **Disciplina** Arquitetura de Dados e Big Data — Aula 2 (10/nov/2026)
-**Formato** Dinâmica em grupo, síncrona, sem mestre — 58 min, incluindo a síntese técnica
+**Formato** Dinâmica em grupo, síncrona, sem mestre — 55 min, incluindo a síntese técnica
 **Papel de vocês** O CTO da LODLog (e sua equipe de arquitetura)
 **Material de origem** Cenário baseado em [`Aulas/LODLog/The-Lord-Of-Data-Logistics.md`](../../../docs/LODLog/The-Lord-Of-Data-Logistics.md)
 
@@ -111,7 +111,7 @@ O grupo que abrir a porta oculta narra para a turma o que viu do outro lado — 
 
 ---
 
-## 5. Síntese Técnica (depois do jogo — 30 min)
+## 5. Síntese Técnica (depois do jogo — 17 min)
 
 A gamificação termina, o aprendizado começa a virar artefato. Cada grupo mapeia os domínios da LODLog para o Medallion **com o contrato mínimo da Silver**:
 
@@ -128,7 +128,7 @@ Esse slide é o ensaio geral do miniprojeto das Aulas 4 e 5 (trabalho em grupo, 
 
 ---
 
-## Cronômetro da Dinâmica (58 min)
+## Cronômetro da Dinâmica (55 min)
 
 | Fase | Tempo |
 |---|---|
@@ -137,7 +137,7 @@ Esse slide é o ensaio geral do miniprojeto das Aulas 4 e 5 (trabalho em grupo, 
 | Defesas (1min30 por grupo) + consequências narradas pelo professor | 12 min |
 | Rodada da porta oculta: pistas progressivas até alguém propô-la | 10 min |
 | Votação final: qual porta escolheríamos agora? | 3 min |
-| Síntese técnica Medallion + contratos (seção 5) | 20 min |
+| Síntese técnica Medallion + contratos (seção 5) | 17 min |
 
 ---
 
