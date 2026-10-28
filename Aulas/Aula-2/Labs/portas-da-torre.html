@@ -193,11 +193,11 @@
     <div class="card tier-serious">
       <div class="eyebrow">Porta 3</div>
       <h2>🌾 A Colheita Silenciosa</h2>
-      <span class="arch-tag">Integração incremental sem blueprint</span>
-      <div class="block"><b>O que prometem</b>Sem trauma, sem plano mestre: ataca-se um problema visível de cada vez (primeiro o rastreamento de frota, depois o estoque), resultado em 90 dias.</div>
-      <div class="block"><b>Armadilha oculta</b>Cada "quick win" cria uma integração pontual nova (um script lê o WMS de um jeito, outro lê o TMS de outro); sem arquitetura de fundo, a dívida técnica cresce em vez de diminuir; a previsão de atraso nunca sai do papel.</div>
-      <blockquote>"18 meses depois: seis integrações pontuais, mas frota, estoque e financeiro ainda não conversam. As multas contratuais de R$4,2 milhões continuam do mesmo jeito — só foi adiado."</blockquote>
-      <div class="hint"><b>🔍 Pista (se o grupo persistir)</b>"Nos últimos três anos a empresa já rodou quatro 'projetos de integração pontual' entre WMS e TMS. Nenhum chegou perto de dar ao Diretor de Operações a visão fim-a-fim que ele pede há dois anos."</div>
+      <span class="arch-tag">Data Fabric sobre os silos, sem blueprint</span>
+      <div class="block"><b>O que prometem</b>Sem mover dado nem construir lago: uma camada de catálogo e virtualização liga WMS, TMS, ERP e IoT onde eles já estão. Ataca-se um problema visível de cada vez (primeiro o rastreamento de frota, depois o estoque), resultado em 90 dias.</div>
+      <div class="block"><b>Armadilha oculta</b>A camada virtual só espelha os silos. Sem cópia histórica, o status de uma entrega some quando o TMS o sobrescreve, e a LODLog fica sem prova nas disputas de multa de até 24 meses. As consultas federadas pesam no ERP em produção, justamente em quem fatura. E as definições divergentes de "entrega" atravessam a camada intactas: o Fabric responde <i>como</i> o dado flui, não <i>quem</i> responde por ele.</div>
+      <blockquote>"18 meses depois: um catálogo bonito sobre seis silos que continuam sem conversar. Na disputa de multa com o maior cliente, ninguém conseguiu reconstituir o status das entregas de março — o TMS já tinha sobrescrito. Os R$ 4,2 milhões de multa continuam do mesmo jeito."</blockquote>
+      <div class="hint"><b>🔍 Pista (se o grupo persistir)</b>"O TMS grava só o último status de cada entrega, sem histórico — e o jurídico tem três disputas de multa abertas sobre entregas de mais de um ano atrás."</div>
       <div class="score-row">
         <span class="score-badge tier-serious">⚠️ 3/10</span>
         <span class="score-label">Um padrão que já falhou antes, repetido</span>
@@ -207,11 +207,11 @@
     <div class="card tier-critical">
       <div class="eyebrow">Porta 4</div>
       <h2>💥 A Grande Ressaca</h2>
-      <span class="arch-tag">Big bang / rip-and-replace</span>
-      <div class="block"><b>O que prometem</b>Zerar a dívida técnica de uma vez: substituir ERP, WMS e TMS legados por uma plataforma nova, do zero.</div>
-      <div class="block"><b>Armadilha oculta</b>Projetos big bang falham em ~70% dos casos; 18–36 meses com dois sistemas rodando em paralelo (risco de perder o rastreamento dos 450 veículos); resistência cultural de motoristas e operadores de CD que precisam reaprender tudo.</div>
-      <blockquote>"Dois anos depois: 50% acima do orçamento, seis meses atrasado, três CDs ainda no sistema antigo. Ninguém quer ser quem parou a expedição de 18 mil entregas/mês sem entregar nada em troca."</blockquote>
-      <div class="hint"><b>🔍 Pista (se o grupo persistir)</b>"O trimestre de maior faturamento do ano é justamente os próximos quatro meses — e o CIO já avisou: nenhuma janela de manutenção pode passar de 4 horas até lá."</div>
+      <span class="arch-tag">Big bang para um Data Warehouse corporativo</span>
+      <div class="block"><b>O que prometem</b>Zerar a dívida de uma vez: modelar de cima para baixo o Data Warehouse da empresa inteira, com todas as dimensões e fatos, e migrar todos os relatórios no mesmo projeto. Uma só verdade, em tabelas.</div>
+      <div class="block"><b>Armadilha oculta</b>Projetos big bang falham em ~70% dos casos. O DW exige o esquema antes da carga: os 864 mil eventos de IoT/dia em JSON, as ocorrências em texto livre e o clima não cabem no modelo e ficam de fora. Com 5 pessoas e R$ 1,6 MM, 18–36 meses de modelagem antes do primeiro relatório estouram o prazo de retorno de 18 meses.</div>
+      <blockquote>"Dois anos depois: 50% acima do orçamento, a dimensão Cliente ainda em discussão entre ERP, TMS e WMS, e a frota fora do DW — os dados de IoT ficaram em arquivos soltos que ninguém consulta. O motor que superaqueceu ontem continua sem alerta."</blockquote>
+      <div class="hint"><b>🔍 Pista (se o grupo persistir)</b>"Em 2021, o 'modelo corporativo de dados' gastou nove meses discutindo o que é um Cliente — e ERP, TMS e WMS continuam com três cadastros diferentes."</div>
       <div class="score-row">
         <span class="score-badge tier-critical">⛔ 0/10</span>
         <span class="score-label">Visão sem execução</span>

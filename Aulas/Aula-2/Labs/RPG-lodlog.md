@@ -95,8 +95,8 @@ Cada grupo defende **uma porta** como se fosse o plano diretor de dados da empre
 |---|---|---|---|
 | **1** | Conselho Federado dos Domínios | Data Mesh puro | Cada domínio (frota, estoque, financeiro...) é dono do seu dado como um **produto de dados** com SLA próprio. Autonomia total, velocidade por domínio. |
 | **2** | Lago Único do Conhecimento | Data Lake / Lakehouse centralizado | Tudo num só lago governado (Delta). Uma equipe central, um catálogo, uma verdade — BI e ML no mesmo lugar, custo de storage baixo. |
-| **3** | Colheita Silenciosa | Integração incremental sem blueprint | Sem big bang: conectar fonte por fonte, entregar valor rápido, "resolver no caminho". Quick wins para a diretoria ver resultado já. |
-| **4** | Grande Ressaca | Big bang / rip-and-replace | Reescrever toda a arquitetura de uma vez, do zero, com a tecnologia ideal. Acabar com a dívida técnica de um só golpe. |
+| **3** | Colheita Silenciosa | Data Fabric sobre os silos, sem blueprint | Sem mover dado nem construir lago: uma camada de catálogo e virtualização conecta WMS, TMS, ERP e IoT onde eles estão, fonte por fonte. Quick wins para a diretoria ver resultado já. |
+| **4** | Grande Ressaca | Big bang para um Data Warehouse corporativo | Modelar de uma vez, de cima para baixo, o DW da empresa inteira e migrar todos os relatórios no mesmo projeto. Uma só verdade, em tabelas dimensionais, acabando com a dívida de um só golpe. |
 | **5** | Tribunal das Leis | Governança antes da tecnologia | Nenhuma linha de código até que padrões, políticas, LGPD e dicionários de dados estejam aprovados. Ordem primeiro, entrega depois. |
 
 ### Como o jogo pontua

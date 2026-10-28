@@ -201,7 +201,7 @@ Para provar que entendeu o porquê, o aluno muda **um fato** e mostra que a resp
 | **LODLog 2028** | 30 CDs, 2 países, cada país com time de dados | Data Mesh | F4 e F6 mudam: há gente nos domínios para ser dona do dado |
 | **LODLog + aquisição** | Compra de uma transportadora com outra nuvem e outro ERP | Data Fabric sobre as duas plataformas | F5 muda: o problema passa a ser integrar plataformas, não silos |
 | **LODLog Tempo Real** | Contrato com rastreio ao vivo para todos os clientes | Kappa (tudo em streaming) | F2 muda: a maioria das perguntas passa a ser em minutos |
-| **LODLog Enxuta** | Orçamento de R$ 300 mil e nenhum engenheiro de dados | Integração incremental com SaaS de BI, começando pelo dado crítico | F4 radicaliza: só cabe a Porta 3, com o risco dela assumido |
+| **LODLog Enxuta** | Orçamento de R$ 300 mil e nenhum engenheiro de dados | Integração incremental com SaaS de BI ligado direto às fontes, sem construir lago, começando pelo dado crítico | F4 radicaliza: só cabe uma versão mínima da Porta 3 (integrar sem mover dado), com o risco dela assumido — sem histórico, a disputa de multa fica sem prova |
 
 ---
 

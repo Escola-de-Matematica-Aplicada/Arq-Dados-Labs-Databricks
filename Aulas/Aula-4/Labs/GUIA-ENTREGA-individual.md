@@ -34,7 +34,7 @@
    Qual é o **elemento crítico de dados** do seu cenário (por exemplo: a entrega e o prazo prometido em A; a leitura de temperatura em B; o saldo do SKU em C; o valor faturado em D) e **por que** ele é crítico — use os critérios do DMBOK: relatório regulatório ou financeiro, operação, satisfação do cliente, estratégia, e o tamanho do prejuízo se ele estiver errado. De que **dados mestres** ele depende (cliente, veículo, CD)? Como ele é gerenciado hoje na LODLog e **quem deveria ser o dono e o steward**? Eles sabem disso? Como você faria com que soubessem?
 
 7. **Conceito de negócio e glossário — 6%**
-   Mostre como o termo central do seu dado crítico **muda de significado entre áreas** (como "entrega" para o financeiro, o entregador, o cliente e a operação) e que números diferentes isso produz. Proponha a **definição oficial** para o glossário — termo, definição, regra de cálculo, dono e steward — e diga onde ela fica no catálogo. Use os dois termos que o grupo registrou no TODO 4 como ponto de partida.
+   Mostre como o termo central do seu dado crítico **muda de significado entre áreas** (como "entrega" para o financeiro, o entregador, o cliente e a operação) e que números diferentes isso produz. Proponha a **definição oficial** para o glossário — termo, definição, regra de cálculo, dono e steward. Diga **o que o catálogo precisa registrar sobre o dado crítico** — o que ele significa, de onde vem (sistema e camada) e quem responde por ele — e onde a definição oficial fica nesse catálogo. Use os dois termos que o grupo registrou no TODO 4 como ponto de partida.
 
 8. **Qualidade e registro de ouro — 6%**
    Para o dado crítico, defina **três regras de qualidade** com dimensão do DMBOK e limite (ex.: completude ≥ 98%), cada limite justificado pelo impacto no negócio. Avalie a decisão do TODO 5 (de onde vem o endereço oficial e o que é endereço válido): o que ela resolve, o que esconde e quem perde poder com ela. Use o scorecard e a análise de impacto da Etapa 7B como evidência. **Onde a causa-raiz deve ser corrigida** — no pipeline ou no processo de quem digita?
@@ -75,8 +75,8 @@ Se quiser ir além, **evolua o notebook do grupo** — mais uma fonte até a Gol
 - [ ] Comparação com ao menos uma arquitetura alternativa
 - [ ] 3 ADRs (armazenamento, movimento, governança) com o que se perde e o gatilho, + 1 contra-cenário
 - [ ] 3+ lições aprendidas, 1 escolha defendida e 1 contestada, próximos passos
-- [ ] Dado crítico do cenário: por que é crítico, de que dados mestres depende, dono e steward
-- [ ] Termo central com significados divergentes entre áreas e a definição oficial proposta para o glossário
+- [ ] Dado crítico do cenário: por que é crítico, de que dados mestres depende, como é gerenciado hoje, dono e steward
+- [ ] Termo central com significados divergentes entre áreas, a definição oficial proposta para o glossário e o registro no catálogo (significado, origem e responsável)
 - [ ] Três regras de qualidade com dimensão e limite justificados + avaliação do registro de ouro (TODO 5)
 - [ ] Maturidade antes × depois, ligada a uma capacidade de negócio da LODLog
 - [ ] Gleicher (D, V, F e R) + dois erros de Kotter + vitória rápida em até 90 dias
