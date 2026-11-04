@@ -1,7 +1,7 @@
 # LAB 2 — Avaliando Arquiteturas com o Modelo LODLog Pronto
 
 **Disciplina** Arquitetura de Dados e Big Data
-**Aula** 2 — Ferramentas para Gerenciamento de Dados Distribuídos (10 de novembro de 2026)
+**Aula** 2 — Ferramentas para Gerenciamento de Dados Distribuídos
 **Duração do Lab** demo de 20 min em aula (20h50–22h20 é dividido com o RPG e a discussão); execução completa em casa
 **Entrega (grupo)** Parecer técnico de 1 página + checklist de "e se...", feitos em casa
 

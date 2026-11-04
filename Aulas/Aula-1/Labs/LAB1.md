@@ -1,7 +1,7 @@
 # LAB 1 — Mapeamento do Ecossistema de Dados e Fundamentos
 
 **Disciplina** Arquitetura de Dados e Big Data
-**Aula** 1 — Tipos de Dados e Contexto de Big Data (22 de setembro de 2026)
+**Aula** 1 — Tipos de Dados e Contexto de Big Data
 **Duração do Lab** ~1h30 (em aula)
 **Entrega** Tabela de classificação preenchida + reflexões em grupo
 

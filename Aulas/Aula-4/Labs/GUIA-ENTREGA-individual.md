@@ -1,6 +1,6 @@
 # GUIA DE ENTREGA INDIVIDUAL — Avaliação pós-projeto do data lake da LODLog (70%)
 
-**Prazo:** 08/12/2026 (15 dias após a última aula — Aula 5, 23/11) · **Formato:** PDF, até ~10 páginas (ou deck equivalente)
+**Prazo:** 08/12/2026 (15 dias após a última aula, a Aula 5) · **Formato:** PDF, até ~10 páginas (ou deck equivalente)
 **Título do documento:** *"Avaliação pós-projeto do data lake da LODLog — [seu nome] — Cenário [A/B/C/D]"*
 
 > **O princípio desta entrega:** o grupo **construiu** o data lake sobre o seed do Databricks (70% pronto + 30% do grupo) e o **apresentou** na Aula 5. Agora você, sozinho, faz o que um líder de dados faz depois de um projeto: **avalia criticamente o que foi construído**, interpreta o resultado para o negócio, **trata o dado mais crítico como um ativo da empresa** e **planeja como a organização vai mudar** para adotar a nova arquitetura. Escreva para convencer um board, com evidência ao lado de cada afirmação. **Não se exige código novo.**

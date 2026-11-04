@@ -1,7 +1,7 @@
 # LAB 3 — Pipelines LODLog: do Desenho à Execução
 
 **Disciplina** Arquitetura de Dados e Big Data
-**Aula** 3 — Organização e Manuseio de Dados em Bases Distribuídas (16 de novembro de 2026)
+**Aula** 3 — Organização e Manuseio de Dados em Bases Distribuídas
 **Duração do Lab** 90 min em aula (20h50–22h20): 3 min de briefing + 30 min de desenho + 35 min de mão na massa no Databricks + 20 min de apresentações + 2 min de síntese
 **Entrega (grupo)** Matriz de decisão + diagrama do pipeline + respostas aos 5 exercícios do notebook + pitch de 3 min
 
@@ -132,7 +132,7 @@ O notebook [`lab3_pipeline_motor_preditivo.py`](lab3_pipeline_motor_preditivo.py
 ## Conexão com o trabalho
 
 - **Trabalho individual (70%, até 08-dez):** a matriz e o diagrama de hoje cobrem a parte "arquitetura proposta com Bronze/Silver/Gold e justificativa batch vs streaming".
-- **Miniprojeto em grupo (30%, apresentação em 23-nov):** o grupo vai construir no Databricks Free Edition uma versão simplificada do pipeline desenhado aqui.
+- **Miniprojeto em grupo (30%, apresentação na Aula 5):** o grupo vai construir no Databricks Free Edition uma versão simplificada do pipeline desenhado aqui.
 
 ## Material opcional
 

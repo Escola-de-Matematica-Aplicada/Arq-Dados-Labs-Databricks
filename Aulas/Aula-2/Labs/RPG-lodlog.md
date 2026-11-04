@@ -1,6 +1,6 @@
 # RPG "As Cinco Torres Isoladas" — O Cenário da LODLog
 
-**Disciplina** Arquitetura de Dados e Big Data — Aula 2 (10/nov/2026)
+**Disciplina** Arquitetura de Dados e Big Data — Aula 2
 **Formato** Dinâmica em grupo, síncrona, sem mestre — 55 min, incluindo a síntese técnica
 **Papel de vocês** O CTO da LODLog (e sua equipe de arquitetura)
 **Material de origem** Cenário baseado em [`Aulas/LODLog/The-Lord-Of-Data-Logistics.md`](../../../docs/LODLog/The-Lord-Of-Data-Logistics.md)

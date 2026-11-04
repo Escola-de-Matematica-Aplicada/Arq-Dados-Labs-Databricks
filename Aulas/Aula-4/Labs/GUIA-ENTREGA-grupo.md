@@ -1,6 +1,6 @@
 # GUIA DE ENTREGA EM GRUPO — Miniprojeto LODLog (30%)
 
-**Quando:** Aula 5 (23/11/2026). A construção começa na Aula 4 (17/11, com checkpoint sem nota) e continua na **primeira metade da Aula 5 (19h00–20h30)**; os pitches (10 min + 5 min de Q&A por grupo; com 5 ou mais grupos, 7 + 3) acontecem na segunda metade.
+**Quando:** Aula 5. A construção começa na Aula 4 (com checkpoint sem nota) e continua na **primeira metade da Aula 5 (19h00–20h30)**; os pitches (10 min + 5 min de Q&A por grupo; com 5 ou mais grupos, 7 + 3) acontecem na segunda metade.
 **Entregáveis:** (1) notebook `lab4_miniprojeto_seed.py` com os 30% completados e executado de ponta a ponta (Etapa 8 toda ✅) · (2) pitch ao vivo na Aula 5 · (3) síntese pós-projeto preliminar de 1 página entregue no dia do pitch
 **Formato do pitch:** até 5 slides (ou 1 slide + prints no Databricks) — "menos é mais" (slide "Pitch do Grupo na Aula 5" da Aula 4)
 
