@@ -4,7 +4,7 @@
 **Entregáveis:** (1) notebook `lab4_miniprojeto_seed.py` com os 30% completados e executado de ponta a ponta (Etapa 8 toda ✅) · (2) pitch ao vivo na Aula 5 · (3) síntese pós-projeto preliminar de 1 página entregue no dia do pitch
 **Formato do pitch:** até 5 slides (ou 1 slide + prints no Databricks) — "menos é mais" (slide "Pitch do Grupo na Aula 5" da Aula 4)
 
-> **O princípio desta entrega:** o grupo recebe o seed do Databricks com **70% do data lake pronto e explicado** e **constrói os 30% restantes**: leva uma fonte semi/não estruturada até a Silver (TODO 1), constrói a Gold do cenário (TODO 2), interpreta a análise de negócio (TODO 3), aplica governança com dois termos no glossário (TODO 4) e decide o registro de ouro do cliente — o dado mais crítico da LODLog (TODO 5). O pitch mostra **o que veio pronto, o que o grupo construiu e o que o número diz ao negócio** — e abre a avaliação pós-projeto, que cada um aprofunda na entrega individual.
+> **O princípio desta entrega:** o grupo recebe o seed do Databricks com **70% do data lake pronto e explicado** e **constrói os 30% restantes**: leva uma fonte semi/não estruturada até a Silver (TODO 1), constrói a Gold do cenário (TODO 2), interpreta a análise de negócio (TODO 3), aplica governança com dois termos no glossário (TODO 4) e decide o registro de ouro do cliente — o dado mais crítico da LODLog (TODO 5). O pitch mostra **o que veio pronto, o que o grupo construiu e o que o número diz ao negócio** — e abre a avaliação pós-projeto, que cada um retoma nas dissertativas da prova.
 
 ---
 
@@ -35,7 +35,7 @@ Substitui relatórios longos de grupo. Quatro seções fixas:
 1. **Mapeamento fonte × camada (tabela única):** para cada fonte usada pelo cenário — tipo, formato, volume, frequência, camada Bronze/Silver/Gold no notebook executado, quem construiu (seed ou grupo) e batch/streaming/CDC com justificativa de 1 linha, citando a força do dossiê que a sustenta (F1 a F6).
 2. **A análise que conduzimos:** a consulta do TODO 3 + print + interpretação de negócio (2–3 linhas).
 3. **Governança sob as 4 lentes:** para cada pilar (qualidade, segurança/LGPD, metadados e glossário, ciclo de vida), uma linha: ✔ cobre (citem o TODO 4) / ✖ não cobre / ➜ cobriríamos com (ação). Sem parágrafo defensivo — a banca prefere o ✖ assumido com plano. Feche com o **dado crítico**: qual é o dado mais crítico do cenário de vocês e por quê, a decisão do TODO 5, o dono e o steward do cliente mestre, os dois termos do glossário e o efeito do endereço ruim na pontualidade.
-4. **Avaliação pós-projeto preliminar:** vantagens × limitações (2+2 bullets) + "o que mudaríamos se recomeçássemos" (1 parágrafo) + lições. *(Cada integrante aprofunda isto na entrega individual.)*
+4. **Avaliação pós-projeto preliminar:** vantagens × limitações (2+2 bullets) + "o que mudaríamos se recomeçássemos" (1 parágrafo) + lições. *(Cada integrante retoma isto nas dissertativas da prova.)*
 
 **Autoavaliação de participação (checkbox obrigatório):** [ ] todos participaram da execução · [ ] todos falaram no pitch · [ ] cada afirmação de arquitetura tem um print/número ao lado.
 

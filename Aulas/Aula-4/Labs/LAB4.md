@@ -3,8 +3,8 @@
 **Disciplina** Arquitetura de Dados e Big Data
 **Aulas** 4 e 5 — Miniprojeto: Construção e Avaliação de Data Lake para a LODLog
 **Organização** Aula 4: teoria curta + construção sobre o seed · Aula 5: 1ª metade para concluir o trabalho, 2ª metade para apresentações e lições aprendidas
-**Entrega**
-- **Individual (70%, até 08/dez — 15 dias após a Aula 5):** avaliação pós-projeto → siga o [`GUIA-ENTREGA-individual.md`](GUIA-ENTREGA-individual.md)
+**Avaliação**
+- **Prova presencial (70%, 1ª chamada 28/11/2026):** objetivas dos Módulos 1–3 + dissertativas sobre o data lake construído aqui → estude pelo [`GUIA-ESTUDO-PROVA.md`](GUIA-ESTUDO-PROVA.md)
 - **Grupo (30%):** notebook seed completado e executado + pitch de 10 min e 5 min de Q&A na Aula 5 → siga o [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md)
 
 > **Como este miniprojeto funciona:** vocês **não começam do zero, mas também não recebem tudo pronto**. O notebook [`lab4_miniprojeto_seed.py`](lab4_miniprojeto_seed.py) entrega **70% do data lake da LODLog pronto e explicado** — sete fontes (estruturadas, semiestruturadas e não estruturadas) na Bronze, quatro delas tratadas na Silver, uma Gold de referência, exemplos de análise e governança e o tratamento do **dado mais crítico da empresa: o cliente e seu endereço**, cadastrados de jeitos diferentes no ERP, no TMS e na planilha comercial (MDM com SQL e IA). Os **30% restantes são do grupo**, em cinco TODOs curtos: levar uma fonte semi/não estruturada até a Silver, construir a Gold do cenário, interpretar a análise de negócio, aplicar governança com glossário e decidir o registro de ouro do cliente. O trabalho avaliado é o de um líder de dados: **decidir regras, escolher a métrica que responde ao negócio, executar, interpretar e avaliar a arquitetura com evidência.**
@@ -72,7 +72,7 @@ Ao final deste miniprojeto, você será capaz de:
 | **Trabalho em grupo** | 19h00–20h30 | ~1h30 | Fechar os TODOs pendentes, TODO 4 (governança e glossário), Run All final, montar o pitch — com o professor circulando |
 | Intervalo | 20h30–20h50 | 15–20 min | — |
 | **Apresentações** | 20h50–21h55 | ~1h05 | Pitch de cada grupo (Etapa 2.3) — 10 + 5 min até 4 grupos; 7 + 3 com 5 ou mais |
-| **Fechamento** | 21h55–22h20 | 25 min | Lições aprendidas da disciplina e preparação da entrega individual |
+| **Fechamento** | 21h55–22h20 | 25 min | Lições aprendidas da disciplina e preparação para a prova |
 
 ---
 
@@ -141,7 +141,7 @@ O notebook do grupo é o [`lab4_miniprojeto_seed.py`](lab4_miniprojeto_seed.py).
 As entregas têm guia próprio, com estrutura, pesos da rubrica (slides "Como Você Será Avaliado" da Aula 4) e checklist de submissão:
 
 - **Grupo (30%, Aula 5):** [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md) — o notebook seed com os 30% completados e executado de ponta a ponta (Etapa 8 toda ✅) + pitch de 10 min e 5 min de Q&A + 1 página de síntese pós-projeto preliminar.
-- **Individual (70%, até 08/12/2026 — 15 dias após a Aula 5):** [`GUIA-ENTREGA-individual.md`](GUIA-ENTREGA-individual.md) — "Avaliação pós-projeto do data lake da LODLog": relatório executivo que parte do data lake que o grupo construiu e avalia criticamente a arquitetura, interpreta os resultados para o negócio, compara com uma alternativa e registra as lições aprendidas. Não exige código novo.
+- **Prova presencial (70%, 1ª chamada 28/11/2026 · 2ª chamada 18/12 · verificação suplementar 30/01):** [`GUIA-ESTUDO-PROVA.md`](GUIA-ESTUDO-PROVA.md) — objetivas sobre os conceitos dos Módulos 1 a 3 e dissertativas que partem do data lake que o grupo construiu: avaliar criticamente a arquitetura, interpretar os resultados para o negócio, comparar com uma alternativa e registrar as lições aprendidas.
 
 Em ambas, o critério de ouro é o mesmo da disciplina: **toda afirmação de arquitetura precisa de uma evidência** (um número do console, uma query, uma linha de DDL, um quadro do diagrama) — ou de uma pergunta honesta ("não testamos X; testaríamos assim").
 

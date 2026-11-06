@@ -1446,6 +1446,6 @@ print("═" * 72)
 # MAGIC - **Análise:** a pergunta, a consulta e a frase para a diretoria (TODO 3).
 # MAGIC - **Dado crítico:** quantos registros viraram quantos clientes mestres, de onde vem o endereço oficial,
 # MAGIC   a definição de "endereço válido" e o efeito na pontualidade (TODO 5, Etapa 7B). Quem é o dono e o steward?
-# MAGIC - **Avaliação pós-projeto (preliminar):** 2 vantagens, 2 limitações e 1 lição. A versão completa é a entrega individual.
+# MAGIC - **Avaliação pós-projeto (preliminar):** 2 vantagens, 2 limitações e 1 lição. A versão completa cai nas dissertativas da prova.
 # MAGIC
 # MAGIC > 🧹 *Para recomeçar do zero:* `DROP SCHEMA lodlog_gold CASCADE` (idem silver e bronze) e Run All.

@@ -21,8 +21,8 @@ https://www.databricks.com/learn/free-edition (gratuito, sem cartão; compute Se
 | 3 | [LAB 3](Aulas/Aula-3/Labs/LAB3.md) | Desenhar o pipeline por domínio e executá-lo, em lote e streaming, até o motor preditivo | sim — `lab3_pipeline_motor_preditivo.py` |
 | 4–5 | [LAB 4](Aulas/Aula-4/Labs/LAB4.md) | Miniprojeto: construir e avaliar o data lake do seu cenário | sim — `lab4_miniprojeto_starter.py` |
 
-**Entregas:** [guia do grupo (30%)](Aulas/Aula-4/Labs/GUIA-ENTREGA-grupo.md) ·
-[guia individual (70%)](Aulas/Aula-4/Labs/GUIA-ENTREGA-individual.md)
+**Avaliação:** [guia do trabalho em grupo (30%)](Aulas/Aula-4/Labs/GUIA-ENTREGA-grupo.md) ·
+[guia de estudo da prova (70%)](Aulas/Aula-4/Labs/GUIA-ESTUDO-PROVA.md)
 
 **Cenário:** [The Lord of Data Logistics](docs/LODLog/The-Lord-Of-Data-Logistics.md) ·
 [por que esta arquitetura? (dossiê de decisões)](docs/LODLog/Por-que-esta-arquitetura.md) ·

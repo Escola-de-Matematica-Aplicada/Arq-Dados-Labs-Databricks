@@ -6,6 +6,19 @@
 > **Duracao:** 24h (5 aulas de ~3h20min)  
 > **Foco:** Arquitetura de dados, modelagem, pipelines ETL/ELT, qualidade e preparacao para ML/IA — com menos dependencia de vendor de nuvem e maior profundidade tecnica em dados.
 
+> ### Aviso para a turma de Arquitetura de Dados e Big Data
+>
+> Este documento e **material de referencia de uma disciplina irma** (Engenharia de Dados para IA e Analytics).
+> Ele esta publicado aqui porque o cenario da LODLog — a empresa, os dados, os numeros e o problema de negocio —
+> e o mesmo das duas disciplinas, e vale como fonte de consulta.
+>
+> **O que NAO se aplica a Arquitetura de Dados e Big Data:** as secoes 12 e 13 (rubrica e entregaveis do
+> "Projeto Individual (70% da nota)"). Nesta disciplina a avaliacao e **prova presencial individual (70%) +
+> trabalho em grupo (30%)**, e **nao ha entrega individual**. Modelagem dimensional completa (star schema) e
+> feature engineering / treino de modelos de ML estao **fora do escopo** desta disciplina — se um modelo aparecer,
+> trate-o como consumidor da camada Gold. As regras que valem aqui estao em
+> `Aulas/Aula-4/Labs/GUIA-ENTREGA-grupo.md` (trabalho em grupo) e `Aulas/Aula-4/Labs/GUIA-ESTUDO-PROVA.md` (prova).
+
 ---
 
 # 1. Cenario de Negocio

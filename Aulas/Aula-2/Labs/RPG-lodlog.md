@@ -136,7 +136,7 @@ A gamificação termina, o aprendizado começa a virar artefato. Cada grupo mape
 
 **Entregável do grupo:** 1 slide com (a) a porta que defenderam (ou a oculta, se a abriram), (b) justificativa batch × streaming por domínio, e (c) o **contrato mínimo** que exigiriam na Silver da frota: schema + regras de qualidade + SLA de atualização + lineage.
 
-Esse slide é o ensaio geral do miniprojeto das Aulas 4 e 5 (trabalho em grupo, 30%) — onde vocês vão CONSTRUIR no Databricks o lakehouse que aqui apenas defenderam.
+Esse slide é o ensaio geral do miniprojeto das Aulas 4 e 5 (trabalho em grupo, 30%) — onde vocês vão CONSTRUIR no Databricks o lakehouse que aqui apenas defenderam — e das questões dissertativas da prova, que cobram a mesma defesa por escrito.
 
 ---
 

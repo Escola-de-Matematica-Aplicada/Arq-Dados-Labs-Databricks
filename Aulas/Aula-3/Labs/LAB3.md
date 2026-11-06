@@ -131,7 +131,7 @@ O notebook [`lab3_pipeline_motor_preditivo.py`](lab3_pipeline_motor_preditivo.py
 
 ## Conexão com o trabalho
 
-- **Trabalho individual (70%, até 08-dez):** a matriz e o diagrama de hoje cobrem a parte "arquitetura proposta com Bronze/Silver/Gold e justificativa batch vs streaming".
+- **Prova presencial (70%, 1ª chamada 28-nov):** a matriz e o diagrama de hoje são material de estudo direto — as dissertativas cobram Bronze/Silver/Gold e a justificativa de batch × streaming sobre o cenário da LODLog.
 - **Miniprojeto em grupo (30%, apresentação na Aula 5):** o grupo vai construir no Databricks Free Edition uma versão simplificada do pipeline desenhado aqui.
 
 ## Material opcional

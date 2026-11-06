@@ -224,10 +224,10 @@ GATILHO: revisaríamos se ____________________________________
 - **Pitch, bloco 2 (arquitetura comentada):** além das 3 setas (onde entra a sujeira, onde é barrada, onde nasce o número), **um ADR** da decisão mais importante para o cenário do grupo, com "o que perdemos".
 - **Síntese de 1 página:** a seção 1 (fonte × camada) ganha uma coluna **"por que esta ingestão"** ligada a uma força (F1–F6).
 
-### 7.3 Individual (70%)
+### 7.3 Prova (70%)
 
-- **Parte B.4 (vantagens e limitações):** **três ADRs** do cenário — um de armazenamento (D1/D2), um de movimento (D4–D7) e um de governança (D3/D8/D9) — e **um contra-cenário** da seção 6 mostrando que a resposta muda.
-- **Parte D.9 (maturidade):** o roteiro com os **gatilhos** da seção 5 (D10) para o cenário do aluno.
+- **Bloco B (avaliação pós-projeto):** os **ADRs** do cenário — de armazenamento (D1/D2), de movimento (D4–D7) e de governança (D3/D8/D9) — e o **contra-cenário** da seção 6 mostrando que a resposta muda.
+- **Bloco D (maturidade):** o roteiro com os **gatilhos** da seção 5 (D10) aplicado ao cenário do aluno.
 
 ---
 
@@ -239,4 +239,4 @@ GATILHO: revisaríamos se ____________________________________
 | 2 | Antes da "Matriz Decisória" | As 6 forças (seção 4) e D1 com a tabela "por que não, para a LODLog de hoje". No RPG, as consequências de cada porta são narradas **pelas forças** (ex.: "Porta 1 cai em F4: os CDs não têm ninguém de dados"). |
 | 3 | Fechamento da teoria ("Pipeline fim a fim") | D4–D7 em um slide de ADRs. Lab 3: a matriz de decisão ganha a coluna "por que não a alternativa". |
 | 4 | "Lakehouse LODLog — Posicionando a Solução" | Trocar a recomendação afirmada pela cadeia de decisões D1–D9. Teste de "E se" ligado aos gatilhos. |
-| 5 | "Linha Narrativa — M1 → M4" | Trocar por "Dor → Decisão → Gatilho": cada módulo com a decisão que tomou e o gatilho que a reverte. Ponte para as ADRs da entrega individual. |
+| 5 | "Linha Narrativa — M1 → M4" | Trocar por "Dor → Decisão → Gatilho": cada módulo com a decisão que tomou e o gatilho que a reverte. Ponte para as ADRs cobradas nas dissertativas da prova. |

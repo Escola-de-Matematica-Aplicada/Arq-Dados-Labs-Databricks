@@ -135,7 +135,7 @@ O facilitador roda `lab2-nosql-simulation.py` (ou cada grupo executa Run All). C
 
 ## Parte 4 — Entrega do Grupo: Parecer Técnico (15 min em aula + 20 min em casa)
 
-> 💡 *É isto — e só isto — que o grupo entrega. Nada de diagrama novo, nada de reescrever SQL. O miniprojeto da Aula 4-5 (trabalho em grupo, 30%) vai CONSTRUIR um lakehouse; este parecer é o músculo de AVALIAR, que a banca mais cobra: justificativa.*
+> 💡 *É isto — e só isto — que o grupo entrega. Nada de diagrama novo, nada de reescrever SQL. O miniprojeto da Aula 4-5 (trabalho em grupo, 30%) vai CONSTRUIR um lakehouse; este parecer é o músculo de AVALIAR, que as dissertativas da prova mais cobram: justificativa.*
 
 **Formato:** 1 página (ou 1 slide), 4 seções:
 
