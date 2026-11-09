@@ -24,6 +24,9 @@ https://www.databricks.com/learn/free-edition (gratuito, sem cartão; compute Se
 **Avaliação:** [guia do trabalho em grupo (30%)](Aulas/Aula-4/Labs/GUIA-ENTREGA-grupo.md) ·
 [guia de estudo da prova (70%)](Aulas/Aula-4/Labs/GUIA-ESTUDO-PROVA.md)
 
+**Descoberta:** [as 26 perguntas da sessão de desenho de arquitetura (ADS)](docs/ref/ADS-questionario-serra.md),
+distribuídas pelos cinco labs — a Ficha ADS do grupo vira o quadro branco do miniprojeto.
+
 **Cenário:** [The Lord of Data Logistics](docs/LODLog/The-Lord-Of-Data-Logistics.md) ·
 [por que esta arquitetura? (dossiê de decisões)](docs/LODLog/Por-que-esta-arquitetura.md) ·
 [diagramas do modelo de dados](Diagramas/)

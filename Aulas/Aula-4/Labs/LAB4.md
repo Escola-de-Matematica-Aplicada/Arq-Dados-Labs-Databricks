@@ -47,9 +47,10 @@ Ao final deste miniprojeto, você será capaz de:
 1. **Executar** um pipeline Medallion completo (Bronze → Silver → Gold) sobre dados semiestruturados e estruturados, e **explicar** o que cada camada transformou.
 2. **Conduzir** análises sobre a camada Gold e **auditar** a qualidade dos dados com SQL — usando as anomalias propositais do seed como material de prova.
 3. **Aplicar** os 4 pilares de governança (qualidade, segurança/LGPD, metadados e glossário, ciclo de vida) como **lentes de avaliação** sobre uma arquitetura existente.
-4. **Tratar o dado crítico** da empresa como dado mestre: padronizar, casar os registros dos três sistemas, medir a qualidade e **decidir** o registro de ouro — e nomear quem responde por ele.
-5. **Justificar** — e quando for o caso, **contestar com evidência** — escolhas arquiteturais: batch vs streaming, ETL vs ELT, Lambda vs Kappa, SCD, centralização vs Mesh.
-6. **Comunicar** decisões de arquitetura para uma banca executiva: parecer, números e lições — não slides decorados.
+4. **Conduzir a parte de governança da descoberta de uma ADS** (a sessão de desenho de arquitetura iniciada no LAB 1): continuidade, dado mestre, limites contratuais e soberania — e distinguir uma resposta de "a confirmar, com responsável" de uma resposta inventada.
+5. **Tratar o dado crítico** da empresa como dado mestre: padronizar, casar os registros dos três sistemas, medir a qualidade e **decidir** o registro de ouro — e nomear quem responde por ele.
+6. **Justificar** — e quando for o caso, **contestar com evidência** — escolhas arquiteturais: batch vs streaming, ETL vs ELT, Lambda vs Kappa, SCD, centralização vs Mesh.
+7. **Comunicar** decisões de arquitetura para uma banca executiva: parecer, números e lições — não slides decorados.
 
 ---
 
@@ -62,7 +63,7 @@ Ao final deste miniprojeto, você será capaz de:
 | **Teoria curta** | 19h00–19h40 | 40 min | Pântano + 4 pilares de governança (qualidade do dado crítico, segurança, metadados e glossário, ciclo de vida) + checklist |
 | **Prática — Parte 1** | 19h40–20h40 | 60 min | Briefing + escolha do cenário + Etapa 2.1 (Run All do seed, leitura do que veio pronto) + TODO 1 |
 | Intervalo | 20h40–20h55 | 15 min | — |
-| **Prática — Parte 2** | 20h55–22h05 | 70 min | Etapa 2.2: TODO 2 (Gold do cenário), TODO 3 (interpretação) e TODO 5 (registro de ouro do cliente) |
+| **Prática — Parte 2** | 20h55–22h05 | 70 min | Etapa 2.2: TODO 2 (Gold do cenário), TODO 3 (interpretação), TODO 5 (registro de ouro do cliente) e a **Ficha ADS, bloco 4** |
 | **Checkpoint** | 22h05–22h20 | 15 min | Cada grupo mostra a Etapa 8 do notebook (✅/⬜) e o que falta para a Aula 5 |
 
 **Aula 5 — concluir, apresentar e avaliar:**
@@ -116,9 +117,21 @@ O notebook do grupo é o [`lab4_miniprojeto_seed.py`](lab4_miniprojeto_seed.py).
 ### Etapa 2.2 — Gold e análise do cenário (Aula 4, 70 min)
 
 1. **TODO 2** (\~20 min): no modelo de Gold do seu cenário, troque `CAST(NULL AS DOUBLE)` pela fórmula da métrica-chave (a dica está no comentário). A Gold junta uma fonte **estruturada** com a fonte **semi/não estruturada** do TODO 1 — é a integração exigida na entrega.
-2. **TODO 3** (\~15 min): a consulta do cenário já vem pronta. Escreva a pergunta de negócio e a interpretação: *"o que eu diria ao diretor com este número? que decisão ele apoia?"*
-3. **TODO 5** (\~25 min) — **o dado mais crítico da LODLog** (Etapa 7B do notebook). Rodem as células prontas e leiam: o mesmo cliente nos três sistemas, a padronização por regra e por IA, a tabela de-para e o scorecard de qualidade. Então decidam, como um conselho de dados decidiria: **de onde vem o endereço oficial** (ERP, a versão mais usada no TMS ou a mais completa) e **o que é um endereço válido para entrega** (que regras valem). A célula seguinte grava o registro de ouro, leva os termos ao glossário com dono e steward e mostra quanto o endereço ruim custa em pontualidade.
-4. **Para quem terminar antes — 1 teste de "E se"** (vira ponto forte no pós-projeto):
+2. **TODO 3** (\~10 min): a consulta do cenário já vem pronta. Escreva a pergunta de negócio e a interpretação: *"o que eu diria ao diretor com este número? que decisão ele apoia?"*
+3. **TODO 5** (\~20 min) — **o dado mais crítico da LODLog** (Etapa 7B do notebook). Rodem as células prontas e leiam: o mesmo cliente nos três sistemas, a padronização por regra e por IA, a tabela de-para e o scorecard de qualidade. Então decidam, como um conselho de dados decidiria: **de onde vem o endereço oficial** (ERP, a versão mais usada no TMS ou a mais completa) e **o que é um endereço válido para entrega** (que regras valem). A célula seguinte grava o registro de ouro, leva os termos ao glossário com dono e steward e mostra quanto o endereço ruim custa em pontualidade.
+4. **Ficha ADS — bloco 4: o que protege e o que não pode parar** (\~15 min). Continuem o documento "Ficha ADS — LODLog" aberto no LAB 1. Estas cinco perguntas são as que a governança responde — e **ADS-12 é, literalmente, o TODO 5 que vocês acabaram de fazer**. Redação completa em [`docs/ref/ADS-questionario-serra.md`](../../../docs/ref/ADS-questionario-serra.md); a regra de não citar produto continua valendo.
+
+   | Código | Pergunta de descoberta | Resposta do grupo | Evidência |
+   |---|---|---|---|
+   | **ADS-11** | Qual é a exigência de continuidade e de recuperação de desastre — RTO (Recovery Time Objective, em quanto tempo o serviço precisa voltar) e RPO (Recovery Point Objective, quanto de dado se aceita perder)? *(pilar Ciclo de Vida e Operação; a evidência que a LODLog dá é a disputa de multa que exige provar uma entrega de até 24 meses atrás e a operação que roda de madrugada e em fim de semana — o resto é "a confirmar")* | | |
+   | **ADS-12** | A empresa precisa de dado mestre (MDM — Master Data Management, o registro único de cada cliente, lugar ou produto)? De qual entidade, primeiro? | | |
+   | **ADS-13** | Há cláusula de contrato com clientes que limite guardar o dado deles na nuvem? | | |
+   | **ADS-14** | A solução exige acesso 24 horas por dia, 7 dias por semana — ou cabe uma janela de manutenção? | | |
+   | **ADS-24** | Quais são os requisitos de segurança? Há exigência de o dado não sair do país (soberania)? | | |
+
+   Duas respostas valem ponto no pitch se forem honestas: **ADS-11** quase sempre volta como "nunca pensamos nisso" — e Serra diz que essa é justamente a função da pergunta; e **ADS-13** costuma exigir ler um contrato que ninguém no projeto leu. Nos dois casos, a resposta correta é "a confirmar, com responsável X" — que vai para o **estacionamento** do quadro branco da Aula 5, não para o vazio.
+
+5. **Para quem terminar antes — 1 teste de "E se"** (vira ponto forte no pós-projeto):
    - Mude a regra de qualidade da Silver do TODO 1 → o que muda na Gold e na conclusão?
    - Rode a Silver sem o `DISTINCT` → quantas duplicatas chegariam à Gold? Isso é a armadilha da "Colheita Silenciosa" (RPG da Aula 2)?
    - Sua Gold tem `cliente_id` ou `motorista_id`? Que pilar da LGPD isso aciona e em qual camada vocês tratariam?
@@ -127,12 +140,33 @@ O notebook do grupo é o [`lab4_miniprojeto_seed.py`](lab4_miniprojeto_seed.py).
 
 Às 22h05, checkpoint: cada grupo mostra a Etapa 8 do notebook ao professor (formativo, sem nota).
 
-### Etapa 2.3 — Concluir e apresentar (Aula 5)
+### Etapa 2.3 — Concluir, fechar a ADS e apresentar (Aula 5)
 
-- **19h00–20h30:** concluir os TODOs pendentes, fazer o **TODO 4** (governança e glossário), rodar o Run All final com tudo ✅ e montar o pitch.
-- **20h50–21h55:** **pitch de cada grupo** (10 min + 5 min de Q&A; com 5 ou mais grupos, 7 + 3) — formato no [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md). Essência: cenário e pergunta → arquitetura (o que veio pronto × o que o grupo construiu) e por quê (1 ADR) → números da Etapa 8 → insight de negócio → avaliação pós-projeto preliminar.
+- **19h05–19h50:** concluir os TODOs pendentes, fazer o **TODO 4** (governança e glossário) e rodar o Run All final com tudo ✅.
+- **19h50–20h10 — as duas últimas perguntas da ADS.** Só agora, com a arquitetura na mesa, entram as restrições que Serra deixa para o fim, porque são elas que transformam "pensar grande" em "começar pequeno":
 
-> ⚠️ *Diagrama novo não é exigido. O exigido é o fluxo do seed **comentado por vocês**: onde entra a sujeira, onde ela é barrada e onde nasce o número do dashboard.*
+  | Código | Pergunta de descoberta | Resposta do grupo | Evidência |
+  |---|---|---|---|
+  | **ADS-17** | Qual é o orçamento? O que ele obriga a trocar — desempenho por custo, ou escopo por prazo? | | |
+  | **ADS-18** | Qual é o prazo planejado? O que dá para entregar dentro dele, e o que fica para a segunda onda? | | |
+
+  Em seguida, o **plano de ação** (o 2º entregável de toda ADS): das 8 fontes mapeadas no LAB 1, **quais duas ou três entram primeiro** — alto valor, baixo esforço — e por quê. Uma frase por fonte.
+
+- **20h10–20h30 — montar o quadro branco (e, com ele, o pitch).** Serra fecha uma ADS com um quadro, não com slides. Transformem os cinco blocos da Ficha ADS neste quadro de cinco campos (ele **substitui** o slide de arquitetura do pitch):
+
+  | Campo | O que entra |
+  |---|---|
+  | **Objetivos priorizados** | o que a arquitetura precisa entregar, em ordem — começando pela pergunta de negócio do cenário |
+  | **Dores** | a lista numerada de ADS-21 (LAB 3), com ✔ em cada dor que a arquitetura de vocês resolve |
+  | **Arquitetura (rascunho)** | fontes → Bronze → Silver → Gold → consumo, marcando o que veio pronto e o que o grupo construiu |
+  | **Estacionamento** | o que ficou "a confirmar" (ADS-11, ADS-13, ADS-15...), as perguntas que vocês inventaram no LAB 1 e o que é assunto de outra disciplina |
+  | **Encaminhamentos** | o que vocês fariam em seguida, **com responsável**: prova de conceito, nova fonte, conversa com a área |
+
+  > ⚠️ **Dor sem ✔ não é falha de grupo — é reunião marcada.** Serra é explícito: se a sessão não resolveu tudo, agenda-se o resto. Grupo que assume uma dor em aberto com encaminhamento pontua mais do que grupo que varre a dor para debaixo do tapete.
+
+- **20h50–21h55:** **pitch de cada grupo** (10 min + 5 min de Q&A; com 5 ou mais grupos, 7 + 3) — formato no [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md). Essência: cenário e pergunta → **quadro branco** (o que veio pronto × o que o grupo construiu) e por quê (1 ADR) → números da Etapa 8 → insight de negócio → avaliação pós-projeto preliminar.
+
+> ⚠️ *Diagrama bonito não é exigido — o quadro branco é deliberadamente feio. O exigido é o fluxo do seed **comentado por vocês**: onde entra a sujeira, onde ela é barrada e onde nasce o número do dashboard, cercado pelos objetivos, pelas dores e pelos encaminhamentos.*
 
 ---
 
@@ -140,7 +174,7 @@ O notebook do grupo é o [`lab4_miniprojeto_seed.py`](lab4_miniprojeto_seed.py).
 
 As entregas têm guia próprio, com estrutura, pesos da rubrica (slides "Como Você Será Avaliado" da Aula 4) e checklist de submissão:
 
-- **Grupo (30%, Aula 5):** [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md) — o notebook seed com os 30% completados e executado de ponta a ponta (Etapa 8 toda ✅) + pitch de 10 min e 5 min de Q&A + 1 página de síntese pós-projeto preliminar.
+- **Grupo (30%, Aula 5):** [`GUIA-ENTREGA-grupo.md`](GUIA-ENTREGA-grupo.md) — o notebook seed com os 30% completados e executado de ponta a ponta (Etapa 8 toda ✅) + o **quadro branco da ADS** (objetivos, dores, arquitetura, estacionamento e encaminhamentos — o artefato de fechamento da sessão de desenho de arquitetura, alimentado pelos cinco blocos da Ficha ADS) + pitch de 10 min e 5 min de Q&A + 1 página de síntese pós-projeto preliminar.
 - **Prova presencial (70%, 1ª chamada 28/11/2026 · 2ª chamada 18/12 · verificação suplementar 30/01):** [`GUIA-ESTUDO-PROVA.md`](GUIA-ESTUDO-PROVA.md) — objetivas sobre os conceitos dos Módulos 1 a 3 e dissertativas que partem do data lake que o grupo construiu: avaliar criticamente a arquitetura, interpretar os resultados para o negócio, comparar com uma alternativa e registrar as lições aprendidas.
 
 Em ambas, o critério de ouro é o mesmo da disciplina: **toda afirmação de arquitetura precisa de uma evidência** (um número do console, uma query, uma linha de DDL, um quadro do diagrama) — ou de uma pergunta honesta ("não testamos X; testaríamos assim").
@@ -153,6 +187,7 @@ Em ambas, o critério de ouro é o mesmo da disciplina: **toda afirmação de ar
 - **Plano de ensino** (eClass): Módulo 4 e Avaliação.
 - **Artefatos prontos:** ver tabela "O que vocês recebem pronto" no topo.
 - **Dossiê "Por que esta arquitetura?"** ([`docs/LODLog/Por-que-esta-arquitetura.md`](../../../docs/LODLog/Por-que-esta-arquitetura.md)): restrições da LODLog, seis forças, decisões D0–D10 e contra-cenários.
+- **Questionário da ADS** ([`docs/ref/ADS-questionario-serra.md`](../../../docs/ref/ADS-questionario-serra.md)): as 26 perguntas de descoberta, a distribuição pelos labs e os cinco campos do quadro branco. Fonte: Serra (2024), cap. 3.
 - **LAB 2 refeito** (`../../Aula-2/Labs/LAB2.md`): o parecer técnico do grupo é o modelo do que se espera de justificativa arquitetural aqui.
 - **Referências complementares:** Serra (2024) cap. 3–5; Inmon et al. (2019); Kleppmann (2017) cap. 1–3.
 

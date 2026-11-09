@@ -2,8 +2,8 @@
 
 **Disciplina** Arquitetura de Dados e Big Data
 **Aula** 2 — Ferramentas para Gerenciamento de Dados Distribuídos
-**Duração do Lab** demo de 20 min em aula (20h50–22h20 é dividido com o RPG e a discussão); execução completa em casa
-**Entrega (grupo)** Parecer técnico de 1 página + checklist de "e se...", feitos em casa
+**Duração do Lab** demo de 15 min + Ficha ADS de 15 min em aula (20h50–22h20 é dividido com o RPG); execução completa em casa
+**Entrega (grupo)** Ficha ADS — a sessão de desenho de arquitetura aberta no LAB 1 — bloco 2 de 5 + parecer técnico de 1 página + checklist de "e se...", feitos em casa
 
 > **Como este lab funciona:** vocês **não vão modelar do zero**. A consultoria de dados da LODLog já entregou os scripts (`lodlog_modelo_dados_free.sql`), o seed de dados, os diagramas do modelo (`/Diagramas/`) e notebooks prontos para executar no Databricks Free Edition. O trabalho de vocês é o que um executivo de dados **realmente** faz no dia a dia: **executar, inspecionar, questionar e avaliar** as escolhas arquiteturais de outros — aprovando, contestando ou propondo evolução.
 
@@ -39,7 +39,8 @@ Ao final deste lab, você será capaz de:
 2. **Executar** a DDL do modelo LODLog e o ETL que popula `lodlog_dw` a partir de `lodlog_op`, e **ler** criticamente o resultado: ER 3FN e Star Schema com escolhas de projeto (PK (chave primária) e FK (chave estrangeira), surrogate keys, SCD, mini-dimensão).
 3. **Avaliar criticamente** uma arquitetura de dados: reconhecer por que cada escolha foi feita, quais armadilhas ela evita e onde ela quebraria.
 4. **Conectar** a escolha de arquitetura (DW/Lake/Lakehouse/Mesh/Fabric) aos objetivos e ao tamanho do negócio.
-5. **Redigir** um parecer técnico curto — o artefato que um líder de dados usa para defender ou contestar uma arquitetura diante da diretoria.
+5. **Responder as perguntas de consumo da ADS** (a sessão de desenho de arquitetura iniciada no LAB 1) — quem usa o dado, com que ferramenta e com que nível técnico — e usá-las para sustentar a escolha entre Warehouse, Lake, Lakehouse e Mesh.
+6. **Redigir** um parecer técnico curto — o artefato que um líder de dados usa para defender ou contestar uma arquitetura diante da diretoria.
 
 ---
 
@@ -133,13 +134,33 @@ O facilitador roda `lab2-nosql-simulation.py` (ou cada grupo executa Run All). C
 
 ---
 
-## Parte 4 — Entrega do Grupo: Parecer Técnico (15 min em aula + 20 min em casa)
+## Parte 4 — Ficha ADS: quem consome e como (15 min em aula)
+
+> 💡 *No LAB 1 vocês descobriram **de onde vem** o dado da LODLog. As cinco perguntas de hoje descobrem **quem o consome** — e é esse lado que decide, mais do que qualquer outro, entre Data Warehouse, Data Lake, Lakehouse e Data Mesh. Serra é explícito: usuário final leigo com muita autonomia empurra para o modelo dimensional; usuário técnico permite o lakehouse cru.*
+
+Continuem no mesmo documento aberto no LAB 1 ("Ficha ADS — LODLog"), agora no bloco 2. **Continua valendo a regra: nenhuma resposta cita produto.** Redação completa das perguntas em [`docs/ref/ADS-questionario-serra.md`](../../../docs/ref/ADS-questionario-serra.md).
+
+| Código | Pergunta de descoberta | Resposta do grupo | Evidência |
+|---|---|---|---|
+| **ADS-07** | A LODLog vai usar painéis, consultas livres (*ad hoc*) ou os dois? Quem usa cada um? | | |
+| **ADS-08** | As consultas serão em lote (fechamento, D-1) ou interativas (alguém esperando a resposta na tela)? | | |
+| **ADS-15** | Quantos usuários simultâneos no pico? E na média? | | |
+| **ADS-16** | Qual é o nível técnico dos usuários finais — o supervisor que hoje vive na planilha consegue escrever uma consulta? | | |
+| **ADS-26** | Quanto de autoatendimento em BI (Business Intelligence, relatórios e painéis feitos pelo próprio usuário) a empresa quer? | | |
+
+**A virada do lab (respondam em 3 linhas, direto na ficha):** as respostas de ADS-16 e ADS-26 **sustentam ou contradizem** a arquitetura que o modelo entregue pela consultoria assume? Um star schema bem desenhado é a resposta clássica para "usuário leigo com muito autoatendimento" — vocês encontraram esse usuário na LODLog, ou inventaram um usuário técnico que não existe?
+
+> 📌 *ADS-15 é a pergunta que mais some das conversas de arquitetura — e é a que derruba produto em produção. Se o grupo não souber o número, escrevam "a confirmar com a operação" e levem para o estacionamento do quadro branco. Chute não é resposta de ADS.*
+
+---
+
+## Parte 5 — Entrega do Grupo: Parecer Técnico (15 min em casa)
 
 > 💡 *É isto — e só isto — que o grupo entrega. Nada de diagrama novo, nada de reescrever SQL. O miniprojeto da Aula 4-5 (trabalho em grupo, 30%) vai CONSTRUIR um lakehouse; este parecer é o músculo de AVALIAR, que as dissertativas da prova mais cobram: justificativa.*
 
 **Formato:** 1 página (ou 1 slide), 4 seções:
 
-1. **Parecer (5–8 linhas):** que arquitetura vocês recomendam para a LODLog **hoje** e qual a **evolução proposta para 3 anos** (a partir do cenário da Atividade "E se..." 1). Citem ao menos 2 critérios da matriz decisória da aula (dados, custo, governança, maturidade, escala).
+1. **Parecer (5–8 linhas):** que arquitetura vocês recomendam para a LODLog **hoje** e qual a **evolução proposta para 3 anos** (a partir do cenário da Atividade "E se..." 1). Citem ao menos 2 critérios da matriz decisória da aula (dados, custo, governança, maturidade, escala) **e ao menos 2 respostas da Ficha ADS pelo código** (por exemplo: "ADS-16 mostrou usuário final leigo, então...").
 2. **Dois "aprovamos":** duas escolhas do modelo entregue que vocês sustentariam sem mudança (ex.: mini-dimensão, SCD2 em cliente, Bronze imutável) — cada uma com **um** argumento de negócio, não técnico.
 3. **Um "contestamos ou evoluímos":** uma escolha que vocês mudariam ou monitorariam de perto, com risco e mitigação (usem o vocabulário do RPG: armadilha, contrato de dados, governança federada leve, dívida técnica).
 4. **Evidência da execução:** os 3 números do console da Atividade 1.1 (linhas Bronze/Silver/Gold) + print de uma consulta da Atividade 3.4.
@@ -154,6 +175,7 @@ Autoavaliação rápida (checkbox na entrega): [ ] todos do grupo participaram d
 - **Plano de ensino** (eClass): Módulo 2.
 - **Modelo de dados (pronto):** `lodlog_modelo_dados_free.sql` (nesta pasta).
 - **Diagramas (prontos):** [`/Diagramas/LODLog_op_v3.png`](../../../Diagramas/LODLog_op_v3.png) e [`/Diagramas/LODLog_dw_v3.png`](../../../Diagramas/LODLog_dw_v3.png).
+- **Questionário da ADS** ([`docs/ref/ADS-questionario-serra.md`](../../../docs/ref/ADS-questionario-serra.md)): as 26 perguntas de descoberta e o que cada uma decide. Fonte: Serra (2024), cap. 3.
 - **RPG "As Cinco Torres Isoladas"** — enunciado do aluno com o cenário LODLog em [`RPG-lodlog.md`](RPG-lodlog.md) (nesta pasta); materiais completos em `docs/Aulas-de-outros-cursos/Aula 8 Arquitetura de Dados/`. Roda na abertura da parte prática e conversa com as Partes 1 e 3 deste lab.
 
 **Dica do Professor:** Vocês não precisam saber desenhar um Star Schema de cabeça para decidir bem — precisam saber **ler** um e perguntar "por quê?". O ER opera (transações); o Star analisa (agregações); o Medallion refina (confiança crescente). Um parecer maduro mostra que você entende as três frases.
