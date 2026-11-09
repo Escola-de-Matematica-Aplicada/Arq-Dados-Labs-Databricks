@@ -3,7 +3,7 @@
 
 > **Disciplina:** Engenharia de Dados para Inteligencia Artificial e Analytics  
 > **Curso:** MBA em Inteligencia Artificial para Negocios  
-> **Duracao:** 24h (5 aulas de ~3h20min)  
+> **Duracao:** 24h (5 aulas de \~3h20min)  
 > **Foco:** Arquitetura de dados, modelagem, pipelines ETL/ELT, qualidade e preparacao para ML/IA — com menos dependencia de vendor de nuvem e maior profundidade tecnica em dados.
 
 > ### Aviso para a turma de Arquitetura de Dados e Big Data
@@ -30,7 +30,7 @@
 - **450 veiculos** de carga (leves, medios e pesados)
 - **12 centros de distribuicao** espalhados pelo Brasil
 - **3.200 clientes ativos** no setor varejista e industrial
-- **~18.000 entregas/mes**
+- **\~18.000 entregas/mes**
 - **Faturamento anual:** R$ 380 milhoes
 
 ## 1.2 O Problema de Negocio
@@ -68,7 +68,7 @@ Antes de projetar qualquer pipeline, o grupo deve responder as perguntas abaixo 
 | **Veracidade** | Quao precisos e confiaveis sao os dados? | Sensores podem falhar; status de pedido pode ser inconsistente entre TMS e WMS |
 | **Variedade** | Quais tipos, formatos e fontes? | JSON (IoT), relacional (ERP/WMS/TMS), CSV (APIs externas), semiestruturado |
 | **Velocidade** | Qual a frequencia de geracao e ingestao? | IoT a cada 30s; pedidos em tempo real; estoque a cada 15 min; relatorios diarios |
-| **Volume** | Qual o tamanho e taxa de crescimento? | ~864k eventos IoT/dia; ~48k movimentacoes WMS/dia; ~3k eventos TMS/dia |
+| **Volume** | Qual o tamanho e taxa de crescimento? | \~864k eventos IoT/dia; \~48k movimentacoes WMS/dia; \~3k eventos TMS/dia |
 
 ---
 
@@ -213,7 +213,7 @@ Cada veiculo emite eventos a cada 30 segundos:
 }
 ```
 
-- **Volume:** ~864.000 eventos/dia
+- **Volume:** \~864.000 eventos/dia
 - **Variedade:** semiestruturado JSON
 - **Veracidade:** sensores podem falhar; exigir validacao de range
 
@@ -250,17 +250,17 @@ Cada veiculo emite eventos a cada 30 segundos:
 }
 ```
 
-- **Volume WMS:** ~48.000 registros/dia
-- **Volume TMS:** ~3.000 registros/dia
+- **Volume WMS:** \~48.000 registros/dia
+- **Volume TMS:** \~3.000 registros/dia
 
 ## 5.3 Dados Externos
 
 | Fonte | Tipo | Frequencia | Volume Estimado |
 |-------|------|-----------|-----------------|
-| API Google Maps / HERE | Trafego em tempo real | A cada 5 min (veiculos em rota) | ~60.000 requisicoes/dia |
-| API INMET / Open-Meteo | Clima e previsao de chuvas | A cada hora | ~1.500 chamadas/dia |
-| API ANTT | Alertas de bloqueio de rodovias | Event-driven | ~20 eventos/dia (media) |
-| Base IBGE | Dados geograficos de CEP/municipio | Mensal | Base completa ~500 MB |
+| API Google Maps / HERE | Trafego em tempo real | A cada 5 min (veiculos em rota) | \~60.000 requisicoes/dia |
+| API INMET / Open-Meteo | Clima e previsao de chuvas | A cada hora | \~1.500 chamadas/dia |
+| API ANTT | Alertas de bloqueio de rodovias | Event-driven | \~20 eventos/dia (media) |
+| Base IBGE | Dados geograficos de CEP/municipio | Mensal | Base completa \~500 MB |
 
 ---
 

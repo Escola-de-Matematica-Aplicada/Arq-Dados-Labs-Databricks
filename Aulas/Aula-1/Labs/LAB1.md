@@ -2,7 +2,7 @@
 
 **Disciplina** Arquitetura de Dados e Big Data
 **Aula** 1 — Tipos de Dados e Contexto de Big Data
-**Duração do Lab** ~1h30 (em aula)
+**Duração do Lab** \~1h30 (em aula)
 **Entrega** Tabela de classificação preenchida + reflexões em grupo
 
 > **Para quem é este lab:** Você é um executivo ou analista que precisa entender *onde estão os dados da sua empresa* e *como eles fluem*. Não é preciso saber programar — é preciso saber pensar em dados. Este lab te ajuda a diagnosticar o que você já sabe e a alinhar essa visão com os conceitos que vamos construir nas próximas aulas.
@@ -12,7 +12,7 @@
 ## Antes de começar
 
 - Releia rapidamente o **plano de ensino** da disciplina (Módulo 1, no eClass) e os slides da **Aula 1**.
-- O cenário que vamos usar é a **LODLog Transportes e Distribuição S.A.** — uma empresa fictícia (mas bem realista) de logística com 450 veículos, 12 centros de distribuição e ~18 mil entregas por mês. Você vai analisar as 8 fontes de dados dela, exatamente como um consultor de dados faria no primeiro dia de um projeto.
+- O cenário que vamos usar é a **LODLog Transportes e Distribuição S.A.** — uma empresa fictícia (mas bem realista) de logística com 450 veículos, 12 centros de distribuição e \~18 mil entregas por mês. Você vai analisar as 8 fontes de dados dela, exatamente como um consultor de dados faria no primeiro dia de um projeto.
 
 ---
 

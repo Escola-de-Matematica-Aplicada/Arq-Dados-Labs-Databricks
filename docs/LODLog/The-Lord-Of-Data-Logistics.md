@@ -11,7 +11,7 @@ A LODLog Transportes e Distribuição S.A. é uma empresa brasileira de logísti
 * 450 veículos de carga (leves, médios e pesados)
 * 12 centros de distribuição espalhados pelo Brasil
 * 3.200 clientes ativos no setor varejista e industrial
-* ~18.000 entregas/mês
+* \~18.000 entregas/mês
 * Faturamento anual: R$ 380 milhões
 
 # O Problema de Negócio
@@ -50,7 +50,7 @@ Cada veículo possui um dispositivo embarcado que emite eventos a cada 30 segund
  "hodometro\_km": 124530
 }
 
-Volume estimado: 450 veículos × 2 eventos/min × 60 min × 16h = ~864.000 eventos/dia
+Volume estimado: 450 veículos × 2 eventos/min × 60 min × 16h = \~864.000 eventos/dia
 
 ## Dados de Sistemas Transacionais (ERP / WMS / TMS)
 
@@ -67,7 +67,7 @@ Extraídos via API REST ou CDC (Change Data Capture) dos sistemas legados:
  "ultima\_movimentacao": "2025-07-14T11:00:00Z"
 }
 
-Volume estimado: 12 CDs × ~4.000 movimentações/dia (recebimento, picking, expedição, transferência) = ~48.000 registros/dia (~38 MB/dia em JSON) 9
+Volume estimado: 12 CDs × \~4.000 movimentações/dia (recebimento, picking, expedição, transferência) = \~48.000 registros/dia (\~38 MB/dia em JSON) 9
 
 ### Notas:
 
@@ -104,7 +104,7 @@ E a regra de negócio: SE nivel\_estoque\_CD < estoque\_minimo × 1.2 → Gerar 
  "motorista\_id": "MOT-0091"
 }
 
-Volume estimado: ~600 pedidos/dia × 5 eventos de status (criação → alocação → coleta → trânsito → entrega) = ~3.000 registros/dia (~3,5 MB/dia em JSON) 10
+Volume estimado: \~600 pedidos/dia × 5 eventos de status (criação → alocação → coleta → trânsito → entrega) = \~3.000 registros/dia (\~3,5 MB/dia em JSON) 10
 
 ### Notas:
 
@@ -125,10 +125,10 @@ No contexto do trabalho, o TMS aparece como fonte de dados para rastrear os **ve
 |  |  |  |  |
 | --- | --- | --- | --- |
 | Fonte | Tipo | Frequência | Volume Estimado |
-| API Google Maps | Tráfego em tempo real | Contínuo | ~60.000 requisições/dia (312 veículos em rota × a cada 5 min × 16h); ~480 MB/dia |
-| API INMET / Open-Meteo | Clima e previsão de chuvas | A cada hora | ~1.500 chamadas/dia (62 localidades: 12 CDs + 50 trechos de rota); ~4,5 MB/dia |
-| API ANTT | Alertas de bloqueio de rodovias | Event-driven | ~20 eventos/dia (média), picos de 100 em chuvas fortes; ~40 KB/dia |
-| Base IBGE | Dados geográficos de CEP/município | Trimestral | Base completa ~500 MB; atualização trimestral (PNADC) ~10 MB; consultas ad-hoc ~5 MB/dia |
+| API Google Maps | Tráfego em tempo real | Contínuo | \~60.000 requisições/dia (312 veículos em rota × a cada 5 min × 16h); \~480 MB/dia |
+| API INMET / Open-Meteo | Clima e previsão de chuvas | A cada hora | \~1.500 chamadas/dia (62 localidades: 12 CDs + 50 trechos de rota); \~4,5 MB/dia |
+| API ANTT | Alertas de bloqueio de rodovias | Event-driven | \~20 eventos/dia (média), picos de 100 em chuvas fortes; \~40 KB/dia |
+| Base IBGE | Dados geográficos de CEP/município | Trimestral | Base completa \~500 MB; atualização trimestral (PNADC) \~10 MB; consultas ad-hoc \~5 MB/dia |
 
 ## Ideias para visão executiva
 

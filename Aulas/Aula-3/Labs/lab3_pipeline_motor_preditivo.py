@@ -21,7 +21,7 @@
 # MAGIC resultado como gestores.
 # MAGIC
 # MAGIC **Como executar:** Databricks Free Edition (https://login.databricks.com) → Workspace → Import →
-# MAGIC este arquivo `.py` → **Run All** (~2 min, compute Serverless). Depois faça os exercícios do fim.
+# MAGIC este arquivo `.py` → **Run All** (\~2 min, compute Serverless). Depois faça os exercícios do fim.
 
 # COMMAND ----------
 

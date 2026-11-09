@@ -14,7 +14,7 @@
 # MAGIC
 # MAGIC **Como executar:**
 # MAGIC 1. Login no Databricks Free Edition — https://login.databricks.com (compute Serverless).
-# MAGIC 2. Workspace > Import > este arquivo `.py` > Run All (~1 min).
+# MAGIC 2. Workspace > Import > este arquivo `.py` > Run All (\~1 min).
 # MAGIC 3. Leia os comentários de cada célula: eles explicam *o que* está acontecendo e *por que*.
 # MAGIC
 # MAGIC > 💡 *Regra de ouro do Medallion: a camada Bronze guarda o dado exatamente como chegou.

@@ -31,7 +31,7 @@
 Para cada fonte do domínio, anotem:
 
 - **Formato:** relacional, JSON, XML, CSV.
-- **Frequência e volume:** ex.: IoT 864k eventos/dia; Maps ~60k requisições/dia; ERP ~3k registros/dia.
+- **Frequência e volume:** ex.: IoT 864k eventos/dia; Maps \~60k requisições/dia; ERP \~3k registros/dia.
 - **Tipo de dado:** estruturado, semiestruturado ou não estruturado (Aula 1).
 - **Quem consome:** dashboard, alerta, modelo de ML, API.
 
@@ -96,7 +96,7 @@ O pitch de 3 min é preparado depois da Parte 7, já com os números do notebook
 
 O notebook [`lab3_pipeline_motor_preditivo.py`](lab3_pipeline_motor_preditivo.py) executa, em escala de laboratório, o pipeline do domínio **Operação/Frota**: entregas do TMS chegam em **lote** (CSV diário) e a telemetria IoT em **streaming** (micro-lotes JSON); as duas passam por Bronze → Silver → Gold, e um **motor preditivo pronto** (modelo `risco_atraso` v1.2, entregue pelo time de Ciência de Dados) lê a Gold e calcula a probabilidade de atraso de cada entrega.
 
-1. **Rodar (10 min):** Databricks Free Edition → Workspace → Import → `lab3_pipeline_motor_preditivo.py` → **Run All** (~2 min, Serverless). Não precisa ter rodado nada antes: o notebook gera os próprios dados.
+1. **Rodar (10 min):** Databricks Free Edition → Workspace → Import → `lab3_pipeline_motor_preditivo.py` → **Run All** (\~2 min, Serverless). Não precisa ter rodado nada antes: o notebook gera os próprios dados.
 2. **Observar (10 min):** anotem os números de cada etapa — linhas na Bronze e na Silver (quantas foram barradas e por quê), entregas na Gold, alertas do motor por CD.
 3. **Responder (15 min):** os 5 exercícios do fim do notebook — limiar de alerta como decisão de negócio, lote × streaming, qualidade, reprocessamento e ferramenta por camada. Cada resposta com um número do notebook.
 

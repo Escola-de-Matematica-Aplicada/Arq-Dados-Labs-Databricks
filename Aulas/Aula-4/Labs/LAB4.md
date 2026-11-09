@@ -23,7 +23,7 @@
 | Artefato | Onde | O que entrega de bandeja |
 |---|---|---|
 | DDL completa (ER `lodlog_op` + Star `lodlog_dw`) | [`../../Aula-2/Labs/lodlog_modelo_dados_free.sql`](../../Aula-2/Labs/lodlog_modelo_dados_free.sql) | modelo dimensional já projetado — para ler e criticar, não para escrever |
-| Seed LODLog (~50k entregas, com anomalias propositais) | [`../../Aula-2/Labs/lodlog_lab2_seed_free.py`](../../Aula-2/Labs/lodlog_lab2_seed_free.py) | dados reais para as suas queries de análise e qualidade |
+| Seed LODLog (\~50k entregas, com anomalias propositais) | [`../../Aula-2/Labs/lodlog_lab2_seed_free.py`](../../Aula-2/Labs/lodlog_lab2_seed_free.py) | dados reais para as suas queries de análise e qualidade |
 | Notebook de apoio com queries guiadas | [`../../Aula-3/Labs/LAB3_apoio_free.ipynb`](../../Aula-3/Labs/LAB3_apoio_free.ipynb) | ponto de partida das queries analíticas |
 | **Seed do miniprojeto (70% pronto)** | [`lab4_miniprojeto_seed.py`](lab4_miniprojeto_seed.py) | 7 fontes LODLog na Bronze, 4 Silvers, Gold de referência, exemplos e o MDM de cliente e endereço; **5 TODOs para o grupo** — é o notebook do trabalho |
 | Pipeline Medallion de referência (starter) | [`lab4_miniprojeto_starter.py`](lab4_miniprojeto_starter.py) | versão mínima 100% pronta (JSON IoT + TMS), para consulta |
@@ -69,9 +69,9 @@ Ao final deste miniprojeto, você será capaz de:
 
 | Bloco | Horário | Duração | Conteúdo |
 |-------|---------|---------|----------|
-| **Trabalho em grupo** | 19h00–20h30 | ~1h30 | Fechar os TODOs pendentes, TODO 4 (governança e glossário), Run All final, montar o pitch — com o professor circulando |
+| **Trabalho em grupo** | 19h00–20h30 | \~1h30 | Fechar os TODOs pendentes, TODO 4 (governança e glossário), Run All final, montar o pitch — com o professor circulando |
 | Intervalo | 20h30–20h50 | 15–20 min | — |
-| **Apresentações** | 20h50–21h55 | ~1h05 | Pitch de cada grupo (Etapa 2.3) — 10 + 5 min até 4 grupos; 7 + 3 com 5 ou mais |
+| **Apresentações** | 20h50–21h55 | \~1h05 | Pitch de cada grupo (Etapa 2.3) — 10 + 5 min até 4 grupos; 7 + 3 com 5 ou mais |
 | **Fechamento** | 21h55–22h20 | 25 min | Lições aprendidas da disciplina e preparação para a prova |
 
 ---
@@ -93,9 +93,9 @@ Ao final deste miniprojeto, você será capaz de:
 
 ---
 
-## Parte 2 — Prática em Grupo (Aula 4: 2h25 · Aula 5: ~1h30 de trabalho + apresentações)
+## Parte 2 — Prática em Grupo (Aula 4: 2h25 · Aula 5: \~1h30 de trabalho + apresentações)
 
-O notebook do grupo é o [`lab4_miniprojeto_seed.py`](lab4_miniprojeto_seed.py). Ele roda inteiro desde o começo (Run All, ~2 min); as partes do grupo ficam "em branco" até serem preenchidas, e a **Etapa 8** do notebook mostra o que já está ✅ e o que falta ⬜.
+O notebook do grupo é o [`lab4_miniprojeto_seed.py`](lab4_miniprojeto_seed.py). Ele roda inteiro desde o começo (Run All, \~2 min); as partes do grupo ficam "em branco" até serem preenchidas, e a **Etapa 8** do notebook mostra o que já está ✅ e o que falta ⬜.
 
 | | O que vem pronto (70%) | O que o grupo faz (30%) |
 |---|---|---|
@@ -107,17 +107,17 @@ O notebook do grupo é o [`lab4_miniprojeto_seed.py`](lab4_miniprojeto_seed.py).
 | **Governança** | Exemplo aplicado na Gold de referência (dono, descrição, PII, retenção), glossário de negócio e tags no catálogo | **TODO 4** — governança da Gold do grupo + regra de qualidade + **2 termos no glossário** com dono e steward |
 | **Dado crítico (MDM)** | Cliente e endereço em ERP, TMS e CRM: padronização por regras SQL e por IA (`ai_query` com `system.ai.llama-4-maverick`), tabela de-para, scorecard de qualidade e análise de impacto na pontualidade | **TODO 5** — o registro de ouro: de onde vem o endereço oficial e o que é um "endereço válido para entrega" |
 
-### Etapa 2.1 — Rodar o seed e entender o que veio pronto (Aula 4, ~45 min)
+### Etapa 2.1 — Rodar o seed e entender o que veio pronto (Aula 4, \~45 min)
 
 1. **Importe e rode:** Workspace › Import › `lab4_miniprojeto_seed.py` › defina `CENARIO` na primeira célula › Run All.
 2. **Leia as Etapas 1 a 3:** para cada fonte, anote tipo de dado, forma de ingestão típica (batch, streaming, CDC) e **quantas linhas a Silver barrou e por quê** — é o slide de execução do pitch.
-3. **Faça o TODO 1** (~20 min): escolha a fonte extra recomendada para o cenário e defina as regras (limite de chuva plausível ou palavras-chave das ocorrências). O notebook avisa se a regra deixou texto demais em `outros`.
+3. **Faça o TODO 1** (\~20 min): escolha a fonte extra recomendada para o cenário e defina as regras (limite de chuva plausível ou palavras-chave das ocorrências). O notebook avisa se a regra deixou texto demais em `outros`.
 
 ### Etapa 2.2 — Gold e análise do cenário (Aula 4, 70 min)
 
-1. **TODO 2** (~20 min): no modelo de Gold do seu cenário, troque `CAST(NULL AS DOUBLE)` pela fórmula da métrica-chave (a dica está no comentário). A Gold junta uma fonte **estruturada** com a fonte **semi/não estruturada** do TODO 1 — é a integração exigida na entrega.
-2. **TODO 3** (~15 min): a consulta do cenário já vem pronta. Escreva a pergunta de negócio e a interpretação: *"o que eu diria ao diretor com este número? que decisão ele apoia?"*
-3. **TODO 5** (~25 min) — **o dado mais crítico da LODLog** (Etapa 7B do notebook). Rodem as células prontas e leiam: o mesmo cliente nos três sistemas, a padronização por regra e por IA, a tabela de-para e o scorecard de qualidade. Então decidam, como um conselho de dados decidiria: **de onde vem o endereço oficial** (ERP, a versão mais usada no TMS ou a mais completa) e **o que é um endereço válido para entrega** (que regras valem). A célula seguinte grava o registro de ouro, leva os termos ao glossário com dono e steward e mostra quanto o endereço ruim custa em pontualidade.
+1. **TODO 2** (\~20 min): no modelo de Gold do seu cenário, troque `CAST(NULL AS DOUBLE)` pela fórmula da métrica-chave (a dica está no comentário). A Gold junta uma fonte **estruturada** com a fonte **semi/não estruturada** do TODO 1 — é a integração exigida na entrega.
+2. **TODO 3** (\~15 min): a consulta do cenário já vem pronta. Escreva a pergunta de negócio e a interpretação: *"o que eu diria ao diretor com este número? que decisão ele apoia?"*
+3. **TODO 5** (\~25 min) — **o dado mais crítico da LODLog** (Etapa 7B do notebook). Rodem as células prontas e leiam: o mesmo cliente nos três sistemas, a padronização por regra e por IA, a tabela de-para e o scorecard de qualidade. Então decidam, como um conselho de dados decidiria: **de onde vem o endereço oficial** (ERP, a versão mais usada no TMS ou a mais completa) e **o que é um endereço válido para entrega** (que regras valem). A célula seguinte grava o registro de ouro, leva os termos ao glossário com dono e steward e mostra quanto o endereço ruim custa em pontualidade.
 4. **Para quem terminar antes — 1 teste de "E se"** (vira ponto forte no pós-projeto):
    - Mude a regra de qualidade da Silver do TODO 1 → o que muda na Gold e na conclusão?
    - Rode a Silver sem o `DISTINCT` → quantas duplicatas chegariam à Gold? Isso é a armadilha da "Colheita Silenciosa" (RPG da Aula 2)?

@@ -53,15 +53,15 @@
 # MAGIC | `contrato` | 200 | Contratos ativos |
 # MAGIC | `veiculo` | 50 | Frota de veículos |
 # MAGIC | `motorista` | 100 | Motoristas |
-# MAGIC | `manutencao` | ~220 | Histórico de manutenção |
-# MAGIC | `telemetria` | ~50K | Eventos IoT (simplificado) |
+# MAGIC | `manutencao` | \~220 | Histórico de manutenção |
+# MAGIC | `telemetria` | \~50K | Eventos IoT (simplificado) |
 # MAGIC | `centro_distribuicao` | 5 | Centros de distribuição |
 # MAGIC | `produto` | 50 | Catálogo de produtos |
 # MAGIC | `estoque` | 250 | Posições de estoque |
-# MAGIC | `movimentacao_estoque` | ~10K | Movimentações |
-# MAGIC | `pedido` | ~50K | Pedidos de entrega |
-# MAGIC | `item_pedido` | ~150K | Itens dos pedidos |
-# MAGIC | `entrega` | ~50K | **Entregas em 2FN (proposital)** com kpi_cat_atraso |
+# MAGIC | `movimentacao_estoque` | \~10K | Movimentações |
+# MAGIC | `pedido` | \~50K | Pedidos de entrega |
+# MAGIC | `item_pedido` | \~150K | Itens dos pedidos |
+# MAGIC | `entrega` | \~50K | **Entregas em 2FN (proposital)** com kpi_cat_atraso |
 # MAGIC
 # MAGIC ### lodlog_dw (Data Warehouse - Star Schema):
 # MAGIC | Tabela | Fonte | Descrição |
@@ -72,7 +72,7 @@
 # MAGIC | `dim_cliente` | SQL ← lodlog_op.cliente + endereco + contrato | SCD Tipo 2 |
 # MAGIC | `dim_veiculo` | SQL ← lodlog_op.veiculo | SCD Tipo 2 |
 # MAGIC | `dim_motorista` | SQL ← lodlog_op.motorista | SCD Tipo 2 |
-# MAGIC | `fato_entregas` | SQL ← entrega + pedido + item_pedido | ~50K + anomalias |
+# MAGIC | `fato_entregas` | SQL ← entrega + pedido + item_pedido | \~50K + anomalias |
 # MAGIC
 # MAGIC > **Anomalias propositais** em fato_entregas (para Parte 4 do LAB):
 # MAGIC > duplicatas · valores negativos · outliers · FK quebrada
@@ -1316,7 +1316,7 @@ print("Otimização concluída.")
 # MAGIC ### Setup Concluído!
 # MAGIC
 # MAGIC **Anomalias propositais em `fato_entregas` (para Parte 4 do LAB):**
-# MAGIC - ~100 linhas duplicadas por `entrega_id` (mesmo pedido, custo levemente diferente)
-# MAGIC - ~50 linhas com valores negativos (`distancia_km`, `peso_total_kg` ou `custo_combustivel`)
-# MAGIC - ~30 linhas com outliers em `minutos_atraso` (> 1.000 min ou adiantamento < −480 min)
-# MAGIC - ~50 linhas com FK quebrada (`sk_cliente` 201–300 não existem em `dim_cliente`)
+# MAGIC - \~100 linhas duplicadas por `entrega_id` (mesmo pedido, custo levemente diferente)
+# MAGIC - \~50 linhas com valores negativos (`distancia_km`, `peso_total_kg` ou `custo_combustivel`)
+# MAGIC - \~30 linhas com outliers em `minutos_atraso` (> 1.000 min ou adiantamento < −480 min)
+# MAGIC - \~50 linhas com FK quebrada (`sk_cliente` 201–300 não existem em `dim_cliente`)

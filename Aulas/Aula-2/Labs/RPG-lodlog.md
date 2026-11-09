@@ -18,7 +18,7 @@ Empresa brasileira de logística, sede em Campinas/SP, fundada em 2010:
 | Frota | **450 veículos** de carga (leves, médios e pesados), cada um com dispositivo IoT |
 | Rede | **12 centros de distribuição** pelo Brasil |
 | Clientes | **3.200 ativos** (varejo e indústria) |
-| Operação | **~18.000 entregas/mês** (~600 pedidos/dia, 5 eventos de status cada) |
+| Operação | **\~18.000 entregas/mês** (\~600 pedidos/dia, 5 eventos de status cada) |
 | Faturamento | **R$ 380 milhões/ano** |
 
 ### A frase que abriu a crise
@@ -46,11 +46,11 @@ A LODLog gera dados de 8 fontes diferentes — e cada uma vive no seu próprio m
 
 | Torre (domínio) | Sistemas | O que produz | Volume |
 |---|---|---|---|
-| **Frota / IoT** | Sensores embarcados | JSON a cada 30s: GPS, velocidade, rpm, temperatura do motor, nível de combustível, peso da carga | **~864 mil eventos/dia** |
-| **Operação / TMS** | Transporte | Pedidos e 5 eventos de status (criação → alocação → coleta → trânsito → entrega) | ~3.000 registros/dia |
-| **Estoque / WMS** | Armazém (12 CDs) | Entradas, saídas, picking, transferência | ~48.000 registros/dia |
+| **Frota / IoT** | Sensores embarcados | JSON a cada 30s: GPS, velocidade, rpm, temperatura do motor, nível de combustível, peso da carga | **\~864 mil eventos/dia** |
+| **Operação / TMS** | Transporte | Pedidos e 5 eventos de status (criação → alocação → coleta → trânsito → entrega) | \~3.000 registros/dia |
+| **Estoque / WMS** | Armazém (12 CDs) | Entradas, saídas, picking, transferência | \~48.000 registros/dia |
 | **Financeiro / ERP** | Gestão | Pedidos, faturamento, contratos, notas | extraído via API/CDC |
-| **Dados Externos** | Google Maps · INMET · ANTT · IBGE | Tráfego (~60k req/dia), clima (1.500 chamadas/dia), bloqueios de rodovia (~20/dia, picos de 100), geografia | contínuo + trimestral |
+| **Dados Externos** | Google Maps · INMET · ANTT · IBGE | Tráfego (\~60k req/dia), clima (1.500 chamadas/dia), bloqueios de rodovia (\~20/dia, picos de 100), geografia | contínuo + trimestral |
 
 Os payloads são heterogêneos (JSON de sensores com campos que variam por veículo), as chaves não batem entre sistemas (o código de caminhão TRK-0342 no TMS ≠ placa no ERP ≠ id no WMS) e cada domínio grava "do seu jeito". As regras de negócio que a diretoria sonha em automatizar —
 
@@ -81,7 +81,7 @@ Todos têm razão. Esse é o problema: **não existe escolha sem trade-off.**
 | Dinheiro | R$ 1,6 MM no 1º ano, retorno em até 18 meses |
 | Legado | ERP no data center próprio, hosting vencendo em 14 meses; WMS em 3 versões |
 | Contratos | 40 clientes = 62% da receita; disputa de multa de até 24 meses |
-| Horizonte | Plano 2028: 30 CDs, 2 países, ~2.000 veículos |
+| Horizonte | Plano 2028: 30 CDs, 2 países, \~2.000 veículos |
 
 Defendam a porta de vocês **pelas forças** que ela atende e pelas que ela sacrifica (F1 variedade, F2 latência, F3 confiança, F4 equipe e custo, F5 legado, F6 governança). Detalhes no dossiê ["Por que esta arquitetura?"](../../../docs/LODLog/Por-que-esta-arquitetura.md).
 

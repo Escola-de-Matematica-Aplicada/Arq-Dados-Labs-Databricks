@@ -17,7 +17,7 @@
   - `LODLog_op_v3.png` — modelo operacional (ER, 3FN)
   - `LODLog_dw_v3.png` — modelo analítico (Star Schema)
 
-> ℹ️ **Sobre o dataset:** a LODLog "de verdade" tem 450 veículos, 12 CDs e ~18 mil entregas/mês. O banco de laboratório é um **recorte piloto**: 5 CDs do corredor Sudeste–Sul, 50 veículos e ~50 mil entregas acumuladas (2024–2026) — tamanho perfeito para o ambiente gratuito.
+> ℹ️ **Sobre o dataset:** a LODLog "de verdade" tem 450 veículos, 12 CDs e \~18 mil entregas/mês. O banco de laboratório é um **recorte piloto**: 5 CDs do corredor Sudeste–Sul, 50 veículos e \~50 mil entregas acumuladas (2024–2026) — tamanho perfeito para o ambiente gratuito.
 
 **Arquivos prontos deste lab (nesta pasta):**
 
@@ -25,7 +25,7 @@
 |---|---|---|
 | `lab2-medallion-bronze-silver-gold.py` | Pipeline completo Bronze→Silver→Gold de IoT (executar células 1→6) | Parte 1 |
 | `lodlog_modelo_dados_free.sql` | DDL do ER (`lodlog_op`) + Star Schema (`lodlog_dw`) — **executar na Atividade 2.0** e depois ler criticamente | Parte 2 |
-| `lodlog_lab2_seed_free.py` | Geração de dados sintéticos para `lodlog_op` + **ETL SQL para `lodlog_dw`** (~3 min) — **executar na Atividade 2.0** | Parte 2 |
+| `lodlog_lab2_seed_free.py` | Geração de dados sintéticos para `lodlog_op` + **ETL SQL para `lodlog_dw`** (\~3 min) — **executar na Atividade 2.0** | Parte 2 |
 | `lab2-nosql-simulation.py` | Simulação KV / Documento / Coluna / Grafo com PySpark+Delta | Parte 2 (demo) |
 | [`/Diagramas/`](../../../Diagramas/) | Diagramas ER e Star Schema já desenhados | Parte 2 |
 
@@ -58,7 +58,7 @@ Ao final deste lab, você será capaz de:
 Respondam **por escrito** (serve para o parecer da Parte 4):
 
 1. **Bronze × Silver:** quantas linhas foram descartadas na Silver e **por quê**? O filtro de `velocidade 0–200 km/h` e `temperatura 50–150 °C` protege contra quê, na linguagem dos 5 Vs da Aula 1 (dica: *Veracidade*)?
-2. **Silver × Gold:** a Gold tem ~1.500 linhas (50 veículos × 30 dias) contra centenas de milhares na Bronze. Essa "redução" é perda de informação ou ganho de foco? Para qual público cada camada fala (operação de manutenção × diretoria)?
+2. **Silver × Gold:** a Gold tem \~1.500 linhas (50 veículos × 30 dias) contra centenas de milhares na Bronze. Essa "redução" é perda de informação ou ganho de foco? Para qual público cada camada fala (operação de manutenção × diretoria)?
 3. **Time-travel:** a célula 5 mostra o `DESCRIBE HISTORY`. Citem **duas situações de negócio** em que poder voltar à versão anterior de uma tabela Delta vale dinheiro ou evita multa (pensem em LGPD (Lei Geral de Proteção de Dados), recall de decisão, auditoria de SLA). Na LODLog, uma disputa de multa pode exigir provar uma entrega de até 24 meses atrás: é a decisão D2 do [dossiê](../../../docs/LODLog/Por-que-esta-arquitetura.md).
 
 ### Atividade 1.3: Quebre a esteira de propósito (grupo, 10 min)
@@ -78,7 +78,7 @@ Respondam **por escrito** (serve para o parecer da Parte 4):
 ### Atividade 2.0: Subir o modelo e rodar o ETL (grupo, 15 min)
 
 1. No Databricks: **Workspace > Import** → `lodlog_modelo_dados_free.sql` → execute célula a célula (cria os schemas `lodlog_op` e `lodlog_dw` com todas as tabelas do ER e do Star Schema; ao final, a "CÉLULA 8" mostra `SHOW TABLES`).
-2. Em seguida importe **`lodlog_lab2_seed_free.py`** → **Run All** (~3 min). Ele faz duas coisas: **(a)** gera dados sintéticos e carrega as 14 tabelas de `lodlog_op` (clientes, frota, pedidos e ~50 mil entregas em 2FN); **(b)** roda o **ETL em SQL** (`INSERT INTO … SELECT` e CTAS) que transforma `lodlog_op` no star schema `lodlog_dw` — 6 dimensões + `fato_entregas`.
+2. Em seguida importe **`lodlog_lab2_seed_free.py`** → **Run All** (\~3 min). Ele faz duas coisas: **(a)** gera dados sintéticos e carrega as 14 tabelas de `lodlog_op` (clientes, frota, pedidos e \~50 mil entregas em 2FN); **(b)** roda o **ETL em SQL** (`INSERT INTO … SELECT` e CTAS) que transforma `lodlog_op` no star schema `lodlog_dw` — 6 dimensões + `fato_entregas`.
 3. Confiram no console: as contagens impressas por tabela (ex.: `✓ lodlog_dw.fato_entregas: 50.230 linhas`) — o número maior que 50.000 é proposital; vocês vão descobrir por quê na Atividade 3.4.
 4. Registrem: qual foi a **última tabela carregada** pelo ETL e de quais tabelas `lodlog_op` ela depende (dica: olhem os JOINs da "Parte 6" do notebook).
 
@@ -104,9 +104,9 @@ Abram `lodlog_modelo_dados_free.sql` **como leitura** (não editem). Para cada i
 |---|---|---|---|
 | 1 | Tabelas `lodlog_op` separadas por domínio (cliente, veiculo, motorista...) | linhas 77–290 | |
 | 2 | `sk_cliente` etc. (surrogate keys) no DW em vez de `cliente_id` | schema `lodlog_dw` | |
-| 3 | Colunas `valido_de` / `valido_ate` (SCD Tipo 2) em `dim_cliente` | ~linha 374 | |
-| 4 | `dim_centro_distribuicao` **sem** `valido_de/ate` (SCD Tipo 1) | ~linha 428 | |
-| 5 | `dim_cat_atraso` com apenas 5 registros | ~linha 447 | |
+| 3 | Colunas `valido_de` / `valido_ate` (SCD Tipo 2) em `dim_cliente` | \~linha 374 | |
+| 4 | `dim_centro_distribuicao` **sem** `valido_de/ate` (SCD Tipo 1) | \~linha 428 | |
+| 5 | `dim_cat_atraso` com apenas 5 registros | \~linha 447 | |
 | 6 | `ZORDER BY` nas tabelas Delta de alta cardinalidade | fatos e dims grandes | |
 
 Pergunta de virada (escolha múltipla, justifiquem a letra): *Se um cliente fosse reclassificado de "Varejo" para "E-commerce" e a diretoria quisesse ver o histórico ANTERIOR como era, qual design torna isso possível?*
@@ -128,7 +128,7 @@ O facilitador roda `lab2-nosql-simulation.py` (ou cada grupo executa Run All). C
 1. **Crescimento:** A LODLog passa de 12 para 30 CDs em 3 países, e cada região quer autonomia sobre seus dados. O Lakehouse centralizado entregue **aguenta**? Em que momento a resposta vira Data Mesh — e o que muda na prática (quem é dono do quê)?
 2. **Nova categoria:** O negócio pede a categoria "Atraso Severíssimo" (> 24h). O que muda em `dim_cat_atraso`, em `fato_entregas` e no pipeline? *(Spoiler: se a resposta envolver reescrever milhões de linhas da fato, algo está errado no desenho.)*
 3. **SCD indevidamente:** E se `dim_cliente` fosse SCD Tipo 1 em vez de Tipo 2? Quem perde informação numa reunião de diretoria? Deem um exemplo concreto de pergunta de negócio que ficaria sem resposta.
-4. **Pântano à vista:** O script seed cria **anomalias propositais** na `fato_entregas` (~100 duplicatas de `pedido_id`, valores negativos, outliers e FKs quebradas — anunciadas nos comentários do arquivo). Rodem uma contagem simples no Databricks ou SQL editor e respondam: qual camada Medallion **deveria** barrar isso, e por que a Bronze NÃO barra (e não deve)?
+4. **Pântano à vista:** O script seed cria **anomalias propositais** na `fato_entregas` (\~100 duplicatas de `pedido_id`, valores negativos, outliers e FKs quebradas — anunciadas nos comentários do arquivo). Rodem uma contagem simples no Databricks ou SQL editor e respondam: qual camada Medallion **deveria** barrar isso, e por que a Bronze NÃO barra (e não deve)?
 5. **Decisão de camada:** Um cientista de dados pede acesso direto à Bronze para treinar um modelo de predição de atraso. Vocês aprovam, negam ou aprovam com condição? Qual zona de Zaloni (Transiente/Sandbox?) resolve sem comprometer a governança?
 
 ---

@@ -28,10 +28,10 @@ Se um elo falta, a decisão é opinião. Se o "o que perdemos" falta, a decisão
 
 | Fato | Número |
 |---|---|
-| Frota | 450 veículos com IoT (internet das coisas: sensor embarcado), evento a cada 30 s → ~864 mil eventos/dia, ~26 milhões/mês, ~30 GB/mês brutos |
-| Rede | 12 CDs (centros de distribuição) · 3.200 clientes ativos · ~18.000 entregas/mês (~600 pedidos/dia) |
+| Frota | 450 veículos com IoT (internet das coisas: sensor embarcado), evento a cada 30 s → \~864 mil eventos/dia, \~26 milhões/mês, \~30 GB/mês brutos |
+| Rede | 12 CDs (centros de distribuição) · 3.200 clientes ativos · \~18.000 entregas/mês (\~600 pedidos/dia) |
 | Faturamento | R$ 380 MM/ano |
-| Variedade | ~30% estruturado (ERP — sistema de gestão empresarial —, WMS — gestão de armazéns — e TMS — gestão de transportes), ~60% semiestruturado (JSON de IoT e APIs), ~10% não estruturado (PDFs, e-mails, fotos de comprovante) |
+| Variedade | \~30% estruturado (ERP — sistema de gestão empresarial —, WMS — gestão de armazéns — e TMS — gestão de transportes), \~60% semiestruturado (JSON de IoT e APIs), \~10% não estruturado (PDFs, e-mails, fotos de comprovante) |
 | Dores | atraso em 23% das entregas → R$ 4,2 MM/ano em multas · retrabalho de inventário → R$ 1,8 MM · rota em planilha → +18% de combustível · manutenção corretiva → R$ 2,1 MM/ano · relatórios com 5 dias de atraso |
 | Meta | −20% de custo e SLA (nível de serviço prometido) de 95% em 12 meses |
 
@@ -40,12 +40,12 @@ Se um elo falta, a decisão é opinião. Se o "o que perdemos" falta, a decisão
 | Restrição | Fato proposto | Por que importa para a arquitetura |
 |---|---|---|
 | **Pessoas** | A área de Dados & BI tem **5 pessoas**: 1 coordenadora de BI (inteligência de negócio), 2 analistas de BI, 1 DBA (administrador de banco de dados) e 1 engenheiro de dados contratado este ano. A TI tem 14 pessoas, com infraestrutura terceirizada. Nos CDs não há ninguém de dados — há um "analista de planilha" por CD. | Uma equipe pequena e central **não sustenta** uma arquitetura federada nem um cluster próprio. Ela precisa de serviço gerenciado e de um único lugar para cuidar. |
-| **Dinheiro** | Orçamento de dados aprovado: **R$ 1,6 MM no primeiro ano**. O board exige retorno em até 18 meses. O diesel custa ~R$ 47 MM/ano; os 18% a mais equivalem a ~R$ 7 MM/ano. | Dá para pagar uma plataforma em nuvem e um time enxuto, não um big bang. As dores somam **~R$ 15 MM/ano** (8,1 + ~7 de combustível): o plano precisa capturar uma parte disso cedo. |
+| **Dinheiro** | Orçamento de dados aprovado: **R$ 1,6 MM no primeiro ano**. O board exige retorno em até 18 meses. O diesel custa \~R$ 47 MM/ano; os 18% a mais equivalem a \~R$ 7 MM/ano. | Dá para pagar uma plataforma em nuvem e um time enxuto, não um big bang. As dores somam **\~R$ 15 MM/ano** (8,1 + \~7 de combustível): o plano precisa capturar uma parte disso cedo. |
 | **Legado** | O **ERP** roda on-premises (no data center próprio, SQL Server de 2014) e o **contrato de hosting vence em 14 meses**. O **TMS** (sistema de gestão de transportes) é SaaS (software como serviço) com API e réplica de banco. O **WMS** (sistema de gestão de armazéns) tem **12 instalações em 3 versões diferentes** — por isso o mesmo produto tem SKUs (códigos de produto) diferentes. A telemetria chega por stream do fornecedor de IoT. | Ninguém vai parar 18 mil entregas/mês para reescrever sistemas (fala do CIO). A arquitetura tem de **ler** os sistemas como estão, sem sobrecarregá-los. O vencimento do hosting abre uma janela para ir à nuvem. |
 | **Contratos** | Os **40 maiores clientes = 62% do faturamento**. Todos têm SLA de janela de entrega com multa. Em disputa de multa, a LODLog precisa provar o que aconteceu em uma entrega de **até 24 meses atrás**. | O dado de entrega precisa de **histórico imutável e auditável**, não só do "número de hoje". |
 | **Regulação** | A LGPD (Lei Geral de Proteção de Dados) cobre a **geolocalização dos motoristas** e o **nome e endereço dos destinatários**. | Segurança e privacidade por camada; o dado pessoal não pode se espalhar em cópias sem dono. |
 | **Organização** | Cada gerente de CD tem meta própria e autonomia de ferramenta. **Não há dono de dado formal.** "Entrega" significa uma coisa para o financeiro, outra para o motorista, outra para o cliente e outra para o TMS. | O problema não é só técnico: sem dono e sem definição comum, qualquer arquitetura reproduz a briga dos números. |
-| **Horizonte** | O plano estratégico 2028 prevê **30 CDs** (com 2 países da América Latina) e **~2.000 veículos**. | É o gatilho natural para descentralizar (Data Mesh) — *depois*, não agora. |
+| **Horizonte** | O plano estratégico 2028 prevê **30 CDs** (com 2 países da América Latina) e **\~2.000 veículos**. | É o gatilho natural para descentralizar (Data Mesh) — *depois*, não agora. |
 
 ---
 
@@ -58,7 +58,7 @@ A tabela abaixo é o coração do "por quê". Cada linha transforma uma dor em u
 | Atraso de 23% → R$ 4,2 MM | Quais entregas de hoje vão atrasar, e por quê? | Torre de controle, **a cada poucos minutos** | Status do TMS em minutos (CDC, captura de mudanças) + IoT + tráfego e clima; previsão ≥ 60 min antes (regra R3) | Streaming **só** nesta faixa; Gold que junta 3 torres |
 | Multa contestada | O que aconteceu nesta entrega de 14 meses atrás? | Jurídico e comercial, **por demanda** | Histórico imutável de 24 meses, com versão de cada registro | **Bronze imutável** + histórico (time-travel, a consulta a versões anteriores da tabela, e SCD (dimensão de mudança lenta) Tipo 2) |
 | Quebra na estrada → R$ 2,1 MM | Qual caminhão vai quebrar esta semana? | Manutenção, **diário**; alerta crítico em **2 min** (R1) | Temperatura e rpm de 26 mi eventos/mês, faixa válida, sem duplicatas | Lake para volume semiestruturado; streaming para o alerta R1; batch para o modelo |
-| Combustível +18% (~R$ 7 MM) | Qual rota custa menos amanhã? | Planejamento, **diário** (D-1) | Histórico de rota × tráfego × clima × peso | **Batch** basta: não precisa de tempo real |
+| Combustível +18% (\~R$ 7 MM) | Qual rota custa menos amanhã? | Planejamento, **diário** (D-1) | Histórico de rota × tráfego × clima × peso | **Batch** basta: não precisa de tempo real |
 | Inventário → R$ 1,8 MM | Onde vai faltar estoque na próxima semana? | Gerente de CD, **a cada 15 min** | WMS das 12 instalações com o **mesmo SKU** | Padronização na Silver; dado de referência comum (SKU) |
 | Relatório em D+5 | Como fechamos a semana? | Diretoria, **semanal** | D+1 confiável, com o mesmo número para todos | Gold com **definição única** de "entrega" e "atraso" (glossário) |
 | "Ninguém sabe qual é o número certo" | Os 23% são de quê? | Board | Dado mestre de Cliente e conceito de Entrega com dono | MDM (gestão de dados mestres) do Cliente e governança com papéis |
@@ -117,7 +117,7 @@ Cada decisão segue o mesmo formato (um ADR, registro de decisão de arquitetura
 
 - **Contexto.** F3: disputas de multa de até 24 meses; os 40 maiores clientes são 62% da receita.
 - **Decisão.** O dado entra na Bronze como veio e **nunca é alterado**. A limpeza acontece na Silver.
-- **O que perdemos.** Armazenamento (pouco: ~30 GB/mês de IoT) e disciplina para não "consertar" na Bronze.
+- **O que perdemos.** Armazenamento (pouco: \~30 GB/mês de IoT) e disciplina para não "consertar" na Bronze.
 - **Evidência.** Lab 2 e seed do Lab 4: contagem de linhas Bronze → Silver → Gold; time-travel do Delta.
 - **Gatilho de revisão.** Se a LGPD exigir apagar o dado de um titular, a imutabilidade cede por regra (pseudonimização, retenção).
 
@@ -133,7 +133,7 @@ Cada decisão segue o mesmo formato (um ADR, registro de decisão de arquitetura
 
 ### Aula 3 — D4: Nuvem gerenciada (PaaS), e não Hadoop no data center próprio
 
-- **Contexto.** O hosting do ERP vence em 14 meses (F5); a equipe tem 5 pessoas (F4); o volume é modesto (~30 GB/mês de IoT), mas com picos (chuva, fim de mês).
+- **Contexto.** O hosting do ERP vence em 14 meses (F5); a equipe tem 5 pessoas (F4); o volume é modesto (\~30 GB/mês de IoT), mas com picos (chuva, fim de mês).
 - **Opções.** Cluster Hadoop próprio (IaaS, infraestrutura como serviço, ou data center) · plataforma gerenciada em nuvem (PaaS, plataforma como serviço) · só SaaS de BI.
 - **Decisão.** PaaS. Hadoop próprio exige um time que a LODLog não tem, e se paga pelo pico teórico. Só SaaS de BI não processa IoT.
 - **O que perdemos.** Dependência de fornecedor e custo variável que precisa de vigilância (FinOps, a gestão financeira do custo de nuvem).

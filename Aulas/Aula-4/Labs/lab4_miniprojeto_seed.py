@@ -25,7 +25,7 @@
 # MAGIC
 # MAGIC **Como executar:**
 # MAGIC 1. Login no Databricks Free Edition — https://login.databricks.com (compute Serverless).
-# MAGIC 2. Workspace › Import › este arquivo › **Run All** (~2 min). Ele roda inteiro mesmo antes dos TODOs —
+# MAGIC 2. Workspace › Import › este arquivo › **Run All** (\~2 min). Ele roda inteiro mesmo antes dos TODOs —
 # MAGIC    as partes do grupo só ficam "em branco" até vocês preencherem.
 # MAGIC 3. Preencham os TODOs **na ordem** e rodem de novo a partir da célula editada (ou Run All).
 # MAGIC
